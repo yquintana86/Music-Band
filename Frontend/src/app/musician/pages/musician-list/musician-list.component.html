@@ -1,0 +1,259 @@
+<div class="flex flex-col p-4 h-full">
+
+  <!-- Filter -->
+  <div class="mb-2">
+    <filter-layout filterTitle="Musician Filter" [formGroup]="this.musicianFilterformGroup" (reset)="onReset()"
+      (search)="onSearch()">
+      <div class="flex flex-col">
+        <div class="flex justify-between items-center py-2 px-4 ">
+          <div>
+            <div>
+              <label for="firstName" class="text-sm font-medium text-primary">First Name</label>
+            </div>
+            <input type="text"
+              class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
+              placeholder="First Name" formControlName="firstName">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('firstName')"
+              [error]="this.getErrorMessage('firstName', 'First Name')"></span>
+          </div>
+          <div>
+            <div>
+              <label for="lastName" class="text-sm font-medium text-primary">Last Name</label>
+            </div>
+            <input type="text"
+              class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
+              placeholder="Last Name" formControlName="lastName">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('lastName')"
+              [error]="this.getErrorMessage('lastName', 'First Name')"></span>
+          </div>
+          <div>
+            <div>
+              <label for="fromAge" class="text-sm font-medium text-primary">From Age</label>
+            </div>
+            <input type="number" class="bg-white/10 text-secondary text-right py-1 px-3 border-2 border-(--color-surface) rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="From Age"
+              formControlName="fromAge">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromAge')"
+              [error]="this.getErrorMessage('fromAge', 'From Age')"></span>
+          </div>
+
+          <div>
+            <div>
+              <label for="toAge" class="text-sm font-medium text-primary">To Age</label>
+            </div>
+            <input type="number" class="bg-white/10 text-right text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="To Age"
+              formControlName="toAge">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toAge')"
+              [error]="this.getErrorMessage('toAge', 'To Age')"></span>
+          </div>
+        </div>
+        <div class="flex justify-between items-center py-2 px-4">
+          <div>
+            <div>
+              <label for="fromExperience" class="text-sm font-medium text-primary">From Experience</label>
+            </div>
+            <input type="number" class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="From Experience"
+              formControlName="fromExperience">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromExperience')"
+              [error]="this.getErrorMessage('fromExperience', 'From Experience')"></span>
+          </div>
+          <div>
+            <div>
+              <label for="toExperience" class="text-sm font-medium text-primary">To Experience</label>
+            </div>
+            <input type="number" class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="To Experience"
+              formControlName="toExperience">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toExperience')"
+              [error]="this.getErrorMessage('toExperience', 'To Experience')"></span>
+          </div>
+          <div>
+            <div>
+              <label for="fromBasicSalary" class="text-sm font-medium text-primary">From Basic Salary</label>
+            </div>
+            <input type="number" class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="From Basic Salary"
+              formControlName="fromBasicSalary">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromBasicSalary')"
+              [error]="this.getErrorMessage('fromBasicSalary', 'From BasicSalary')"></span>
+          </div>
+          <div>
+            <div>
+              <label for="toBasicSalary" class="text-sm font-medium text-primary">To Basic Salary</label>
+            </div>
+            <input type="number" class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="To Basic Salary"
+              formControlName="toBasicSalary">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toBasicSalary')"
+              [error]="this.getErrorMessage('toBasicSalary', 'To BasicSalary')"></span>
+          </div>
+        </div>
+        <div class="flex justify-start items-center py-2 px-4">
+          <div>
+            <div>
+              <label for="instrument" class="text-sm font-medium text-primary">Instrument</label>
+            </div>
+            <input type="number" class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="Instrument"
+              formControlName="instrumentId">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('instrumentId')"
+              [error]="this.getErrorMessage('instrumentId', 'Instrument Id')"></span>
+          </div>
+        </div>
+      </div>
+    </filter-layout>
+  </div>
+
+  <!-- Update/Create Modal -->
+  <dialog-modal #dialogModalComponent [title]="musicianDialogModalTitle" [showCancelButton]="false"
+    [divContentClasses]="'h-50 bg-surface'" (okButtonEmit)="onAcceptModalButtonClicked()">
+    <form autocomplete="off" [formGroup]="musicianformGroup" (keydown.enter)="$event.preventDefault()"
+      (ngSubmit)="$event.preventDefault()">
+      <div class="flex flex-col gap-4">
+        <div class="flex justify-between items-center py-2 px-4 gap-4 ">
+          <div>
+            <div>
+              <label for="firstName" class="text-sm font-medium text-primary">First Name</label>
+            </div>
+            <input type="text"
+              class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
+              placeholder="First Name" formControlName="firstName">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('firstName')"
+              [error]="this.getErrorMessage('firstName', 'First Name')"></span>
+          </div>
+          <div class="flex-3/4">
+            <div>
+              <label for="lastName" class="text-sm font-medium text-primary">Last Name</label>
+            </div>
+            <input type="text"
+              class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl w-full"
+              placeholder="Last Name" formControlName="lastName">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('lastName')"
+              [error]="this.getErrorMessage('lastName', 'Last Name')"></span>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center py-2 px-4">
+          <div>
+            <div>
+              <label for="age" class="text-sm font-medium text-primary">Age</label>
+            </div>
+            <input type="number"
+              class="bg-white/10 text-secondary text-right py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
+              placeholder="Age" formControlName="age">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('age')"
+              [error]="this.getErrorMessage('age')"></span>
+          </div>
+          <div>
+            <div>
+              <label for="experience" class="text-sm font-medium text-primary">Experience</label>
+            </div>
+            <input type="number"
+              class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl"
+              placeholder="Experience" formControlName="experience">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('experience')"
+              [error]="this.getErrorMessage('experience')"></span>
+          </div>
+
+          <div>
+            <div>
+              <label for="basicSalary" class="text-sm font-medium text-primary">Basic Salary</label>
+            </div>
+            <input type="number"
+              class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl "
+              placeholder="Basic Salary" formControlName="basicSalary">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('basicSalary')"
+              [error]="this.getErrorMessage('basicSalary')"></span>
+          </div>
+          <div>
+            <div>
+              <label for="instrumentId" class="text-sm font-medium text-primary">Instrument</label>
+            </div>
+            <input type="number"
+              class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl"
+              placeholder="Instrument" formControlName="instrumentId">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('instrumentId')"
+              [error]="this.getErrorMessage('instrumentId', 'Instrument Id')"></span>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </dialog-modal>
+
+  <!-- Prompt Modal -->
+  <dialog-modal #promptModalComponent
+    [divModalBoxClasses]="'modal-box max-w-4xs p-0 border-2 border-(--color-primary)'" [title]="'Delete Musician'"
+    [showCloseButton]="false" [okButtonText]="'Delete'" [divContentClasses]="'h-15 bg-surface'"
+    (okButtonEmit)="onAcceptPromptButtonClicked()" (cancelButtonEmit)="onCancelPromptButtonClicked()">
+    <h3 class="font-semibold text-lg text-red-800 p-4">
+      Are you sure to delete?
+    </h3>
+  </dialog-modal>
+
+  <!-- Table -->
+  <div class="flex-1 min-h-0">
+    <table-layout class="h-full" [tableTitle]="'Musician List'"
+      (addButtonClicked)="showModalOnCreateMode()" (deleteAllButtonClicked)="onDeleteAllButtonClicked()">
+      <tr table-header>
+        <th>
+          <label>
+            <input type="checkbox" class="checkbox" />
+          </label>
+        </th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Experience</th>
+        <th>Basic Salary</th>
+        <th class="w-[15%]">Options</th>
+      </tr>
+
+      @for (musician of musicians(); track musician.id) {
+      <tr table-body>
+        <th>
+          <label>
+            <input type="checkbox" class="checkbox" />
+          </label>
+        </th>
+        <td>
+          <div class="flex items-center gap-3">
+            <div class="avatar">
+              <div class="mask mask-squircle h-12 w-12">
+                <img src="https://img.daisyui.com/images/profile/demo/2@94.webp" alt="Avatar Tailwind CSS Component" />
+              </div>
+            </div>
+            <div>
+              <div class="font-bold">{{musician.firstName}} {{ musician.middleName }} {{musician.lastName}}</div>
+              <div class="text-sm opacity-50">United States</div>
+            </div>
+          </div>
+        </td>
+        <td>{{ musician.age }} </td>
+        <td>{{ musician.experience }}</td>
+        <td>{{ musician.basicSalary | currency : 'USD'}}</td>
+        <th>
+          <div>
+            <a class="btn btn-link  text-purple-600 hover:text-lg" title="Edit"
+              (click)="showModalOnUpdateMode(musician.id)">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+            <a class="btn btn-link hover:text-lg text-red-800" title="Delete"
+              (click)="showDeletePromptModal(musician.id, musician.firstName + ' ' + musician.lastName)">
+              <i class="fa-solid fa-trash-can"></i>
+            </a>
+          </div>
+        </th>
+      </tr>
+      }
+
+      <div table-pager class="h-14 flex justify-between items-center px-4">
+        <items-per-page (itemsPerPageChange)="tableItemsPerPageChanged($event)"></items-per-page>
+        <table-pager [currentPage]="pageQuery()" [pageCount]="pageCount()" (pageChanged)="tablePageChanged($event)">
+        </table-pager>
+      </div>
+
+    </table-layout>
+  </div>
+</div>

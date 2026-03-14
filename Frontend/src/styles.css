@@ -1,0 +1,78 @@
+
+/* -------------------------------
+   Tailwind base + preflight
+--------------------------------- */
+@import "tailwindcss";
+
+
+
+/* DaisyUI components */
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark;
+}
+
+@import 'tailwindcss/utilities';
+
+/* ========================
+   CSS Variables (Design Tokens)
+======================== */
+:root {
+  --color-background: #0F0F14;
+  --color-surface: #1A1A23;
+  --color-primary: #7C3AED;
+  --color-accent: #EC4899;
+  --color-text-primary: #F5F5F7;
+  --color-text-secondary: #9CA3AF;
+
+
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* Dark mode override */
+[data-theme="dark"] {
+
+  --color-background: #0A0A0F;
+  --color-surface: #121212;
+  --color-primary: #7C3AED;
+  --color-accent: #EC4899;
+  --color-text-primary: #F5F5F7;
+  --color-text-secondary: #9CA3AF;
+
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* ========================
+   Custom Tailwind Utilities
+======================== */
+@layer utilities {
+
+  .text-primary { color: var(--color-text-primary); }
+  .text-secondary { color: var(--color-text-secondary); }
+  .bg-background { background-color: var(--color-background); }
+  .bg-surface { background-color: var(--color-surface); }
+  .bg-primary { background-color: var(--color-primary); }
+  .bg-accent { background-color: var(--color-accent); }
+
+  .font-heading { font-family: var(--font-heading); }
+  .font-body { font-family: var(--font-body); }
+}
+
+
+
+/* ========================
+   Base styles
+======================== */
+@layer base {
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+

@@ -1,0 +1,36 @@
+<dialog class="modal" #dialogModal>
+  <div [class]="divModalBoxClasses()">
+    <div class="flex flex-col">
+      <div class="flex justify-between items-center bg-background  h-12 px-4">
+        <h3 class="text-lg font-bold">{{ title() }}</h3>
+        <form method="dialog">
+          <button class="btn btn-sm btn-circle focus:outline-none" #closeBtn>✕</button>
+        </form>
+      </div>
+      <div [class]="divContentClasses()">
+        <ng-content></ng-content>
+      </div>
+      <div class="bg-background h-14 flex justify-end items-center gap-4 px-4">
+        @if(showOkButton())
+        {
+          <button class="btn btn-sm border bg-surface border-(--color-primary) rounded-2xl text-sm w-20"
+          (click)="okClicked()">
+            {{ okButtonText() }}
+          </button>
+        }
+        @if(showCancelButton()){
+          <button class="btn btn-sm border bg-surface border-(--color-secondary) rounded-2xl text-sm w-20"
+            (click)="cancelClicked()">
+            {{ cancelButtonText() }}
+          </button>
+        }
+        @if(showCloseButton()){
+          <button class="btn btn-sm bg-surface border border-b-gray-600 rounded-2xl text-sm w-20"
+            (click)="closeModal()">
+            {{ closeButtonText() }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</dialog>

@@ -1,0 +1,121 @@
+<div class="min-h-screen flex flex-col items-center justify-center bg-background">
+  <div class="flex flex-col bg-surface shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-3xl max-w-md">
+    <div class="font-body self-center text-xl sm:text-3xl text-primary">
+      Register with the Band
+    </div>
+    <div class="mt-2 self-center text-xl sm:text-sm text-secondary">
+      Enter your credentials to get access account
+    </div>
+
+    <div class="mt-8">
+      <form autocomplete="off" [formGroup]="registerFormGropup" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <div class="flex flex-col">
+            <label for="firstname" class="mb-1 text-xs tracking-wide text-secondary">First Name:</label>
+            <div class="relative">
+              <div class="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-secondary">
+                <i class="fas fa-user text-(--color-primary)"></i>
+              </div>
+              <input id="firstname" type="text"
+              formControlName="firstName"
+              class="text-sm placeholder-gray-500 pl-10 pr-4 rounded-2xl
+                    border border-gray-400 w-full py-2 focus:outline-none focus:border-(--color-primary)"
+                placeholder="Enter your first name" />
+            </div>
+          </div>
+          <span class="text-sm"
+          fielderror
+          [isInvalidField]="isInvalidField('firstName')"
+          [error]="getErrorMessage('firstName', 'first name')"></span>
+        </div>
+        <div class="mb-3">
+          <div class="flex flex-col">
+            <label for="lastname" class="text-secondary text-sm mb-1 tracking-wide">Last Name:</label>
+            <div class="relative">
+              <div class="absolute top-0 left-0 inline-flex items-center justify-center h-full w-10">
+                <i class="fas fa-user text-(--color-primary)"></i>
+              </div>
+              <input type="text" id="lastname" formControlName="lastName" class="text-sm border border-gray-400 rounded-2xl text-secondary w-full pl-10 pr-4 py-2
+            focus:outline-none focus:border-(--color-primary)"
+            placeholder="Enter your last name">
+            </div>
+          </div>
+          <span class="text-sm" fielderror [isInvalidField]="isInvalidField('lastName')"
+            [error]="getErrorMessage('lastName', 'last name')"></span>
+        </div>
+
+        <div class="mb-3">
+          <div class="flex flex-col">
+            <label for="email" class="mb-1 text-xs tracking-wide text-secondary">E-Mail Address:</label>
+            <div class="relative">
+              <div class="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 ">
+                <i class="fas fa-at text-(--color-primary)"></i>
+              </div>
+
+              <input id="email" type="email" formControlName="email" name="email" class="text-sm placeholder-gray-500
+                    pl-10 pr-4 rounded-2xl border border-gray-400 w-full py-2 focus:outline-none
+                     focus:border-(--color-primary)" placeholder="Enter your email" />
+            </div>
+          </div>
+          <span class="text-sm" fielderror [isInvalidField]="isInvalidField('email')"
+            [error]="getErrorMessage('email')">
+          </span>
+        </div>
+        <div class="mb-3">
+          <div class="flex flex-col">
+            <label for="password" class="mb-1 text-xs sm:text-sm tracking-wide text-secondary">Password:</label>
+            <div class="relative">
+              <div class="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10">
+                <span>
+                  <i class="fas fa-lock text-(--color-primary)"></i>
+                </span>
+              </div>
+              <input id="password" type="password" formControlName="password"
+                class="text-sm placeholder-gray-500 pl-10
+                    pr-4 rounded-2xl border border-gray-400 w-full py-2 focus:outline-none focus:border-(--color-primary)" placeholder="Enter your password" />
+            </div>
+          </div>
+          <span class="text-sm" fielderror [isInvalidField]="isInvalidField('password')"
+            [error]="getErrorMessage('password')"></span>
+        </div>
+        <div class="mb-3">
+          <div class="flex flex-col ">
+            <label for="confirmPassword" class="mb-1 text-xs sm:text-sm tracking-wide text-secondary">Confirm
+              Password:</label>
+            <div class="relative">
+              <div class="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10">
+                <span>
+                  <i class="fas fa-lock text-(--color-primary)"></i>
+                </span>
+              </div>
+              <input id="confirmPassword" type="password"
+                formControlName="confirmPassword"
+                class="text-sm placeholder-gray-500 pl-10 pr-4 rounded-2xl border border-gray-400 w-full
+                py-2 focus:outline-none focus:border-(--color-primary)"
+                    placeholder="Confirm your password" />
+            </div>
+          </div>
+          <span class="text-sm" fielderror [isInvalidField]="isFormGroupInvalid()"
+            [error]="getFormGroupErrors()"></span>
+        </div>
+
+        <div class="flex w-full">
+          <button type="submit"
+          [disabled]="registerFormGropup.invalid"
+          class="flex mt-2 items-center justify-center focus:outline-none text-white text-sm
+                  sm:text-base bg-primary hover:bg-indigo-700 rounded-2xl py-2 w-full transition duration-150 ease-in
+                  disabled:bg-(--color-surface) disabled:text-gray-700">
+            <span class="mr-2 uppercase">Register</span>
+            <i class="fa-solid fa-user-plus text-xs"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="flex justify-center items-center mt-6">
+      <span class="ml-2 text-xs text-secondary">You have an account?</span>
+      <a [routerLink]="['/auth/login']" class="text-xs ml-2 text-(--color-primary)">Login
+          here</a>
+
+  </div>
+</div>

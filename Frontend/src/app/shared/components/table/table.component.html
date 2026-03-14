@@ -1,0 +1,36 @@
+<div class="flex flex-col h-full w-full border-2 border-(--color-primary) rounded-t-2xl">
+  <div class="flex justify-between items-center h-14 w-full bg-surface text-end align-middle rounded-t-2xl py-2 px-4">
+    <h3 class="text-primary text-xl align-middle">
+      {{ tableTitleText }}
+    </h3>
+    <div>
+      <button [title]="addButtonAlternativeText"
+        class="btn btn-sm border-2 border-(--color-primary) rounded-full hover:btn-md transition-all duration-250 ease-in-out"
+        (click)="onAdd()">
+        <i class="fa-solid fa-plus text-(--color-primary)"></i>
+      </button>
+      <button [title]="deleteButtonAlternativeText"
+        class="ml-2 btn btn-sm border-2 border-(--color-secondary) rounded-full hover:btn-md transition-all duration-250 ease-in"
+        (click)="onDelete()">
+        <i class="fa-solid fa-trash text-(--color-secondary)"></i>
+      </button>
+    </div>
+  </div>
+  <!-- Table -->
+  <div class="bg-white/10 flex-1 min-h-0 overflow-y-auto h-full">
+    <div class="overflow-x-auto">
+      <table class="table">
+        <thead>
+          <ng-content select="[table-header]"></ng-content>
+        </thead>
+        <tbody>
+          <ng-content select="[table-body]"></ng-content>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pager -->
+  <ng-content select="[table-pager]"></ng-content>
+
+</div>
