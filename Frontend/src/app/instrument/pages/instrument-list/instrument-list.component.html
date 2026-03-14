@@ -1,0 +1,177 @@
+<div class="flex flex-col p-4 h-full">
+
+  <!-- Filter -->
+  <div class="mb-2">
+    <filter-layout filterTitle="Filter instruments" [formGroup]="instrumentFilterForm" (clear)="onFilterClear()"
+      (search)="onFilterSearch()">
+
+      <div class="flex justify-start items-center gap-x-40">
+        <div>
+          <label for="name" class="text-primary text-sm font-medium">Name</label>
+          <div>
+            <input formControlName="name" placeholder="Search by name"
+              class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+          </div>
+          <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('name', true)"></span>
+        </div>
+        <div>
+          <label for="country" class="text-primary text-sm font-medium">Country</label>
+          <div>
+            <input formControlName="country" placeholder="Search by country"
+              class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+          </div>
+          <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('country', true)"></span>
+        </div>
+
+        <div>
+          <label for="type" class="text-primary text-sm font-medium">Type</label>
+          <div>
+            <select formArrayName="type"
+              class="bg-white/10 text-secondary py-1.5 px-3 border border-(--color-surface) rounded-2xl">
+              <option [value]="null"></option>
+              @for (item of instrumentTypeOptions; track $index) {
+              <option [value]="item.value">
+                {{item.label}}
+              </option>
+              }
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </filter-layout>
+  </div>
+
+  <!-- Update / Create Modal -->
+  <dialog-modal #dialogModalComponent [title]="instrumentDialogModalTitle()" [showCloseButton]="false"
+    [divContentClasses]="'h-56 bg-surface'" (cancelButtonEmit)="onCancelModalButtonClicked()"
+    (okButtonEmit)="onAcceptModalButtonClicked()">
+    <form autocomplete="off" class="h-full" [formGroup]="instrumentDialogModalForm" (ngSubmit)="$event.preventDefault()"
+      (keydown.enter)="$event.preventDefault()">
+      <div class="flex h-full items-center gap-10 px-4 py-2">
+        <div class="h-full flex flex-col gap-2">
+          <div>
+            <label for="name" class="text-sm text-primary font-medium">Name</label>
+            <div>
+              <input type="text" id="name" placeholder="Enter name..." formControlName="name"
+                class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+            </div>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('name')"></span>
+          </div>
+          <div>
+            <label for="country" class="text-sm text-primary font-medium">Country</label>
+            <div>
+              <input type="text" id="country" placeholder="Enter country..." formControlName="country"
+                class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+            </div>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('country')"></span>
+          </div>
+          <div>
+            <label for="type" class="text-sm text-primary font-medium">Type</label>
+            <div>
+              <select id="type" formControlName="type"
+                class="bg-white/10 w-full text-secondary py-1.5 px-3 border border-(--color-surface) rounded-2xl">
+                <option [value]="null"></option>
+                @for (item of instrumentTypeOptions; track $index) {
+                <option [value]="item.value">
+                  {{item.label}}
+                </option>
+                }
+              </select>
+            </div>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('type')"></span>
+          </div>
+        </div>
+        <div class="h-full flex flex-col mt-2">
+          <label for="musicianId" class="text-sm text-primary font-medium">Musician</label>
+          <input type="text" formControlName="musicianId" placeholder="Enter musician ...."
+            class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('musicianId')"></span>
+        </div>
+
+        <div class="h-full flex flex-1 flex-col mt-2">
+          <label for="description" class="text-sm text-primary font-medium">Description</label>
+          <textarea id="description" placeholder="Enter instrument description..." formControlName="description"
+            class="bg-white/10 h-full text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+          </textarea>
+        </div>
+
+      </div>
+    </form>
+
+  </dialog-modal>
+
+  <!-- Prompt Modal -->
+
+  <dialog-modal #promptModalComponent
+  [divContentClasses]="'h-15 bg-surface'"
+  [title]="promptDeleteModalTitle()"
+  [showCloseButton]="false"
+  [okButtonText]="'Delete'"
+  (cancelButtonEmit)="onCancelPromptButtonClicked()"
+  (okButtonEmit)="onDeletePromptButtonClicked()">
+    <h3 class="text-2xl text-red-800 p-2">
+      Are you sure to delete?
+    </h3>
+  </dialog-modal>
+
+
+  <!-- Table -->
+  <table-layout class="h-full" [tableTitle]="'Instrument List'" (addButtonClicked)="showModalOnCreateMode()"
+    (deleteAllButtonClicked)="onDeleteAllButtonClicked()">
+    <tr table-header>
+      <th>
+        <label>
+          <input type="checkbox" class="checkbox" />
+        </label>
+      </th>
+      <th>Name</th>
+      <th>Country</th>
+      <th>Type</th>
+      <th class="w-[15%]">Options</th>
+    </tr>
+    @for (instrument of instrumentList().results; track instrument.id) {
+    <tr table-body>
+      <td>
+        <label>
+          <input type="checkbox" class="checkbox" />
+        </label>
+      </td>
+      <td>
+        {{instrument.name}}
+      </td>
+      <td>
+        {{instrument.country}}
+      </td>
+      <td>
+        {{instrument.type}}
+      </td>
+      <td>
+        <div class="flex justify-end items-center gap-2">
+          <a class="btn btn-link" title="Edit instrument" (click)="showModalOnUpdateMode(instrument.id)">
+            <i class="fa-solid fa-pen-to-square text-secondary"></i>
+          </a>
+          <a class="btn btn-link" title="Delete instrument">
+            <i class="fa-solid fa-trash text-red-800"
+              (click)="showConfirmDeleteInstrument(instrument.id, instrument.name)"></i>
+          </a>
+        </div>
+      </td>
+    </tr>
+    }
+
+    <!-- Pagination -->
+    <div table-pager class="flex justify-between items-center py-1 px-3">
+      <items-per-page (itemsPerPageChange)="tableItemsPerPageChanged($event)"></items-per-page>
+      <table-pager [currentPage]="page()" [pageCount]="pageCount()" (pageChanged)="tablePageChanged($event)">
+      </table-pager>
+    </div>
+
+  </table-layout>
+
+
+
+
+
+
+</div>

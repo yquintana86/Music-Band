@@ -1,0 +1,70 @@
+<form autocomplete="off" [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
+  <div class="min-h-screen bg-background flex flex-col justify-center sm:py-12">
+    <div class="pb-10 px-10 mx-auto md:w-full md:max-w-md">
+      <div class="mb-2">
+        <img class="image-full rounded-md" [src]="'assets/drums.png'" alt="logo">
+      </div>
+      <div class="bg-surface shadow w-full rounded-lg divide-y divide-gray-700">
+        <div class="px-5 py-7">
+          <div class="mb-5">
+            <div class="relative">
+              <div class="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-secondary">
+                  <i class="fas fa-user text-(--color-primary)"></i>
+              </div>
+              <input type="text" id="email"
+                class="text-sm placeholder-gray-500 pl-10 pr-4 rounded-2xl border w-full py-2"
+                placeholder="Enter your email"
+                formControlName="email">
+            </div>
+            <span class="text-sm"
+            fielderror
+            [isInvalidField]="isFieldInvalid('email')"
+            [error]="getErrorMessage('email')" >
+            </span>
+          </div>
+        <div class="mb-5">
+          <div class="relative">
+            <div class="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-secondary">
+              <i class="fa-solid fa-lock text-(--color-primary)"></i>
+            </div>
+            <input type="password" id="password" class="border rounded-2xl pl-10 pr-4 py-2 text-sm w-full"
+              placeholder="Enter password"
+              formControlName="password" />
+          </div>
+          <span class="text-sm"
+          fielderror
+          [isInvalidField]="isFieldInvalid('password')"
+          [error]="getErrorMessage('password')"></span>
+        </div>
+        <button type="submit"
+        [disabled]="loginFormGroup.invalid"
+          class="transition duration-200 bg-primary w-full hover:bg-purple-900 focus:bg-primary
+          focus:shadow-outline focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed
+          text-primary font-bold py-2 px-4 rounded">
+          <span class="inline-block mr-2">Login</span>
+          <i class="w-4 h-4 inline-block fa-solid fa-arrow-right-to-bracket"></i>
+        </button>
+      </div>
+      <div class="py-5">
+        <div class="grid grid-cols-2 gap-1">
+          <div class="text-center sm:text-left whitespace-nowrap">
+            <a [routerLink]="['/auth/forgot-password']"
+              class="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-secondary hover:text-primary">
+              <i class="fa-thin fa-unlock-keyhole"></i>
+              <span class="ml-1 inline-block">Forgot Password</span>
+            </a>
+          </div>
+          <div class="text-center sm:text-right whitespace-nowrap">
+            <a [routerLink]="['/auth/register']"
+              class="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-secondary hover:text-primary ">
+              <i class="fa-thin fa-circle-question"></i>
+              <span class="ml-1 inline-block">Register</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</form>

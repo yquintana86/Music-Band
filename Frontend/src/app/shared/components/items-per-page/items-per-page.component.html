@@ -1,0 +1,12 @@
+<div class="flex items-center gap-2">
+  <label for="items-per-page" class="text-sm font-medium text-primary">Items per page</label>
+  <select id="items-per-page" class="bg-gray-800 text-primary text-sm p-2 border border-(--color-surface) rounded-lg"
+  (change)="onItemsPerPageChange(itemsPerPageSelect.value)"
+  #itemsPerPageSelect>
+
+  @for (item of itemsPerPageOptions; track item)
+   {
+      <option [value]="item" [selected]="item === itemsPerPage()">{{item}}</option>
+  }
+  </select>
+</div>
