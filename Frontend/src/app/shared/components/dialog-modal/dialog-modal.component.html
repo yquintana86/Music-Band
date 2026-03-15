@@ -13,10 +13,18 @@
       <div class="bg-background h-14 flex justify-end items-center gap-4 px-4">
         @if(showOkButton())
         {
-          <button class="btn btn-sm border bg-surface border-(--color-primary) rounded-2xl text-sm w-20"
-          (click)="okClicked()">
-            {{ okButtonText() }}
-          </button>
+          @if(!disableOKButton()){
+            <button class="btn btn-sm border bg-surface border-(--color-primary) rounded-2xl text-sm w-20"
+            (click)="okClicked()">
+              {{ okButtonText() }}
+            </button>
+          }
+          @else {
+            <span class="btn btn-sm border bg-surface border-(--color-primary) rounded-2xl text-sm w-20 opacity-40 cursor-not-allowed">
+              {{ okButtonText() }}
+            </span>
+          }
+
         }
         @if(showCancelButton()){
           <button class="btn btn-sm border bg-surface border-(--color-secondary) rounded-2xl text-sm w-20"

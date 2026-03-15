@@ -25,16 +25,16 @@ export class ValidatorsService {
       control.invalid) as boolean;
   }
 
-  public getRawValidationError(formGroup: FormGroup, field: string): ValidationErrors | null {
-    return !formGroup.contains(field) ? null : (formGroup.get(field)?.errors || null);
+  public getRawValidationError(formGroup: FormGroup, controlName: string): ValidationErrors | null {
+    return !formGroup.contains(controlName) ? null : (formGroup.get(controlName)?.errors || null);
   }
 
-  public getFieldError(formGroup: FormGroup, field: string, fieldNameToShow?: string): string {
+  public getFieldError(formGroup: FormGroup, controlName: string, fieldNameToShow?: string): string {
 
-    if (!!formGroup.contains(field)) {
-      const errors = formGroup.get(field)?.errors;
+    if (!!formGroup.contains(controlName)) {
+      const errors = formGroup.get(controlName)?.errors;
       if (errors){
-        const fieldName = fieldNameToShow ? fieldNameToShow : field;
+        const fieldName = fieldNameToShow ? fieldNameToShow : controlName;
         return this.#getError(errors, fieldName);
       }
     }

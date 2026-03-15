@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, signal, untracked, viewChild, WritableSignal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, FormControlStatus } from '@angular/forms';
 import { InstrumentFilterQuery, InstrumentResponse, InstrumentType, UpdateInstrumentCommand } from '../../interfaces';
 import { FilterLayoutComponent } from '../../../shared/components/filter-layout/filter-layout.component';
 import { IntrumentService } from '../../services/intrument.service';
@@ -13,6 +13,8 @@ import { ItemsPerPageComponent } from "../../../shared/components/items-per-page
 import { CreateInstrumentCommand } from '../../interfaces/create-instrument-command.interface';
 import { ValidatorsService } from '../../../shared/services/validator.service';
 import { FieldErrorDirective } from "../../../shared/directives/field-error-directive";
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-instrument-list',
@@ -28,13 +30,13 @@ export default class InstrumentListComponent {
   instrumentFilterForm = this._fb.group({
     name: ['', Validators.pattern(this._validatorsService.musicalInstrumentNamePattern)],
     country: ['', Validators.pattern(this._validatorsService.countryNamePattern)],
-    type: this._fb.control<InstrumentType | null>(null),
+    type: this._fb.control<number | null>(null),
   });
 
   instrumentDialogModalForm = this._fb.group({
     id: this._fb.control<number | null>(null),
-    name: ['',Validators.pattern(this._validatorsService.musicalInstrumentNamePattern)],
-    country: ['', Validators.pattern(this._validatorsService.countryNamePattern)],
+    name: ['',[Validators.required,  Validators.pattern(this._validatorsService.musicalInstrumentNamePattern)]],
+    country: ['',[Validators.required, Validators.pattern(this._validatorsService.countryNamePattern)]],
     type: this._fb.control<InstrumentType | null>(null, Validators.required),
     description: [''],
     musicianId: this._fb.control<number | null>(null, Validators.required),
@@ -49,6 +51,7 @@ export default class InstrumentListComponent {
   private _instrumentFilterQuery: WritableSignal<InstrumentFilterQuery> = signal({
     page: 1,
     pageSize: 10,
+    requestCount: true,
   });
   //#endregion
 
@@ -58,6 +61,11 @@ export default class InstrumentListComponent {
   public itemsPerPage = signal(20);
   public instrumentDialogModalTitle = signal('Add Instrument');
   public promptDeleteModalTitle = signal<string>('Delete Instrument');
+  public readonly disableDialogModalOkBtn = toSignal(
+    this.instrumentDialogModalForm.statusChanges.pipe(
+    map(status => status === 'INVALID'),
+    startWith(this.instrumentDialogModalForm.invalid)
+  ));
 
   public instrumentFilterEffect = effect(() => {
     const filterQuery = this._instrumentFilterQuery();
@@ -81,13 +89,17 @@ export default class InstrumentListComponent {
       .map(
         key => ({
           label: key,
-          value: InstrumentType[key as keyof typeof InstrumentType]
+          value: Number(InstrumentType[key as keyof typeof InstrumentType])
         })
       );
   }
   //#endregion
 
   //#region public methods
+
+  public getInstrumentTypeLabel(type: number){
+    return InstrumentType[type];
+  }
 
   onFilterSearch() {
     if (this.instrumentFilterForm.invalid) {
@@ -119,7 +131,6 @@ export default class InstrumentListComponent {
   }
 
   // Modal methods
-
   showModalOnCreateMode() {
     this.instrumentDialogModalTitle.set('Add Instrument');
     this.instrumentDialogModalForm.reset();
@@ -146,11 +157,20 @@ export default class InstrumentListComponent {
 
     this.isLoading.set(true);
 
-    const instrument = this.instrumentDialogModalForm.value;
-    let message = 'Instrument updated successfully';
-    let doTask = this._instrumentService.updateInstrument(instrument as UpdateInstrumentCommand)
 
-    if (instrument.id == null) {
+    const { id, name, country, description, musicianId, type } = this.instrumentDialogModalForm.value;
+    const instrument = {
+      name,
+      country,
+      description,
+      musicianId: Number(musicianId),
+      type: Number(type)
+    };
+
+    let message = 'Instrument updated successfully';
+    let doTask = this._instrumentService.updateInstrument({ ...instrument, id: Number(id) } as UpdateInstrumentCommand)
+
+    if (!id) {
       message = 'Instrument created successfully';
       doTask = this._instrumentService.createInstrument(instrument as CreateInstrumentCommand)
     }
@@ -219,6 +239,12 @@ export default class InstrumentListComponent {
     const formGroup = isFilterFormGroup ? this.instrumentFilterForm : this.instrumentDialogModalForm;
     return this._validatorsService.isInvalidField(formGroup, controlName);
   }
+
+  public getErrorMessage(constrolName: string, isFilterFormGroup: boolean = false): string{
+    const formGroup = isFilterFormGroup ? this.instrumentFilterForm : this.instrumentDialogModalForm;
+    return this._validatorsService.getFieldError(formGroup, constrolName);
+  }
+
   //#endregion
 
   //#region private methods
@@ -234,10 +260,11 @@ export default class InstrumentListComponent {
         value !== 0
       )
       .reduce((acc, [key, value]) => {
-        acc[key] = value as any;
+        acc[key] = isNaN(Number(value)) ? (value as string) : Number(value);
+        return acc;
       }, {} as any)
 
-    return {
+      return {
       ...cleaned,
       page: this.page(),
       pageSize: this.itemsPerPage(),
@@ -250,7 +277,6 @@ export default class InstrumentListComponent {
       this._toastService.info('A request is already in progress. Please wait...');
       return;
     }
-
     this.isLoading.set(true);
     this._instrumentService
       .searchInstrumentsByFilter(instrumentFilterQuery)

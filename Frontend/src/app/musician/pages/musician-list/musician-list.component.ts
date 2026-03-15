@@ -12,9 +12,10 @@ import { ValidatorsService } from '../../../shared/services/validator.service';
 import { PagedResult } from './../../../shared/interfaces/paged-result.interface';
 import { CurrencyPipe } from '@angular/common';
 import { DialogModalComponent } from "../../../shared/components/dialog-modal/dialog-modal.component";
-import { tap } from 'rxjs';
+import { map, startWith, tap } from 'rxjs';
 import { ItemsPerPageComponent } from "../../../shared/components/items-per-page/items-per-page.component";
 import { PagerComponent } from "../../../shared/components/pager/pager.component";
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-musician-list',
@@ -68,15 +69,23 @@ export default class MusicianList {
     instrumentId: [0, [Validators.min(0)]],
   });
 
-  musicianformGroup = this._fb.group({
-    id: [0],
-    firstName: ['', [Validators.maxLength(25)]],
-    lastName: ['', [Validators.maxLength(50)]],
-    age: [0, [Validators.min(0), Validators.max(80)]],
-    experience: [0, [Validators.min(0), Validators.max(50)]],
-    basicSalary: [0, [Validators.min(0), Validators.max(100000)]],
-    instrumentId: [0, [Validators.min(0)]],
+  musicianDialogModalForm = this._fb.group({
+    id: this._fb.control<number | null>(null),
+    firstName: ['', [Validators.required, Validators.maxLength(25)]],
+    lastName: ['', [Validators.required, Validators.maxLength(50)]],
+    age: [0, [Validators.required, Validators.min(0), Validators.max(80)]],
+    experience: [0, [Validators.required, Validators.min(0), Validators.max(50)]],
+    basicSalary: [0, [Validators.required, Validators.min(0), Validators.max(100000)]],
+    instrumentId: [0, [Validators.required, Validators.min(0)]],
   });
+
+  public readonly disableDialogModalOkBtn = toSignal(
+    this.musicianDialogModalForm.statusChanges
+    .pipe(
+      map((status) => status === 'INVALID'),
+      startWith(this.musicianDialogModalForm.invalid)
+    )
+  );
 
   searchMusicianQuery: WritableSignal<SearchMusicianByFilterQuery> = signal<SearchMusicianByFilterQuery>(
     {
@@ -109,17 +118,19 @@ export default class MusicianList {
     }
   }
 
-  public isInvalidField(controlName: string): boolean {
-    return this._validatorService.isInvalidField(this.musicianFilterformGroup, controlName);
+  public isInvalidField(controlName: string, isFilterFormGroup: boolean = false): boolean {
+    const formGroup = isFilterFormGroup ? this.musicianFilterformGroup : this.musicianDialogModalForm;
+    return this._validatorService.isInvalidField(formGroup, controlName);
   }
 
-  public getErrorMessage(controlName: string, fieldNameToShow?: string): string | null {
-    return this._validatorService.getFieldError(this.musicianFilterformGroup, controlName, fieldNameToShow);
+  public getErrorMessage(controlName: string, isFilterFormGroup: boolean = false, fieldNameToShow?: string): string | null {
+    const formGroup = isFilterFormGroup ? this.musicianFilterformGroup : this.musicianDialogModalForm;
+    return this._validatorService.getFieldError(formGroup, controlName, fieldNameToShow);
   }
 
 
   showModalOnCreateMode() {
-    this.musicianformGroup.reset();
+    this.musicianDialogModalForm.reset();
     this.dialogModalComponent()?.showModal();
   }
 
@@ -151,11 +162,11 @@ export default class MusicianList {
     }
     this.isLoading.set(true);
 
-    const musician = this.musicianformGroup.value;
+    const musician = this.musicianDialogModalForm.value;
     let message = 'Musician updated successfully';
     let doTask = this.doUpdateMusician(musician as UpdateMusicianCommand);
 
-    if (!this.musicianformGroup.get('id')?.value) {
+    if (!this.musicianDialogModalForm.get('id')?.value) {
       doTask = this.doCreateMusician(musician as CreateMusicianCommand);
       message = 'Musician added successfully';
     }
@@ -200,7 +211,7 @@ export default class MusicianList {
       this._toastService.error('Musician not found');
       return;
     }
-    this.musicianformGroup.patchValue(musician);
+    this.musicianDialogModalForm.patchValue(musician);
     this.dialogModalComponent()?.showModal();
   }
 

@@ -21,6 +21,7 @@ export class DialogModalComponent {
   cancelButtonText = input<string>('Cancel');
   closeButtonText = input<string>('Close');
   showOkButton = input<boolean>(true);
+  disableOKButton = input<boolean>(false);
   showCloseButton = input<boolean>(true);
   showCancelButton = input<boolean>(true);
 

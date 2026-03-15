@@ -7,11 +7,6 @@ export default [
   loadComponent: () => import('./pages/instrument-list/instrument-list.component')
 },
 {
-  path: 'details/:id',
-  title: 'Details',
-  loadComponent: () => import('./pages/instrument-details/instrument-details.component')
-},
-{
   path: '**',
   redirectTo: 'list'
 }

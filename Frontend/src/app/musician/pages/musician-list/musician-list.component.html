@@ -13,8 +13,8 @@
             <input type="text"
               class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
               placeholder="First Name" formControlName="firstName">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('firstName')"
-              [error]="this.getErrorMessage('firstName', 'First Name')"></span>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('firstName', true)"
+              [error]="this.getErrorMessage('firstName',true ,'First Name')"></span>
           </div>
           <div>
             <div>
@@ -23,8 +23,8 @@
             <input type="text"
               class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
               placeholder="Last Name" formControlName="lastName">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('lastName')"
-              [error]="this.getErrorMessage('lastName', 'First Name')"></span>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('lastName', true)"
+              [error]="this.getErrorMessage('lastName', true, 'Last Name')"></span>
           </div>
           <div>
             <div>
@@ -33,8 +33,8 @@
             <input type="number" class="bg-white/10 text-secondary text-right py-1 px-3 border-2 border-(--color-surface) rounded-2xl
               placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="From Age"
               formControlName="fromAge">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromAge')"
-              [error]="this.getErrorMessage('fromAge', 'From Age')"></span>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromAge', true)"
+              [error]="this.getErrorMessage('fromAge', true, 'From Age')"></span>
           </div>
 
           <div>
@@ -44,8 +44,8 @@
             <input type="number" class="bg-white/10 text-right text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl
               placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="To Age"
               formControlName="toAge">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toAge')"
-              [error]="this.getErrorMessage('toAge', 'To Age')"></span>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toAge', true)"
+              [error]="this.getErrorMessage('toAge', true, 'To Age')"></span>
           </div>
         </div>
         <div class="flex justify-between items-center py-2 px-4">
@@ -56,8 +56,8 @@
             <input type="number" class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
               placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="From Experience"
               formControlName="fromExperience">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromExperience')"
-              [error]="this.getErrorMessage('fromExperience', 'From Experience')"></span>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromExperience', true)"
+              [error]="this.getErrorMessage('fromExperience',true, 'From Experience')"></span>
           </div>
           <div>
             <div>
@@ -66,8 +66,8 @@
             <input type="number" class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
               placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="To Experience"
               formControlName="toExperience">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toExperience')"
-              [error]="this.getErrorMessage('toExperience', 'To Experience')"></span>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toExperience', true)"
+              [error]="this.getErrorMessage('toExperience', true, 'To Experience')"></span>
           </div>
           <div>
             <div>
@@ -76,8 +76,8 @@
             <input type="number" class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
               placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="From Basic Salary"
               formControlName="fromBasicSalary">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromBasicSalary')"
-              [error]="this.getErrorMessage('fromBasicSalary', 'From BasicSalary')"></span>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromBasicSalary', true)"
+              [error]="this.getErrorMessage('fromBasicSalary', true, 'From BasicSalary')"></span>
           </div>
           <div>
             <div>
@@ -86,8 +86,8 @@
             <input type="number" class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
               placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="To Basic Salary"
               formControlName="toBasicSalary">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toBasicSalary')"
-              [error]="this.getErrorMessage('toBasicSalary', 'To BasicSalary')"></span>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toBasicSalary', true)"
+              [error]="this.getErrorMessage('toBasicSalary', true, 'To BasicSalary')"></span>
           </div>
         </div>
         <div class="flex justify-start items-center py-2 px-4">
@@ -98,8 +98,8 @@
             <input type="number" class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
               placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="Instrument"
               formControlName="instrumentId">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('instrumentId')"
-              [error]="this.getErrorMessage('instrumentId', 'Instrument Id')"></span>
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('instrumentId', true)"
+              [error]="this.getErrorMessage('instrumentId', true, 'Instrument Id')"></span>
           </div>
         </div>
       </div>
@@ -108,8 +108,8 @@
 
   <!-- Update/Create Modal -->
   <dialog-modal #dialogModalComponent [title]="musicianDialogModalTitle" [showCancelButton]="false"
-    [divContentClasses]="'h-50 bg-surface'" (okButtonEmit)="onAcceptModalButtonClicked()">
-    <form autocomplete="off" [formGroup]="musicianformGroup" (keydown.enter)="$event.preventDefault()"
+    [divContentClasses]="'h-50 bg-surface'" (okButtonEmit)="onAcceptModalButtonClicked()" [disableOKButton]="disableDialogModalOkBtn()!">
+    <form autocomplete="off" [formGroup]="musicianDialogModalForm" (keydown.enter)="$event.preventDefault()"
       (ngSubmit)="$event.preventDefault()">
       <div class="flex flex-col gap-4">
         <div class="flex justify-between items-center py-2 px-4 gap-4 ">
@@ -120,18 +120,20 @@
             <input type="text"
               class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
               placeholder="First Name" formControlName="firstName">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('firstName')"
-              [error]="this.getErrorMessage('firstName', 'First Name')"></span>
+            <span class="block text-xs"
+            fielderror
+            [isInvalidField]="this.isInvalidField('firstName')"
+            [error]="this.getErrorMessage('firstName', false, 'First Name')"></span>
           </div>
           <div class="flex-3/4">
             <div>
               <label for="lastName" class="text-sm font-medium text-primary">Last Name</label>
             </div>
-            <input type="text"
+            <input type="text" id="lastName"
               class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl w-full"
               placeholder="Last Name" formControlName="lastName">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('lastName')"
-              [error]="this.getErrorMessage('lastName', 'Last Name')"></span>
+              [error]="this.getErrorMessage('lastName', false, 'Last Name')"></span>
           </div>
         </div>
 
@@ -140,7 +142,7 @@
             <div>
               <label for="age" class="text-sm font-medium text-primary">Age</label>
             </div>
-            <input type="number"
+            <input type="number" id="age"
               class="bg-white/10 text-secondary text-right py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
               placeholder="Age" formControlName="age">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('age')"
@@ -150,7 +152,7 @@
             <div>
               <label for="experience" class="text-sm font-medium text-primary">Experience</label>
             </div>
-            <input type="number"
+            <input type="number" id="experience"
               class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl"
               placeholder="Experience" formControlName="experience">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('experience')"
@@ -161,21 +163,21 @@
             <div>
               <label for="basicSalary" class="text-sm font-medium text-primary">Basic Salary</label>
             </div>
-            <input type="number"
+            <input type="number" id="basicSalary"
               class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl "
               placeholder="Basic Salary" formControlName="basicSalary">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('basicSalary')"
-              [error]="this.getErrorMessage('basicSalary')"></span>
+              [error]="this.getErrorMessage('basicSalary', false, 'Basic Salary')"></span>
           </div>
           <div>
             <div>
               <label for="instrumentId" class="text-sm font-medium text-primary">Instrument</label>
             </div>
-            <input type="number"
+            <input type="number" id="instrumentId"
               class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl"
               placeholder="Instrument" formControlName="instrumentId">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('instrumentId')"
-              [error]="this.getErrorMessage('instrumentId', 'Instrument Id')"></span>
+              [error]="this.getErrorMessage('instrumentId', false, 'Instrument Id')"></span>
           </div>
         </div>
 
