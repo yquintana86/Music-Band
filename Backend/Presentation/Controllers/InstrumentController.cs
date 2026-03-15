@@ -4,6 +4,10 @@ using Application.Instrument.Commands.DeleteInstrument;
 using Application.Instrument.Commands.UpdateInstrument;
 using Application.Instrument.Queries.GetInstruments;
 using Application.Instrument.Queries.SearchInstrumentbyId;
+<<<<<<< HEAD
+=======
+using Application.Instruments.Queries.SearchInstrumentsByFilter;
+>>>>>>> feature/dev
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -71,7 +75,11 @@ public class InstrumentController : ControllerBase
 
     [HttpPost]
     [Route("search")]
+<<<<<<< HEAD
     public async Task<IResult> SearchInstrumentsByFilterAsync([FromBody] SearchActivitiesByFilterQuery filterQuery, ISender sender, CancellationToken cancellationToken)
+=======
+    public async Task<IResult> SearchInstrumentsByFilterAsync([FromBody] SearchInstrumentsByFilterQuery filterQuery, ISender sender, CancellationToken cancellationToken)
+>>>>>>> feature/dev
     {
         var result = await sender.Send(filterQuery, cancellationToken);
         return result.ToHttpResult();

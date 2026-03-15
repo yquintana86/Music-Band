@@ -38,7 +38,11 @@ export class IntrumentService {
 
   public createInstrument(instrument: CreateInstrumentCommand): Observable<boolean>{
     const uri = `${this.#baseUrl}/create`;
+<<<<<<< HEAD
 
+=======
+debugger;
+>>>>>>> feature/dev
     return this._httpClient
     .post<APIOperationResultBase>(uri, instrument)
     .pipe(

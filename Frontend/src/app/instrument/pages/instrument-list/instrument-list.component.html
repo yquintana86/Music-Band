@@ -12,7 +12,14 @@
             <input formControlName="name" placeholder="Search by name"
               class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
           </div>
+<<<<<<< HEAD
           <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('name', true)"></span>
+=======
+          <span class="block text-xs"
+          fielderror
+          [isInvalidField]="this.isInvalidField('name', true)"
+          [error]="this.getErrorMessage('name',true)"></span>
+>>>>>>> feature/dev
         </div>
         <div>
           <label for="country" class="text-primary text-sm font-medium">Country</label>
@@ -20,13 +27,24 @@
             <input formControlName="country" placeholder="Search by country"
               class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
           </div>
+<<<<<<< HEAD
           <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('country', true)"></span>
+=======
+          <span class="block text-xs"
+          fielderror
+          [isInvalidField]="this.isInvalidField('country', true)"
+          [error]="this.getErrorMessage('country', true)"></span>
+>>>>>>> feature/dev
         </div>
 
         <div>
           <label for="type" class="text-primary text-sm font-medium">Type</label>
           <div>
+<<<<<<< HEAD
             <select formArrayName="type"
+=======
+            <select formControlName="type"
+>>>>>>> feature/dev
               class="bg-white/10 text-secondary py-1.5 px-3 border border-(--color-surface) rounded-2xl">
               <option [value]="null"></option>
               @for (item of instrumentTypeOptions; track $index) {
@@ -44,7 +62,11 @@
 
   <!-- Update / Create Modal -->
   <dialog-modal #dialogModalComponent [title]="instrumentDialogModalTitle()" [showCloseButton]="false"
+<<<<<<< HEAD
     [divContentClasses]="'h-56 bg-surface'" (cancelButtonEmit)="onCancelModalButtonClicked()"
+=======
+    [divContentClasses]="'h-56 bg-surface'" [disableOKButton]="disableDialogModalOkBtn()!" (cancelButtonEmit)="onCancelModalButtonClicked()"
+>>>>>>> feature/dev
     (okButtonEmit)="onAcceptModalButtonClicked()">
     <form autocomplete="off" class="h-full" [formGroup]="instrumentDialogModalForm" (ngSubmit)="$event.preventDefault()"
       (keydown.enter)="$event.preventDefault()">
@@ -56,7 +78,14 @@
               <input type="text" id="name" placeholder="Enter name..." formControlName="name"
                 class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
             </div>
+<<<<<<< HEAD
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('name')"></span>
+=======
+            <span class="block text-xs"
+            fielderror
+            [isInvalidField]="this.isInvalidField('name')"
+            [error]="getErrorMessage('name')"></span>
+>>>>>>> feature/dev
           </div>
           <div>
             <label for="country" class="text-sm text-primary font-medium">Country</label>
@@ -64,7 +93,14 @@
               <input type="text" id="country" placeholder="Enter country..." formControlName="country"
                 class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
             </div>
+<<<<<<< HEAD
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('country')"></span>
+=======
+            <span class="block text-xs"
+            fielderror
+            [isInvalidField]="this.isInvalidField('country')"
+            [error]="getErrorMessage('country')"></span>
+>>>>>>> feature/dev
           </div>
           <div>
             <label for="type" class="text-sm text-primary font-medium">Type</label>
@@ -79,14 +115,30 @@
                 }
               </select>
             </div>
+<<<<<<< HEAD
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('type')"></span>
+=======
+            <span class="block text-xs"
+            fielderror
+            [isInvalidField]="this.isInvalidField('type')"
+            [error]="getErrorMessage('type')"></span>
+>>>>>>> feature/dev
           </div>
         </div>
         <div class="h-full flex flex-col mt-2">
           <label for="musicianId" class="text-sm text-primary font-medium">Musician</label>
+<<<<<<< HEAD
           <input type="text" formControlName="musicianId" placeholder="Enter musician ...."
             class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('musicianId')"></span>
+=======
+          <input type="text" id="musicianId" formControlName="musicianId" placeholder="Enter musician ...."
+            class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+            <span class="block text-xs"
+            fielderror
+            [isInvalidField]="this.isInvalidField('musicianId')"
+            [error]="getErrorMessage('musicianId')"></span>
+>>>>>>> feature/dev
         </div>
 
         <div class="h-full flex flex-1 flex-col mt-2">
@@ -128,7 +180,11 @@
       <th>Name</th>
       <th>Country</th>
       <th>Type</th>
+<<<<<<< HEAD
       <th class="w-[15%]">Options</th>
+=======
+      <th class="w-[15%] text-end pr-10">Options</th>
+>>>>>>> feature/dev
     </tr>
     @for (instrument of instrumentList().results; track instrument.id) {
     <tr table-body>
@@ -144,10 +200,17 @@
         {{instrument.country}}
       </td>
       <td>
+<<<<<<< HEAD
         {{instrument.type}}
       </td>
       <td>
         <div class="flex justify-end items-center gap-2">
+=======
+        {{ getInstrumentTypeLabel(instrument.type) }}
+      </td>
+      <td>
+        <div class="flex justify-end items-center gap-1">
+>>>>>>> feature/dev
           <a class="btn btn-link" title="Edit instrument" (click)="showModalOnUpdateMode(instrument.id)">
             <i class="fa-solid fa-pen-to-square text-secondary"></i>
           </a>

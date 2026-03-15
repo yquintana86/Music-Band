@@ -26,6 +26,14 @@ internal sealed class UpdateInstrumentCommandHandler : ICommandHandler<UpdateIns
     {
         try
         {
+<<<<<<< HEAD
+=======
+            var instrumentDb = await this._instrumentRepository.GetByIdAsync(request.Id);
+
+            if (instrumentDb == null)
+                return ApiOperationResult.Fail(InstrumentError.NotFound());
+
+>>>>>>> feature/dev
             var musician = await _musicianRepository.GetByIdWithRelatedEntitiesAsync(request.MusicianId, m => m.Instruments, cancellationToken);
 
             if (musician is null)
@@ -34,11 +42,14 @@ internal sealed class UpdateInstrumentCommandHandler : ICommandHandler<UpdateIns
             if(musician.Instruments.Any(i => i.Name.ToLower() == request.Name.ToLower()))
                 return ApiOperationResult.Fail(InstrumentError.DuplicateOwner());
 
+<<<<<<< HEAD
             var instrumentDb = musician.Instruments.FirstOrDefault(i => i.Id == request.Id);
 
             if (instrumentDb is null)
                 return ApiOperationResult.Fail(InstrumentError.NotFound());
 
+=======
+>>>>>>> feature/dev
             instrumentDb!.Name = request.Name;
             instrumentDb!.Country = request.Country;
             instrumentDb!.Description = request.Description;
