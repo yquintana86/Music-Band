@@ -22,13 +22,6 @@ internal sealed class SearchActivitiesByFilterQueryHandler : IQueryHandler<Searc
     {
         try
         {
-            if (!request.Begin.HasValue && 
-                    !request.End.HasValue &&
-                        request.Begin!.Value > request.End!.Value)
-            {
-                return ApiOperationResult.Fail<PagedResult<ActivityResponse>>(ActivityError.InvalidFilterDates());
-            }
-
             var paged = await _activityRepository.SearchByFilterAsync(request, cancellationToken);
 
             var pagedResponse = new PagedResult<ActivityResponse>

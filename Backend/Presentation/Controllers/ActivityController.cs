@@ -8,7 +8,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using Presentation.Extension;
 
 namespace Presentation.Controllers;
@@ -42,7 +41,7 @@ public class ActivityController : ControllerBase
 
     [HttpDelete]
     //[ServiceFilter(typeof(ApiKeyAuthenticationFilter))]
-    [Route("delete/{id:int}")]
+    [Route("{id:int}")]
     public async Task<IResult> DeleteActivityAsync(int id, ISender sender, CancellationToken cancellationToken)
     {
         var response = await sender.Send(new DeleteActivityCommand(id), cancellationToken);

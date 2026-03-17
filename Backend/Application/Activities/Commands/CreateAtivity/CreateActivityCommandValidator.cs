@@ -17,7 +17,7 @@ public class CreateActivityCommandValidator : AbstractValidator<CreateActivityCo
             if (a.End.HasValue && a.End.Value.Year < 2020)
                 vc.AddFailure("End Date Shoud be After 2020");
 
-            if (a.Begin.HasValue && a.End.HasValue && a.Begin.Value < a.End.Value)
+            if (a.Begin.HasValue && a.End.HasValue && a.Begin.Value > a.End.Value)
                 vc.AddFailure("End Date Shoud be After begin Date");
         });
     }

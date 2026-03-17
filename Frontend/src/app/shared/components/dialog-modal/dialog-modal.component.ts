@@ -1,8 +1,9 @@
 import { Component, ElementRef, input, output, viewChild } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'dialog-modal',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './dialog-modal.component.html',
   styleUrl: './dialog-modal.component.css',
 })
