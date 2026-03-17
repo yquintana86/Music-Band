@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.DataContext;
+using Application.Abstractions.Messaging;
 using Application.Abstractions.Repositories;
 using Domain.Exceptions;
 using Microsoft.Extensions.Logging;
@@ -10,12 +11,14 @@ public sealed class DeleteActivityCommandHandler : ICommandHandler<DeleteActivit
 {
 
     private readonly IActivityRepository _activityRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DeleteActivityCommandHandler> _logger;
 
-    public DeleteActivityCommandHandler(IActivityRepository activityRepository, ILogger<DeleteActivityCommandHandler> logger)
+    public DeleteActivityCommandHandler(IActivityRepository activityRepository, ILogger<DeleteActivityCommandHandler> logger, IUnitOfWork unitOfWork)
     {
         _activityRepository = activityRepository;
         _logger = logger;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ApiOperationResult> Handle(DeleteActivityCommand request, CancellationToken cancellationToken)
@@ -28,6 +31,7 @@ public sealed class DeleteActivityCommandHandler : ICommandHandler<DeleteActivit
                 return ApiOperationResult.Fail(ActivityError.DeleteActivityNotFoundId(actId));
 
             await _activityRepository.DeleteAsync(actId);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return ApiOperationResult.Success();
 
         }

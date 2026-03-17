@@ -66,7 +66,7 @@ internal class ActivityRepository : IActivityRepository
         DateTime? end = filter.End;
         if(end.HasValue)
         {
-            query = query.Where(a => a.End >= end.Value);
+            query = query.Where(a => a.End <= end.Value);
         }
 
         bool? international = filter.International;

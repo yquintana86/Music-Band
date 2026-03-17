@@ -1,4 +1,6 @@
-export interface SearchMusicianByFilterQuery{
+import { PagingFilter } from "../../shared/interfaces/paging-filter.interface";
+
+export interface SearchMusicianByFilterQuery extends PagingFilter {
   firstName?: string;
   lastName?: string;
   fromAge?: number;
@@ -8,7 +10,4 @@ export interface SearchMusicianByFilterQuery{
   fromBasicSalary?: number;
   toBasicSalary?: number;
   instrumentId?: number;
-  page: number;
-  pageSize: number;
-  requestCount?: boolean;
 }
