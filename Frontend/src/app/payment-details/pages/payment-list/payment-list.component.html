@@ -57,8 +57,13 @@
             <div>
               <label for="musicianId" class="text-sm font-medium text-primary">Musician</label>
             </div>
-            <input type="text" id="musicianId" formControlName="musicianId" class="input bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface)
-              rounded-2xl focus:ring-0 focus-within:outline-none">
+            <input-search-selector
+            [initialDto]="initialDto()"
+            [callBackShowFieldValueFn]="callBackShowFieldValueFn"
+            [callBackGetFilterFn]="callBackGetFilterFn"
+            (elementCleared)="setMusicianId(null)"
+            (elementSelected)="setMusicianId($event.id)"
+            [searchPostUri]="filterMusicianUri"></input-search-selector>
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('musicianId')"
               [error]="this.getErrorMessage('musicianId')"></span>
           </div>
