@@ -50,7 +50,7 @@ internal sealed class SearchPaymentDetailsByFilterQueryHandler : IQueryHandler<S
                     Id = pd.Id,
                     BasicSalary = pd.BasicSalary,
                     MusicianId = pd.MusicianId,
-                    MusicianName = string.Join(' ', new { pd.Musician.FirstName, pd.Musician.MiddleName, pd.Musician.LastName }),
+                    MusicianName = $"{pd.Musician.FirstName} {pd.Musician.LastName}",
                     PaymentDate = pd.PaymentDate,
                     RangePlusId = pd.RangePlusId,
                     Salary = pd.Salary,

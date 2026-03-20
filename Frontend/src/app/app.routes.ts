@@ -34,6 +34,10 @@ export const routes: Routes = [
         loadChildren: () => import('./activities/activity.routes')
       },
       {
+        path: 'payment',
+        loadChildren: () => import('./payment-details/payment-details.routes')
+      },
+      {
         path: '**',
         redirectTo: 'dashboard'
       }

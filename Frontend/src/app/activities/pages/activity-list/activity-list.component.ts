@@ -182,7 +182,6 @@ export default class ActivityListComponent {
   }
 
   public promptModalOkButtonClicked() {
-    debugger;
     const id = this.activityIdToDelete();
     if (id == null) {
       this._toastService.error('Invalid Activity Id');

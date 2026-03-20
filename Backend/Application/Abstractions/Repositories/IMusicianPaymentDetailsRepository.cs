@@ -13,4 +13,5 @@ public interface IMusicianPaymentDetailsRepository
     Task<bool> ExistIdAsync(int id, CancellationToken cancellationToken = default);
     void Add(MusicianPaymentDetail musicianPaymentDetail, CancellationToken cancellationToken = default);
     Task DeleteAsync(int id,CancellationToken cancellationToken = default);
+    Task DeleteManyAsync(List<int> ids, CancellationToken cancellationToken = default);
 }

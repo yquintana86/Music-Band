@@ -9,8 +9,11 @@
         (click)="onAdd()">
         <i class="fa-solid fa-plus text-(--color-primary)"></i>
       </button>
-      <button [title]="deleteButtonAlternativeText"
-        class="ml-2 btn btn-sm border-2 border-(--color-secondary) rounded-full hover:btn-md transition-all duration-250 ease-in"
+      <button
+        [disabled]="deleteAllButtonDisabled()"
+        [title]="deleteButtonAlternativeText"
+        class="ml-2 btn btn-sm border-2 border-(--color-secondary) rounded-full hover:btn-md transition-all duration-250 ease-in
+        disabled:opacity-40 disabled:cursor-not-allowed"
         (click)="onDelete()">
         <i class="fa-solid fa-trash text-(--color-secondary)"></i>
       </button>
