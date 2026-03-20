@@ -32,6 +32,21 @@ internal sealed class MusicianPaymentDetailsRepository : IMusicianPaymentDetails
         _dbContext.MusicianPaymentDetails.Remove(detail!);
     }
 
+    public async Task DeleteManyAsync(List<int> ids, CancellationToken cancellationToken)
+    {
+        var entities = await _dbContext.MusicianPaymentDetails
+                            .Where(p => ids.Contains(p.Id))
+                            .ToListAsync();
+
+        var foundIds = entities.Select(p => p.Id).ToHashSet();
+
+        var missingIds = ids.Where(id => !foundIds.Contains(id)).ToList();
+        if (missingIds.Any())
+            throw new ArgumentException("Some of the items were not founded");
+
+        _dbContext.MusicianPaymentDetails.RemoveRange(entities);
+    }
+
     public async Task<bool> ExistIdAsync(int id, CancellationToken cancellationToken = default) =>
         await _dbContext.MusicianPaymentDetails.FindAsync(id) != null;
 

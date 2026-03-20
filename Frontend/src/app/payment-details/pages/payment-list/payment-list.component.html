@@ -1,0 +1,181 @@
+<div class="flex flex-col p-4 h-full">
+  <!-- Filter -->
+  <div class="mb-2">
+    <filter-layout class="h-16" filterTitle="Payment Detail Filter" [formGroup]="filterForm" (reset)="onReset()"
+      (search)="onSearch()">
+      <div class="flex items-center gap-24 py-2">
+        <div class="w-[15%]">
+          <div>
+            <label for="fromSalary" class="text-sm text-surface font-medium">From Salary</label>
+          </div>
+          <input type="number" id="fromSalary" formControlName="fromSalary"
+            class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
+          <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('fromSalary', true)"
+            [error]="this.getErrorMessage('fromSalary',true,'From Salary')"></span>
+        </div>
+        <div class="w-[15%]">
+          <div>
+            <label for="toSalary" class="text-sm text-surface font-medium">To Salary</label>
+          </div>
+          <input type="number" id="toSalary" formControlName="toSalary"
+            class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
+          <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('toSalary', true)"
+            [error]="this.getErrorMessage('toSalary',true,'To Salary')"></span>
+        </div>
+        <div class="w-[15%]">
+          <div>
+            <label for="fromPaymentDate" class="text-sm text-surface font-medium">From Date</label>
+          </div>
+          <input type="datetime-local" id="fromPaymentDate" formControlName="fromPaymentDate"
+            class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
+          <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('fromPaymentDate', true)"
+            [error]="this.getErrorMessage('fromPaymentDate',true,'From Payment Date')"></span>
+        </div>
+        <div class="w-[15%]">
+          <div>
+            <label for="toPaymentDate" class="text-sm text-surface font-medium">To Date</label>
+          </div>
+          <input type="datetime-local" id="toPaymentDate" formControlName="toPaymentDate"
+            class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
+          <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('toPaymentDate', true)"
+            [error]="this.getErrorMessage('toPaymentDate',true,'To Payment Date')"></span>
+        </div>
+
+      </div>
+    </filter-layout>
+  </div>
+
+  <!-- Update/Create Modal -->
+  <dialog-modal #dialogModal [title]="dialogModalTitle()" [showCancelButton]="false"
+    [divContentClasses]="'h-70 bg-surface'" (okButtonEmit)="onDialogModalOk()"
+    [disableOKButton]="disableDialogModalOkBtn()!">
+    <form class="h-full w-full" autocomplete="off" [formGroup]="dialogModalForm"
+      (keydown.enter)="$event.preventDefault()" (ngSubmit)="$event.preventDefault()">
+      <div class="h-full w-full flex justify-between items-center py-2 px-4 gap-8 ">
+        <div class="flex flex-col h-full w-full gap-8">
+          <div>
+            <div>
+              <label for="musicianId" class="text-sm font-medium text-primary">Musician</label>
+            </div>
+            <input type="text" id="musicianId" formControlName="musicianId" class="input bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface)
+              rounded-2xl focus:ring-0 focus-within:outline-none">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('musicianId')"
+              [error]="this.getErrorMessage('musicianId')"></span>
+          </div>
+          <div>
+            <div>
+              <label for="basicSalary" class="text-sm text-surface font-medium">Basic Salary</label>
+            </div>
+            <input type="number" id="basicSalary" formControlName="basicSalary" class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface)
+                      rounded-2xl focus:ring-0 focus-within:outline-none">
+            <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('basicSalary')"
+              [error]="this.getErrorMessage('basicSalary',false,'Basic Salary')"></span>
+          </div>
+          <div>
+            <div>
+              <label for="rangePlusId" class="text-sm text-surface font-medium">Range Plus</label>
+            </div>
+            <select id="rangePlusId" formControlName="rangePlusId" class="select bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface)
+              rounded-2xl focus:ring-0 focus-within:outline-none">
+              <option [ngValue]="null">Select Range Plus</option>
+              @for (plus of rangePlusList(); track plus.id) {
+                  <option [ngValue]="plus.id">{{ infoByRangePlus(plus) }}</option>
+              }
+          </select>
+            <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('rangePlusId')"
+              [error]="this.getErrorMessage('rangePlusId',false,'Range Plus Id')"></span>
+          </div>
+        </div>
+        <div class="flex flex-col gap-4 h-full w-full">
+          <div>
+            <div>
+              <label for="salary" class="text-sm font-medium text-primary">Salary</label>
+            </div>
+            <input type="number" id="salary" formControlName="salary" class="input bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface)
+                    rounded-2xl w-full focus:ring-0 focus-within:outline-none">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('salary')"
+              [error]="this.getErrorMessage('salary', false, 'Salary')"></span>
+          </div>
+          <div>
+            <div>
+              <label for="paymentDate" class="text-sm font-medium text-primary">Payment Date</label>
+            </div>
+            <input type="datetime-local" id="client" formControlName="paymentDate" class="input bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface)
+                    rounded-2xl w-full focus:ring-0 focus-within:outline-none">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('paymentDate')"
+              [error]="this.getErrorMessage('paymentDate', false, 'Payment Date')"></span>
+          </div>
+        </div>
+        <div class="flex flex-col w-full h-full">
+          <label for="description" class="text-sm font-medium text-primary">Description</label>
+          <textarea id="description" placeholder="Enter payment description..."
+            class="bg-white/10 flex-1 h-full w-full text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+          </textarea>
+        </div>
+      </div>
+    </form>
+  </dialog-modal>
+
+  <!-- Prompt Modal -->
+  <dialog-modal #promptModal [divModalBoxClasses]="'modal-box max-w-4xs p-0 border-2 border-(--color-primary)'"
+    [title]="'Delete Payment Detail'" [showCloseButton]="false" [okButtonText]="'Delete'"
+    [divContentClasses]="'h-15 bg-surface'" (okButtonEmit)="promptModalOkButtonClicked()"
+    (cancelButtonEmit)="onCancelPromptButtonClicked()">
+    <h3 class="font-semibold text-lg text-red-800 p-4">
+      {{ deletePromptBodyText() }}
+    </h3>
+  </dialog-modal>
+
+  <!-- Table -->
+  <div class="flex-1 min-h-0">
+    <table-layout class="h-full" [tableTitle]="'Payment Detail List'"
+    (addButtonClicked)="showDialogModalOnCreateMode()"
+    [deleteAllButtonDisabled]="paymentIdsSelectedForDeleteEmpty()"
+      (deleteAllButtonClicked)="showPromptModalOnDeleteAllMode()">
+      <tr table-header>
+        <th></th>
+        <th class="w-[25%]">Musician</th>
+        <th class="w-[15%]">Salary</th>
+        <th class="w-[15%]">Basic Salary</th>
+        <th class="w-[20%]">Payment Date</th>
+        <th class="w-[15%]">Range Plus</th>
+        <th class="w-[10%] text-right pr-10">Options</th>
+      </tr>
+
+      @for (payment of paymentDetailPagedResult().results; track payment.id) {
+      <tr table-body>
+        <td>
+          <label>
+            <input type="checkbox" class="checkbox" (change)="onPaymentChecked($event,payment.id)" />
+          </label>
+        </td>
+        <td>{{payment.musicianName}}</td>
+        <td>{{ payment.salary | number: '1.2-2' }} </td>
+        <td>{{ payment.basicSalary | number : '1.2-2' }} </td>
+        <td>{{ payment.paymentDate | date: 'medium' }}</td>
+        <td>{{ getRangePlusInfoById(payment.rangePlusId) }} </td>
+        <td>
+          <div class="float-right">
+            <a class="btn btn-link  text-purple-600 hover:text-lg" title="Edit"
+              (click)="showDialogModalOnUpdateMode(payment.id)">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+            <a class="btn btn-link hover:text-lg text-red-800" title="Delete"
+              (click)="showPromptModalOnDeleteMode(payment.id)">
+              <i class="fa-solid fa-trash-can"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      }
+
+      <div table-pager class="h-14 flex justify-between items-center px-4">
+        <items-per-page (itemsPerPageChange)="tableItemsPerPageChanged($event)"></items-per-page>
+        <table-pager [currentPage]="page()" [pageCount]="pageCount()" (pageChanged)="tablePageChanged($event)">
+        </table-pager>
+      </div>
+
+    </table-layout>
+  </div>
+
+</div>

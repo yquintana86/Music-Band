@@ -13,6 +13,7 @@ export class TableComponent {
   tableTitle = input<string>('');
   addButtonClicked = output<void>();
   deleteAllButtonClicked = output<void>();
+  deleteAllButtonDisabled = input<boolean>(false);
 
   onAdd() {
     this.addButtonClicked.emit();
