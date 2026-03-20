@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SearchPaymentDetailsByFilterQuery } from '../../interfaces/search-payment-by-filter-query.interface';
 import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.class';
 import { PaymentDetailResponse } from '../../interfaces/payment-detail-response.interface';
-import { PagedResult } from '../../../shared/interfaces';
+import { DtoWithId, InitialDtoWithId, PagedResult } from '../../../shared/interfaces';
 import { map, startWith } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DialogModalComponent } from '../../../shared/components/dialog-modal/dialog-modal.component';
@@ -19,6 +19,9 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { FilterLayoutComponent } from '../../../shared/components/filter-layout/filter-layout.component';
 import { RangePlusService } from '../../../range-plus/services/range-plus.service';
 import { RangePlusResponse } from '../../../range-plus/interfaces/range-plus-response.interface';
+import { InputSearchSelectorComponent } from "../../../shared/components/input-search-selector/input-search-selector.component";
+import { MusicianResponse } from '../../../musician/interfaces';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'app-payment-list',
@@ -31,8 +34,9 @@ import { RangePlusResponse } from '../../../range-plus/interfaces/range-plus-res
     ItemsPerPageComponent,
     PagerComponent,
     DatePipe,
-    DecimalPipe
-  ],
+    DecimalPipe,
+    InputSearchSelectorComponent
+],
   templateUrl: './payment-list.component.html',
   styleUrl: './payment-list.component.css',
 })
@@ -67,6 +71,17 @@ export default class PaymentListComponent {
   //#endregion
 
   //#region public fields
+
+  public initialDto = signal<InitialDtoWithId | null>(null);
+  public readonly callBackShowFieldValueFn = (item: DtoWithId) => (item as MusicianResponse).firstName + ' ' + (item as MusicianResponse).lastName;
+  public readonly callBackGetFilterFn = (query: string) => {
+    return {
+      page: 1,
+      pageSize: 10,
+      firstName: query
+    }
+  }
+  public readonly filterMusicianUri = `${environment.API_BASE_URL}/api/musician/search`;
   public isLoading = signal(false);
 
   public paymentDetailPagedResult = signal<PagedResult<PaymentDetailResponse>>({
@@ -97,7 +112,7 @@ export default class PaymentListComponent {
     paymentDate: this._fb.control<string | null>(null),
     salary: [0, [Validators.required, Validators.min(0)]],
     basicSalary: [0, [Validators.required, Validators.min(0)]],
-    musicianId: [0, [Validators.required, Validators.min(0)]],
+    musicianId: this._fb.control<number | null>(null, [Validators.required]),
     rangePlusId: this._fb.control<number | null>(null, [Validators.required])
   });
 
@@ -116,6 +131,10 @@ export default class PaymentListComponent {
 
 
   //#region public methods
+
+  setMusicianId(id: number | null) {
+    this.dialogModalForm.get('musicianId')?.setValue(id);
+  }
 
   //filter methods
 
@@ -151,6 +170,7 @@ export default class PaymentListComponent {
     this._doGetAllRangePlus(() => {
       this.dialogModalForm.reset();
       this.dialogModalTitle.set('Create Payment Detail');
+      this.initialDto.set(null);
       this.dialogModal()?.showModal();
     },
       (err) => {
@@ -173,6 +193,10 @@ export default class PaymentListComponent {
 
     this._doGetAllRangePlus(() => {
       this.dialogModalTitle.set('Update payment detail');
+      this.initialDto.set({
+        id: paymentDetail.musicianId,
+        text: paymentDetail.musicianName
+      });
       this.dialogModalForm.patchValue({
         ...paymentDetail,
         paymentDate: !paymentDetail.paymentDate ? null : this.getFormDateTime(paymentDetail.paymentDate)
