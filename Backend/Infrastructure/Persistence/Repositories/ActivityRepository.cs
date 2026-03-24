@@ -30,6 +30,21 @@ internal class ActivityRepository : IActivityRepository
         _appDbContext.Activities.Remove(activity);
     }
 
+    public async Task DeleteManyAsync(List<int> ids)
+    {
+        var founded = await _appDbContext.Activities
+            .Where(a => ids.Contains(a.Id))
+            .ToListAsync();
+
+        var foundedHashSet = founded.Select(a => a.Id).ToHashSet();
+
+        var notFounded = ids.Where(id => !foundedHashSet.Contains(id)).ToList();
+        if (notFounded.Any())
+            throw new Exception("Some Activities weren't found");
+
+        _appDbContext.Activities.RemoveRange(founded);
+    }
+
     public async Task<bool> ExistIdAsync(int id, CancellationToken cancellationToken = default) => 
         await _appDbContext.Activities.FindAsync(id, cancellationToken) != null;
     

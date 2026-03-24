@@ -3,7 +3,7 @@ export interface DtoWithId {
   [key : string] : any;
 }
 
-export interface InitialDtoWithId {
+export interface SelectItem {
   id: number;
   text : string;
 }

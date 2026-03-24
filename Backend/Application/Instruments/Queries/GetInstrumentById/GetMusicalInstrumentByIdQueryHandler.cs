@@ -36,6 +36,7 @@ internal sealed class GetMusicalInstrumentByIdQueryHandler : IQueryHandler<GetMu
                     Id = instrument.Id,
                     Name = instrument.Name,
                     Country = instrument.Country,
+                    Type = instrument.Type,
                     Description = instrument.Description,
                     MusicianId = instrument.MusicianId,
                 };

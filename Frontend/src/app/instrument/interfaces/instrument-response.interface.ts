@@ -5,6 +5,7 @@ export interface InstrumentResponse {
   name: string;
   country?: string;
   description?: string;
+  type: InstrumentType;
   musicianId: number;
-  type: InstrumentType
+  musicianName: string;
 }

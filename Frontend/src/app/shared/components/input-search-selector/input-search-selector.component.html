@@ -5,11 +5,11 @@
       class="flex items-center justify-center bg-white/10 input border border-(--color-surface) border-r-0 rounded-l-2xl rounded-r-none
       w-10 h-10 focus-within:outline-none focus:ring-0">
       <span role="button" class="btn btn-link no-underline p-0 min-h-0 h-auto" title="Clear Selection" (click)="clearSelection()">
-        <i [class.hidden]="xHidden()" class="fa-solid fa-xmark text-(--color-surface)"></i>
+        <i [class.hidden]="xHidden()" class="fa-solid fa-xmark text-gray-400 hover:text-primary hover:p-0 hover:scale-130 hover:ease-in hover:duration-150 hover:transition"></i>
       </span>
     </div>
 
-    <input type="text" class="h-10 input flex-1 bg-white/10 text-sm text-secondary px-2 py-1 rounded-r-none rounded-l-none
+    <input type="text" class="h-10 input input-md flex-1 bg-white/10 text-sm text-secondary px-2 py-1 rounded-r-none rounded-l-none
       border border-(--color-surface) border-x-0 focus-within:outline-none focus:ring-0" #inputSearch
       [readOnly]="itemSelected()">
 
@@ -18,18 +18,18 @@
       class="flex items-center justify-center bg-white/10 input border border-(--color-surface) border-l-0 rounded-r-2xl
       rounded-l-none w-10 h-10 focus-within:outline-none focus:ring-0">
       <button [disabled]="itemSelected()" role="button" class="btn btn-link no-underline p-0 min-h-0 h-auto" [title]="searchButtonTitle()" (click)="doSearch(inputSearch.value)">
-        <i class="fa-solid fa-magnifying-glass text-(--color-surface)"></i>
+        <i class="fa-solid fa-magnifying-glass text-gray-400 hover:text-primary hover:p-0 hover:scale-130 hover:ease-in hover:duration-150 hover:transition"></i>
       </button>
     </div>
   </div>
 
   <div class="absolute z-10 top-10 left-0 w-full bg-surface border-2 border-white/10 rounded-2xl"
   [class.hidden]="dropDownHidden()">
-    <div class="flex flex-col basis-15 max-h-28 overflow-y-auto">
-      @for (item of foundedItems(); track item.id) {
-      <div class="flex items-center gap-3 px-4 mt-1 py-0 h-6">
+    <div class="flex flex-col max-h-28 overflow-y-auto">
+      @for (item of foundedItems(); track item.id; let i = $index) {
+      <div [class.mt-1]="i == 0" class="flex basis-6 items-center gap-3 px-4 py-0">
         <input type="radio" class="radio radio-sm" name="selector" [checked]="item.id == idSelected()" (change)="changeSelected(item.id)">
-        <span class="text-sm text-surface">{{ callBackShowFieldValueFn()(item) }}</span>
+        <span class="text-sm text-surface">{{ item.text }}</span>
       </div>
       <div class="divider py-0 my-0 border-(--color-surface)"></div>
       }

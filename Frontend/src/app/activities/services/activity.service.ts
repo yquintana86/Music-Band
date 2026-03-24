@@ -62,4 +62,14 @@ public deleteActivity(id: number): Observable<boolean>{
   )
 }
 
+public deteleManyActivities(ids: number[]): Observable<boolean>{
+  const deleteUri = `${this.baseUrl}/deletemany`;
+
+  return this._httpClient.post<APIOperationResultBase>(deleteUri, ids)
+  .pipe(
+    map(response => response.isSuccess),
+    catchError(err => throwError(() => err))
+  )
+}
+
 }

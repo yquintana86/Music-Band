@@ -4,4 +4,5 @@ export interface CreatePaymentDetailCommand {
   basicSalary: number;
   musicianId: number;
   rangePlusId: number;
+  description?: string;
 }

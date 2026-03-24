@@ -9,8 +9,8 @@
           <div>
             <label for="begin" class="text-sm text-surface font-medium">Begin</label>
           </div>
-          <input type="date" id="begin" formControlName="begin"
-            class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
+          <input type="date" id="begin" formControlName="begin" class="input input-md bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl
+            focus-within:outline-none focus:ring-0">
           <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('begin', true)"
             [error]="this.getErrorMessage('begin',true,'Begin')"></span>
         </div>
@@ -19,7 +19,7 @@
             <label for="end" class="text-sm text-surface font-medium">End</label>
           </div>
           <input type="date" id="end" formControlName="end"
-            class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
+            class="input input-md bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
           <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('end', true)"
             [error]="this.getErrorMessage('end',true,'End')"></span>
         </div>
@@ -27,12 +27,11 @@
           <div>
             <label for="international" class="text-sm text-primary font-medium">International</label>
           </div>
-          <select id="international" formControlName="international"
-            class="select  bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
+          <select id="international" formControlName="international" class="select select-md  bg-[rgba(57,57,61,1)] text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl
+            focus-within:outline-none focus:ring-0">
             <option value="" selected></option>
             <option value="true">True</option>
             <option value="false">False</option>
-
           </select>
           <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('international', true)"
             [error]="this.getErrorMessage('international',true,'International')"></span>
@@ -136,13 +135,10 @@
   <!-- Table -->
   <div class="flex-1 min-h-0">
     <table-layout class="h-full" [tableTitle]="'Activity List'" (addButtonClicked)="showDialogModalOnCreateMode()"
-      (deleteAllButtonClicked)="onDeleteAllButtonClicked()">
+      (deleteAllButtonClicked)="onDeleteAllButtonClicked()"
+      [deleteAllButtonDisabled]="deleteAllButtonDisabled()">
       <tr table-header>
-        <th>
-          <label>
-            <input type="checkbox" class="checkbox" />
-          </label>
-        </th>
+        <th></th>
         <th class="w-[25%]">Name</th>
         <th class="w-[25%]">Client</th>
         <th class="w-10">International</th>
@@ -155,7 +151,7 @@
       <tr table-body>
         <th>
           <label>
-            <input type="checkbox" class="checkbox" />
+            <input type="checkbox" class="checkbox" (change)="updateActivitiesToDelete(activity.id, $event)" />
           </label>
         </th>
         <td>{{activity.name}}</td>
@@ -169,11 +165,11 @@
         <td class="text-center">{{ activity.end | date }}</td>
         <th>
           <div class="float-right">
-            <a class="btn btn-link  text-purple-600 hover:text-lg" title="Edit"
+            <a class="btn btn-link  text-purple-600 hover:scale-125 hover:transition hover:ease-in hover:duration-150" title="Edit"
               (click)="showDialogModalOnUpdateMode(activity.id)">
               <i class="fa-solid fa-pen-to-square"></i>
             </a>
-            <a class="btn btn-link hover:text-lg text-red-800" title="Delete"
+            <a class="btn btn-link text-red-800 hover:scale-125 hover:transition hover:ease-in hover:duration-150" title="Delete"
               (click)="showPromptModalOnDeleteMode(activity.id)">
               <i class="fa-solid fa-trash-can"></i>
             </a>

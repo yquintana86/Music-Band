@@ -5,5 +5,5 @@ export interface UpdatePaymentDetailCommand {
   basicSalary: number;
   musicianId: number;
   rangePlusId: number;
-  //description: string;
+  description?: string;
 }

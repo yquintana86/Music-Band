@@ -6,4 +6,5 @@ export interface PaymentDetailResponse {
   musicianId: number;
   musicianName: string;
   rangePlusId: number;
+  description?: string;
 }
