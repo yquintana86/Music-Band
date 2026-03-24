@@ -13,5 +13,6 @@ public interface IInstrumentRepository
     Task<bool> ExistByIdAsync(int id, CancellationToken cancellationToken = default);
     void Add(MusicalInstrument instrument);
     Task DeleteAsync(int id);
+    Task DeleteManyAsync(List<int> ids);
     Task<Dictionary<string, IEnumerable<Musician>>> GetMostUsedInstrument(int? instrumentQtyToSearch, CancellationToken cancellationToken);
 }

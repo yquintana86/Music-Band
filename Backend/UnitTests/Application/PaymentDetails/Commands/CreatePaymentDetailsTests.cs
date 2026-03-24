@@ -36,14 +36,16 @@ public sealed class CreatePaymentDetailsTests
         decimal salary = 200,
         decimal basicSalary = 50,
         int musicianId = 1,
-        int rangePlusId = 1)
+        int rangePlusId = 1,
+        string description = "")
     {
         return new CreatePaymentDetailCommand(
             paymentDate ?? new DateTime(2025, 1, 1),
             salary,
             basicSalary,
             musicianId,
-            rangePlusId);
+            rangePlusId,
+            description);
     }
 
     [Fact]

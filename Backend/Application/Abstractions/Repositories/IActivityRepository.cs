@@ -13,5 +13,6 @@ public interface IActivityRepository
     Task<bool> ExistIdAsync(int id, CancellationToken cancellationToken = default);
     void Add(Activity activity);
     Task DeleteAsync(int id);
+    Task DeleteManyAsync(List<int> id);
     Task<IEnumerable<Activity>> GetInternationalActivitiesByMusicianIdAsync(int id, CancellationToken cancellationToken);
 }

@@ -1,27 +1,29 @@
-<div class="flex flex-col p-4 h-full">
+<div class="flex flex-col p-4 h-full w-full">
 
   <!-- Filter -->
-  <div class="mb-2">
-    <filter-layout filterTitle="Filter instruments" [formGroup]="instrumentFilterForm" (clear)="onFilterClear()"
+  <div class="mb-2 w-full">
+    <filter-layout class="w-full" filterTitle="Filter instruments" [formGroup]="instrumentFilterForm" (clear)="onFilterClear()"
       (search)="onFilterSearch()">
 
-      <div class="flex justify-start items-center gap-x-40">
-        <div>
+      <div class="w-[80%] flex justify-between items-center gap-x-20">
+        <div class="w-full">
           <label for="name" class="text-primary text-sm font-medium">Name</label>
           <div>
             <input formControlName="name" placeholder="Search by name"
-              class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+              class="input input-md w-full bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl
+              focus-within:outline-none focus:ring-0">
           </div>
           <span class="block text-xs"
           fielderror
           [isInvalidField]="this.isInvalidField('name', true)"
           [error]="this.getErrorMessage('name',true)"></span>
         </div>
-        <div>
+        <div class="w-full">
           <label for="country" class="text-primary text-sm font-medium">Country</label>
           <div>
             <input formControlName="country" placeholder="Search by country"
-              class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+              class="input ibnput-md bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl
+              focus-within:outline-none focus:ring-0">
           </div>
           <span class="block text-xs"
           fielderror
@@ -29,11 +31,12 @@
           [error]="this.getErrorMessage('country', true)"></span>
         </div>
 
-        <div>
+        <div class="w-full">
           <label for="type" class="text-primary text-sm font-medium">Type</label>
           <div>
             <select formControlName="type"
-              class="bg-white/10 text-secondary py-1.5 px-3 border border-(--color-surface) rounded-2xl">
+              class="select select-md w-full bg-[rgba(57,57,61,1)] text-secondary py-1.5 px-3 border-2 border-(--color-surface) rounded-2xl
+              focus-within:outline-none focus:ring-0">
               <option [value]="null"></option>
               @for (item of instrumentTypeOptions; track $index) {
               <option [value]="item.value">
@@ -60,7 +63,8 @@
             <label for="name" class="text-sm text-primary font-medium">Name</label>
             <div>
               <input type="text" id="name" placeholder="Enter name..." formControlName="name"
-                class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+                class="input input-md bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl
+                focus-within:outline-none focus:ring-0">
             </div>
             <span class="block text-xs"
             fielderror
@@ -71,7 +75,8 @@
             <label for="country" class="text-sm text-primary font-medium">Country</label>
             <div>
               <input type="text" id="country" placeholder="Enter country..." formControlName="country"
-                class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+                class="input input-md bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl
+                focus-within:outline-none focus:ring-0">
             </div>
             <span class="block text-xs"
             fielderror
@@ -82,7 +87,7 @@
             <label for="type" class="text-sm text-primary font-medium">Type</label>
             <div>
               <select id="type" formControlName="type"
-                class="bg-white/10 w-full text-secondary py-1.5 px-3 border border-(--color-surface) rounded-2xl">
+                class="select select-md bg-[rgba(57,57,61,1)] w-full text-secondary py-1.5 px-3 border border-(--color-surface) rounded-2xl">
                 <option [value]="null"></option>
                 @for (item of instrumentTypeOptions; track $index) {
                 <option [value]="item.value">
@@ -99,8 +104,14 @@
         </div>
         <div class="h-full flex flex-col mt-2">
           <label for="musicianId" class="text-sm text-primary font-medium">Musician</label>
-          <input type="text" id="musicianId" formControlName="musicianId" placeholder="Enter musician ...."
-            class="bg-white/10 text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+          <input-search-selector
+          [initialDto]="initialDto()"
+          [callBackShowFieldValueFn]="callBackShowFieldValueFn"
+          [callBackGetFilterFn]="callBackGetFilterFn"
+          [searchPostUri]="searchPostUri"
+          (elementSelected)="setMusicianId($event)"
+          (elementCleared)="setMusicianId(null)">
+          </input-search-selector>
             <span class="block text-xs"
             fielderror
             [isInvalidField]="this.isInvalidField('musicianId')"
@@ -129,21 +140,19 @@
   (cancelButtonEmit)="onCancelPromptButtonClicked()"
   (okButtonEmit)="onDeletePromptButtonClicked()">
     <h3 class="text-2xl text-red-800 p-2">
-      Are you sure to delete?
+      {{ promptDeleteModalBodyText() }}
     </h3>
   </dialog-modal>
 
 
   <!-- Table -->
   <table-layout class="h-full" [tableTitle]="'Instrument List'" (addButtonClicked)="showModalOnCreateMode()"
-    (deleteAllButtonClicked)="onDeleteAllButtonClicked()">
+    (deleteAllButtonClicked)="onDeleteAllButtonClicked()"
+    [deleteAllButtonDisabled]="deleteAllButtonDisabled()">
     <tr table-header>
-      <th>
-        <label>
-          <input type="checkbox" class="checkbox" />
-        </label>
-      </th>
+      <th></th>
       <th>Name</th>
+      <th>Owner</th>
       <th>Country</th>
       <th>Type</th>
       <th class="w-[15%] text-end pr-10">Options</th>
@@ -152,11 +161,14 @@
     <tr table-body>
       <td>
         <label>
-          <input type="checkbox" class="checkbox" />
+          <input type="checkbox" class="checkbox" (change)="updateSelectedInstrumentForDelete(instrument.id, $event)" />
         </label>
       </td>
       <td>
         {{instrument.name}}
+      </td>
+      <td>
+        {{instrument.musicianName}}
       </td>
       <td>
         {{instrument.country}}
@@ -167,11 +179,11 @@
       <td>
         <div class="flex justify-end items-center gap-1">
           <a class="btn btn-link" title="Edit instrument" (click)="showModalOnUpdateMode(instrument.id)">
-            <i class="fa-solid fa-pen-to-square text-secondary"></i>
+            <i class="fa-solid fa-pen-to-square text-(--color-primary) hover:scale-125 hover:transition hover:ease-in hover:duration-100"></i>
           </a>
           <a class="btn btn-link" title="Delete instrument">
-            <i class="fa-solid fa-trash text-red-800"
-              (click)="showConfirmDeleteInstrument(instrument.id, instrument.name)"></i>
+            <i class="fa-solid fa-trash text-red-800 hover:scale-125 hover:transition hover:ease-in hover:duration-100"
+              (click)="showConfirmDeleteInstrument(instrument.id)"></i>
           </a>
         </div>
       </td>

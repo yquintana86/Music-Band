@@ -5,6 +5,7 @@ namespace Domain.Exceptions;
 public sealed class InstrumentError
 {
     public static ApiOperationError InvalidId() => ApiOperationError.Validation(nameof(InvalidId), $"Musical Instrument must have an Id greater than 0");
+    public static ApiOperationError InvalidRequest() => ApiOperationError.Validation(nameof(InvalidId), $"Invalid Request");
     public static ApiOperationError InvalidInstrumentQtyToSearch() => ApiOperationError.Validation(nameof(InvalidInstrumentQtyToSearch), $"Musical Instrument quantity to search must have a value greater than 0");
     public static ApiOperationError NotFound() => ApiOperationError.Validation(nameof(InvalidId), $"Musical Instrument not found");
     public static ApiOperationError OwnerNotFound(int musicianId) => ApiOperationError.Validation(nameof(OwnerNotFound), $"The id: {musicianId} of the instrument's owner isn't found");

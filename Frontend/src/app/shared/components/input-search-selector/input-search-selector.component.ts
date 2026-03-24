@@ -1,9 +1,10 @@
-import { Component, computed, ElementRef, inject, input, linkedSignal, output, signal, viewChild, WritableSignal } from '@angular/core';
-import { APIOperationResult, DtoWithId, InitialDtoWithId, PagedResult } from '../../interfaces';
+import { Component, computed, effect, ElementRef, inject, input, linkedSignal, output, signal, viewChild, WritableSignal } from '@angular/core';
+import { APIOperationResult, DtoWithId, SelectItem, PagedResult } from '../../interfaces';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorUtilitiesClass } from '../../interfaces/error-utilities.class';
 import { PagingFilter } from '../../interfaces/paging-filter.interface';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'input-search-selector',
@@ -21,47 +22,61 @@ export class InputSearchSelectorComponent {
   public searchPostUri = input.required<string>();
   public placeholder = input<string>('Search...');
   public searchButtonTitle = input<string>('Search');
-  public initialDto = input<InitialDtoWithId | null>(null);
-  public callBackShowFieldValueFn = input.required<(item: DtoWithId) => string>();
+  public initialDto = input<SelectItem | null>(null);
+  public callBackShowFieldValueFn = input.required<(item: DtoWithId) => SelectItem>();
   public callBackGetFilterFn = input.required<(query: string) => PagingFilter>();
-  public elementSelected = output<DtoWithId>();
+  public elementSelected = output<number>();
   public elementCleared = output<void>();
 
 
-  public idSelected: WritableSignal<number | null> = linkedSignal(() => {
-    const dto = this.initialDto();
+   public idSelected: WritableSignal<number | null> = signal(null);
+  // public idSelected: WritableSignal<number | null> = linkedSignal(() => {
+  //   const dto = this.initialDto();
 
-    if(!dto){
-      (this.inputSearch()?.nativeElement as HTMLInputElement).value = '';
-      return null;
-    }
-    (this.inputSearch()?.nativeElement as HTMLInputElement).value = dto.text;
-    return dto.id;
+  //   if(!dto){
+  //     (this.inputSearch()?.nativeElement as HTMLInputElement).value = '';
+  //     return null;
+  //   }
+  //   (this.inputSearch()?.nativeElement as HTMLInputElement).value = dto.text;
+  //   return dto.id;
+  // });
+
+  public itemSelected: WritableSignal<SelectItem | null> = linkedSignal(() => {
+    const dto = this.initialDto();
+    return !dto ? null : { id: dto.id, text: dto.text };
   });
 
-  public itemSelected: WritableSignal<DtoWithId | null> = linkedSignal(() => {
-    const dto = this.initialDto();
+  selectedItem = effect(() => {
+    const item = this.itemSelected();
 
-    if(!dto){
-      (this.inputSearch()?.nativeElement as HTMLInputElement).value = '';
-      return null;
+    const input = this.inputSearch()?.nativeElement as HTMLInputElement;
+    if(!item)
+    {
+      this.idSelected.set(null);
+      if(input) input.value = '';
+      return;
     }
-    (this.inputSearch()?.nativeElement as HTMLInputElement).value = dto.text;
-    return { id: dto.id };
+    this.idSelected.set(item.id);
+    if(input) input.value = item.text;
   });
-
 
   public xHidden = computed(() => !this.itemSelected());
   public dropDownHidden = signal(true);
-  public foundedItems: WritableSignal<DtoWithId[]> = signal([]);
+  public foundedItems: WritableSignal<SelectItem[]> = signal([]);
 
 
   public doSearch(value: string) {
     if(!value) return;
-    this._httpClient.post<APIOperationResult<PagedResult<DtoWithId>>>(this.searchPostUri(), this.callBackGetFilterFn()(value))
+    this._httpClient.post<APIOperationResult<PagedResult<DtoWithId>>>(
+      this.searchPostUri(), this.callBackGetFilterFn()(value)
+    )
+    .pipe(
+      map(response => response.data.results),
+      map(items => items.map(item => this.callBackShowFieldValueFn()(item)))
+    )
     .subscribe({
-      next: (result) => {
-        this.foundedItems.set(result.data.results);
+      next: (items) => {
+        this.foundedItems.set(items);
         this.clearSelection();
         this.dropDownHidden.set(false);
       },error: (err) => {
@@ -91,10 +106,9 @@ export class InputSearchSelectorComponent {
   public selectItem(){
     const item = this.foundedItems().find(i => i.id == this.idSelected());
     if(item){
-      const inputValue = this.callBackShowFieldValueFn()(item);
-      (this.inputSearch()?.nativeElement as HTMLInputElement).value = inputValue;
+      (this.inputSearch()?.nativeElement as HTMLInputElement).value = item.text;
       this.itemSelected.set(item);
-      this.elementSelected.emit(item);
+      this.elementSelected.emit(item.id);
       this.closeDropDown();
     }
   }

@@ -45,11 +45,13 @@ export default class ActivityListComponent {
   });
 
   private activityIdToDelete = signal<number | null>(null);
-
+  private activitiesIdsSelectedForDelete = signal<number[]>([]);
+  private isPromptDeleteSingleMode = signal(false);
   //#endregion
 
   //#region public fields
   public isLoading = signal(false);
+  public readonly deleteAllButtonDisabled = computed(() => !this.activitiesIdsSelectedForDelete()?.length);
 
   public activitiesPagedResult = signal<PagedResult<ActivityReponse>>({
     currentpage: 1,
@@ -169,10 +171,31 @@ export default class ActivityListComponent {
 
     this.deletePromptBodyText.set(`Are you sure to delete the '${activity.name}' activity ?`);
     this.activityIdToDelete.set(activity.id);
+    this.isPromptDeleteSingleMode.set(true);
     this.promptModal()?.showModal();
   }
 
   public onDeleteAllButtonClicked() {
+
+    if(this.activitiesIdsSelectedForDelete()?.length > 0) {
+      this.deletePromptBodyText.set(`Are you sure to delete ${this.activitiesIdsSelectedForDelete()?.length} activities ?`);
+      this.isPromptDeleteSingleMode.set(false);
+      this.promptModal()?.showModal();
+    }
+  }
+
+  public updateActivitiesToDelete(activityId: number, event: Event) {
+    const target = event.target as HTMLInputElement;
+
+    if (activityId && target) {
+      if (target.checked) {
+        if (this.activitiesIdsSelectedForDelete().find(a => a == activityId) === undefined) {
+          this.activitiesIdsSelectedForDelete.update(current => [...current, activityId])
+          return;
+        }
+      }
+      this.activitiesIdsSelectedForDelete.update(current => current.filter(a => a != activityId));
+    }
 
   }
 
@@ -182,7 +205,16 @@ export default class ActivityListComponent {
   }
 
   public promptModalOkButtonClicked() {
-    const id = this.activityIdToDelete();
+    if(this.isPromptDeleteSingleMode()){
+      this.deleteSingleActivity();
+      return;
+    }
+
+    this.deleteSelectedActivities();
+  }
+
+  public deleteSingleActivity(){
+     const id = this.activityIdToDelete();
     if (id == null) {
       this._toastService.error('Invalid Activity Id');
       return;
@@ -204,13 +236,34 @@ export default class ActivityListComponent {
       })
   }
 
+  public deleteSelectedActivities(){
+    if(!this.activitiesIdsSelectedForDelete()?.length)
+    {
+      this._toastService.error('Please select at least one activity');
+      return;
+    }
+
+    this._activityService.deteleManyActivities(this.activitiesIdsSelectedForDelete())
+    .subscribe({
+      next: () => {
+        this.activitiesIdsSelectedForDelete.set([]);
+        this._toastService.success('Activities deleted successfully', 'Success');
+        this._activityFilterQuery.set(this.getActivityFilter());
+        this.promptModal()?.closeModal();
+      },
+      error: (err) => {
+          this._toastService.error(ErrorUtilitiesClass.getErrorMessage(err), 'Error');
+      }
+    })
+  }
+
   public onDialogModalOk() {
     const isCreation = !this.dialogModalForm.get('id')?.value;
     const value = this.dialogModalForm.value;
-    const activity = {...value, international: value.international == 'true'};
+    const activity = { ...value, international: value.international == 'true' };
 
     const doTask = isCreation ? this._activityService.createActivity(activity as CreateActivityCommand)
-                              : this._activityService.updateActivity(activity as UpdateActivityCommand);
+      : this._activityService.updateActivity(activity as UpdateActivityCommand);
 
     doTask.subscribe({
       next: () => {
@@ -251,7 +304,7 @@ export default class ActivityListComponent {
       .reduce((acc, [key, value]) => {
 
         let data: string | boolean = '';
-        switch (key){
+        switch (key) {
           case 'begin':
             data = this.getFormDate(value!);
             break;

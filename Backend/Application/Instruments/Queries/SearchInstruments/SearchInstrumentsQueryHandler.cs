@@ -31,7 +31,8 @@ internal sealed class SearchInstrumentsQueryHandler : IQueryHandler<SearchInstru
                     Name = i.Name,
                     Country = i.Country,
                     Description = i.Description,
-                    MusicianId = i.MusicianId,
+                    Type = i.Type,
+                    MusicianId = i.MusicianId
                 });
             }
 

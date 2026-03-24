@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SearchPaymentDetailsByFilterQuery } from '../../interfaces/search-payment-by-filter-query.interface';
 import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.class';
 import { PaymentDetailResponse } from '../../interfaces/payment-detail-response.interface';
-import { DtoWithId, InitialDtoWithId, PagedResult } from '../../../shared/interfaces';
+import { DtoWithId, SelectItem, PagedResult } from '../../../shared/interfaces';
 import { map, startWith } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DialogModalComponent } from '../../../shared/components/dialog-modal/dialog-modal.component';
@@ -72,8 +72,12 @@ export default class PaymentListComponent {
 
   //#region public fields
 
-  public initialDto = signal<InitialDtoWithId | null>(null);
-  public readonly callBackShowFieldValueFn = (item: DtoWithId) => (item as MusicianResponse).firstName + ' ' + (item as MusicianResponse).lastName;
+  public initialDto = signal<SelectItem | null>(null);
+  public readonly callBackShowFieldValueFn = (item: DtoWithId) =>
+    ({
+      id: item.id,
+      text: (item as MusicianResponse).firstName + ' ' + (item as MusicianResponse).lastName,
+    } as SelectItem);
   public readonly callBackGetFilterFn = (query: string) => {
     return {
       page: 1,
@@ -113,7 +117,8 @@ export default class PaymentListComponent {
     salary: [0, [Validators.required, Validators.min(0)]],
     basicSalary: [0, [Validators.required, Validators.min(0)]],
     musicianId: this._fb.control<number | null>(null, [Validators.required]),
-    rangePlusId: this._fb.control<number | null>(null, [Validators.required])
+    rangePlusId: this._fb.control<number | null>(null, [Validators.required]),
+    description: this._fb.control<string | null>(null),
   });
 
   public disableDialogModalOkBtn = toSignal(this.dialogModalForm.statusChanges

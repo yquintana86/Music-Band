@@ -5,14 +5,14 @@
     </h3>
     <div>
       <button [title]="addButtonAlternativeText"
-        class="btn btn-sm border-2 border-(--color-primary) rounded-full hover:btn-md transition-all duration-250 ease-in-out"
+        class="btn btn-sm border-2 border-(--color-primary) rounded-full hover:scale-125 hover:transition hover:ease-in hover:duration-100"
         (click)="onAdd()">
         <i class="fa-solid fa-plus text-(--color-primary)"></i>
       </button>
       <button
         [disabled]="deleteAllButtonDisabled()"
         [title]="deleteButtonAlternativeText"
-        class="ml-2 btn btn-sm border-2 border-(--color-secondary) rounded-full hover:btn-md transition-all duration-250 ease-in
+        class="ml-2 btn btn-sm border-2 border-(--color-secondary) rounded-full hover:scale-125 hover:transition hover:ease-in hover:duration-100
         disabled:opacity-40 disabled:cursor-not-allowed"
         (click)="onDelete()">
         <i class="fa-solid fa-trash text-(--color-secondary)"></i>

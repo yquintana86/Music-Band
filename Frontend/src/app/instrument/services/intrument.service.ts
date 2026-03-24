@@ -68,4 +68,15 @@ debugger;
       catchError(err => throwError(() => err))
     )
   }
+
+
+  public deteleManyInstruments(ids: number[]): Observable<boolean> {
+    const uri = `${this.#baseUrl}/deletemany`;
+
+    return this._httpClient.post<APIOperationResultBase>(uri, ids)
+    .pipe(
+      map(response => response.isSuccess),
+      catchError(err => throwError(() => err))
+    )
+  }
 }

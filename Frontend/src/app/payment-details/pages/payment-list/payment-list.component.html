@@ -9,7 +9,7 @@
             <label for="fromSalary" class="text-sm text-surface font-medium">From Salary</label>
           </div>
           <input type="number" id="fromSalary" formControlName="fromSalary"
-            class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
+            class="input input-md bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
           <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('fromSalary', true)"
             [error]="this.getErrorMessage('fromSalary',true,'From Salary')"></span>
         </div>
@@ -18,7 +18,7 @@
             <label for="toSalary" class="text-sm text-surface font-medium">To Salary</label>
           </div>
           <input type="number" id="toSalary" formControlName="toSalary"
-            class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
+            class="input input-md bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
           <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('toSalary', true)"
             [error]="this.getErrorMessage('toSalary',true,'To Salary')"></span>
         </div>
@@ -27,7 +27,7 @@
             <label for="fromPaymentDate" class="text-sm text-surface font-medium">From Date</label>
           </div>
           <input type="datetime-local" id="fromPaymentDate" formControlName="fromPaymentDate"
-            class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
+            class="input input-md bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
           <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('fromPaymentDate', true)"
             [error]="this.getErrorMessage('fromPaymentDate',true,'From Payment Date')"></span>
         </div>
@@ -36,7 +36,7 @@
             <label for="toPaymentDate" class="text-sm text-surface font-medium">To Date</label>
           </div>
           <input type="datetime-local" id="toPaymentDate" formControlName="toPaymentDate"
-            class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
+            class="input input-md bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl focus-within:outline-none focus:ring-0">
           <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('toPaymentDate', true)"
             [error]="this.getErrorMessage('toPaymentDate',true,'To Payment Date')"></span>
         </div>
@@ -62,7 +62,7 @@
             [callBackShowFieldValueFn]="callBackShowFieldValueFn"
             [callBackGetFilterFn]="callBackGetFilterFn"
             (elementCleared)="setMusicianId(null)"
-            (elementSelected)="setMusicianId($event.id)"
+            (elementSelected)="setMusicianId($event)"
             [searchPostUri]="filterMusicianUri"></input-search-selector>
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('musicianId')"
               [error]="this.getErrorMessage('musicianId')"></span>
@@ -71,7 +71,7 @@
             <div>
               <label for="basicSalary" class="text-sm text-surface font-medium">Basic Salary</label>
             </div>
-            <input type="number" id="basicSalary" formControlName="basicSalary" class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface)
+            <input type="number" id="basicSalary" formControlName="basicSalary" class="input input-md bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface)
                       rounded-2xl focus:ring-0 focus-within:outline-none">
             <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('basicSalary')"
               [error]="this.getErrorMessage('basicSalary',false,'Basic Salary')"></span>
@@ -80,7 +80,7 @@
             <div>
               <label for="rangePlusId" class="text-sm text-surface font-medium">Range Plus</label>
             </div>
-            <select id="rangePlusId" formControlName="rangePlusId" class="select bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface)
+            <select id="rangePlusId" formControlName="rangePlusId" class="select select-md bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface)
               rounded-2xl focus:ring-0 focus-within:outline-none">
               <option [ngValue]="null">Select Range Plus</option>
               @for (plus of rangePlusList(); track plus.id) {
@@ -96,7 +96,7 @@
             <div>
               <label for="salary" class="text-sm font-medium text-primary">Salary</label>
             </div>
-            <input type="number" id="salary" formControlName="salary" class="input bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface)
+            <input type="number" id="salary" formControlName="salary" class="input input-md bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface)
                     rounded-2xl w-full focus:ring-0 focus-within:outline-none">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('salary')"
               [error]="this.getErrorMessage('salary', false, 'Salary')"></span>
@@ -105,7 +105,7 @@
             <div>
               <label for="paymentDate" class="text-sm font-medium text-primary">Payment Date</label>
             </div>
-            <input type="datetime-local" id="client" formControlName="paymentDate" class="input bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface)
+            <input type="datetime-local" id="client" formControlName="paymentDate" class="input input-md bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface)
                     rounded-2xl w-full focus:ring-0 focus-within:outline-none">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('paymentDate')"
               [error]="this.getErrorMessage('paymentDate', false, 'Payment Date')"></span>
@@ -113,7 +113,7 @@
         </div>
         <div class="flex flex-col w-full h-full">
           <label for="description" class="text-sm font-medium text-primary">Description</label>
-          <textarea id="description" placeholder="Enter payment description..."
+          <textarea id="description" placeholder="Enter payment description..." formControlName="description"
             class="bg-white/10 flex-1 h-full w-full text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
           </textarea>
         </div>
@@ -161,11 +161,11 @@
         <td>{{ getRangePlusInfoById(payment.rangePlusId) }} </td>
         <td>
           <div class="float-right">
-            <a class="btn btn-link  text-purple-600 hover:text-lg" title="Edit"
+            <a class="btn btn-link  text-purple-600 hover:scale-125 hover:transition hover:ease-in hover:duration-100" title="Edit"
               (click)="showDialogModalOnUpdateMode(payment.id)">
               <i class="fa-solid fa-pen-to-square"></i>
             </a>
-            <a class="btn btn-link hover:text-lg text-red-800" title="Delete"
+            <a class="btn btn-link text-red-800 hover:scale-125 hover:transition hover:ease-in hover:duration-100" title="Delete"
               (click)="showPromptModalOnDeleteMode(payment.id)">
               <i class="fa-solid fa-trash-can"></i>
             </a>

@@ -35,10 +35,11 @@ internal sealed class SearchInstrumentsByFilterQueryHandler : IQueryHandler<Sear
                 {
                     Id = i.Id,
                     Name = i.Name,
-                    MusicianId = i.MusicianId,
                     Type = i.Type,
                     Country = i.Country,
                     Description = i.Description,
+                    MusicianId = i.MusicianId,
+                    MusicianName = $"{i.Musician.FirstName} {i.Musician.LastName}",
                 }).ToList(),
             };
 

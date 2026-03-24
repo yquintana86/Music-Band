@@ -11,4 +11,5 @@ public sealed class PaymentDetailResponse
     public int MusicianId { get; set; }
     public string MusicianName { get; set; } = null!;
     public int RangePlusId { get; set; }
+    public string? Description { get; set; }
 }

@@ -9,5 +9,6 @@ public class MusicalInstrumentResponse
     public string? Country { get; set; }
     public string? Description { get; set; }
     public int MusicianId { get; set; }
+    public string MusicianName { get; set; } = null!;
     public InstrumentType Type { get; set; }
 }

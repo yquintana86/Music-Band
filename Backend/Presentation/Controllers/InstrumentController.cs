@@ -4,6 +4,7 @@ using Application.Instrument.Commands.DeleteInstrument;
 using Application.Instrument.Commands.UpdateInstrument;
 using Application.Instrument.Queries.GetInstruments;
 using Application.Instrument.Queries.SearchInstrumentbyId;
+using Application.Instruments.Commands.DeleteManyInstrument;
 using Application.Instruments.Queries.SearchInstrumentsByFilter;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -23,34 +24,7 @@ public class InstrumentController : ControllerBase
 
     }
 
-    [HttpPost]
-    [Route("create")]
-    public async Task<IResult> CreateInstrumentAsync([FromBody] CreateInstrumentCommand command, ISender sender, CancellationToken cancellationToken)
-    {
-        var response = await sender.Send(command, cancellationToken);
-
-        return response.ToHttpResult();
-    }
-
-
-    [HttpPut]
-    [Route("update")]
-    public async Task<IResult> UpdateInstrumentAsync([FromBody] UpdateInstrumentCommand command, ISender sender, CancellationToken cancellationToken)
-    {
-        var response = await sender.Send(command, cancellationToken);
-
-        return response.ToHttpResult();
-    }
-
-
-    [HttpDelete]
-    [Route("{id:int}")]
-    public async Task<IResult> DeleteInstrumentAsync(int id, ISender sender, CancellationToken cancellationToken)
-    {
-        var response = await sender.Send(new DeleteInstrumentCommand(id), cancellationToken);
-
-        return response.ToHttpResult();
-    }
+    #region Queries
 
     [HttpGet]
     [Route("{id:int}")]
@@ -77,5 +51,55 @@ public class InstrumentController : ControllerBase
         var result = await sender.Send(filterQuery, cancellationToken);
         return result.ToHttpResult();
     }
+
+    #endregion
+
+    #region Commands
+
+    [HttpPost]
+    [Route("create")]
+    public async Task<IResult> CreateInstrumentAsync([FromBody] CreateInstrumentCommand command, ISender sender, CancellationToken cancellationToken)
+    {
+        var response = await sender.Send(command, cancellationToken);
+
+        return response.ToHttpResult();
+    }
+
+
+    [HttpPut]
+    [Route("update")]
+    public async Task<IResult> UpdateInstrumentAsync([FromBody] UpdateInstrumentCommand command, ISender sender, CancellationToken cancellationToken)
+    {
+        var response = await sender.Send(command, cancellationToken);
+
+        return response.ToHttpResult();
+    }
+
+    [HttpDelete]
+    [Route("{id:int}")]
+    public async Task<IResult> DeleteInstrumentAsync(int id, ISender sender, CancellationToken cancellationToken)
+    {
+        var response = await sender.Send(new DeleteInstrumentCommand(id), cancellationToken);
+
+        return response.ToHttpResult();
+    }
+
+    [HttpPost]
+    [Route("deletemany")]
+    public async Task<IResult> DeleteManyInstrumentAsync([FromBody] List<int> instrumentsIds, ISender sender,  CancellationToken cancellationToken)
+    {
+        var response = await sender.Send(new DeleteManyInstrumentCommand(instrumentsIds), cancellationToken);
+        
+        return response.ToHttpResult();
+    }
+
+
+    #endregion
+
+
+
+
+
+    
     
 }

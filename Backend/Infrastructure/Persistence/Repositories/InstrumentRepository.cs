@@ -36,6 +36,22 @@ internal class InstrumentRepository : IInstrumentRepository
         _appDbContext.Instruments.Remove(instrument);
     }
 
+    public async Task DeleteManyAsync(List<int> ids)
+    {
+        var founded = await _appDbContext
+            .Instruments
+            .Where(i => ids.Contains(i.Id))
+            .ToListAsync();
+
+        var foundedHashSet = founded.Select(i => i.Id).ToHashSet();
+        var diff = ids.Where(id => !foundedHashSet.Contains(id)).ToList();
+
+        if (diff.Any())
+            throw new Exception("Some instruments weren't founded");
+
+        _appDbContext.Instruments.RemoveRange(founded);
+    }
+
     public async Task<bool> ExistByIdAsync(int id, CancellationToken cancellationToken = default) =>
         await _appDbContext.Instruments.FindAsync(id) != null;
 
@@ -66,7 +82,9 @@ internal class InstrumentRepository : IInstrumentRepository
 
     public async Task<PagedResult<MusicalInstrument>> SearchByFilterAsync(SearchInstrumentsByFilterQuery filter, CancellationToken cancellationToken = default)
     {
-        IQueryable<MusicalInstrument> query = from instrument in _appDbContext.Instruments.AsNoTracking()
+        IQueryable<MusicalInstrument> query = from instrument in _appDbContext.Instruments
+                                              .Include(i => i.Musician)
+                                              .AsNoTracking()
                                               select instrument;
 
 
