@@ -34,8 +34,7 @@
         <div class="w-full">
           <label for="type" class="text-primary text-sm font-medium">Type</label>
           <div>
-            <select formControlName="type"
-              class="select select-md w-full bg-[rgba(57,57,61,1)] text-secondary py-1.5 px-3 border-2 border-(--color-surface) rounded-2xl
+            <select formArrayName="type" class="select select-md w-full bg-[rgba(57,57,61,1)] text-secondary py-1.5 px-3 border-2 border-(--color-surface) rounded-2xl
               focus-within:outline-none focus:ring-0">
               <option [value]="null"></option>
               @for (item of instrumentTypeOptions; track $index) {

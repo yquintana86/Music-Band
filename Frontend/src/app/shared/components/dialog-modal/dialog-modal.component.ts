@@ -22,7 +22,10 @@ export class DialogModalComponent {
   cancelButtonText = input<string>('Cancel');
   closeButtonText = input<string>('Close');
   showOkButton = input<boolean>(true);
+<<<<<<< HEAD
+=======
   disableOKButton = input<boolean>(false);
+>>>>>>> feature/dev
   showCloseButton = input<boolean>(true);
   showCancelButton = input<boolean>(true);
 

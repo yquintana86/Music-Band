@@ -25,6 +25,18 @@ export class ValidatorsService {
       control.invalid) as boolean;
   }
 
+<<<<<<< HEAD
+  public getRawValidationError(formGroup: FormGroup, field: string): ValidationErrors | null {
+    return !formGroup.contains(field) ? null : (formGroup.get(field)?.errors || null);
+  }
+
+  public getFieldError(formGroup: FormGroup, field: string, fieldNameToShow?: string): string {
+
+    if (!!formGroup.contains(field)) {
+      const errors = formGroup.get(field)?.errors;
+      if (errors){
+        const fieldName = fieldNameToShow ? fieldNameToShow : field;
+=======
   public getRawValidationError(formGroup: FormGroup, controlName: string): ValidationErrors | null {
     return !formGroup.contains(controlName) ? null : (formGroup.get(controlName)?.errors || null);
   }
@@ -35,6 +47,7 @@ export class ValidatorsService {
       const errors = formGroup.get(controlName)?.errors;
       if (errors){
         const fieldName = fieldNameToShow ? fieldNameToShow : controlName;
+>>>>>>> feature/dev
         return this.#getError(errors, fieldName);
       }
     }

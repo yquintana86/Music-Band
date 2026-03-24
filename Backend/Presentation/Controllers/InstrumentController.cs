@@ -6,6 +6,7 @@ using Application.Instrument.Queries.GetInstruments;
 using Application.Instrument.Queries.SearchInstrumentbyId;
 using Application.Instruments.Commands.DeleteManyInstrument;
 using Application.Instruments.Queries.SearchInstrumentsByFilter;
+
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -96,10 +97,12 @@ public class InstrumentController : ControllerBase
 
     #endregion
 
-
-
-
-
-    
+    [HttpPost]
+    [Route("search")]
+    public async Task<IResult> SearchInstrumentsByFilterAsync([FromBody] SearchInstrumentsByFilterQuery filterQuery, ISender sender, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(filterQuery, cancellationToken);
+        return result.ToHttpResult();
+    }
     
 }
