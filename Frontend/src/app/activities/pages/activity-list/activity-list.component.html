@@ -42,83 +42,95 @@
 
   <!-- Update/Create Modal -->
   <dialog-modal #dialogModal [title]="dialogModalTitle()" [showCancelButton]="false"
-    [divContentClasses]="'h-70 bg-surface'" (okButtonEmit)="onDialogModalOk()"
+    [divContentClasses]="'h-80 bg-surface'" (okButtonEmit)="onDialogModalOk()"
     [disableOKButton]="disableDialogModalOkBtn()!">
     <form class="h-full" autocomplete="off" [formGroup]="dialogModalForm" (keydown.enter)="$event.preventDefault()"
       (ngSubmit)="$event.preventDefault()">
-      <div class="h-full flex justify-between items-center py-2 px-4 gap-8 ">
-        <div class="flex flex-col h-full gap-8">
-          <div>
-            <div>
-              <label for="name" class="text-sm font-medium text-primary">Name</label>
+      <div class="tabs tabs-lift h-full">
+        <input type="radio" name="my_tabs_3" class="tab" aria-label="Main" />
+        <div class="tab-content bg-base-100 border-base-300">
+          <div class="h-full flex justify-between items-center py-2 px-4 gap-8 ">
+            <div class="flex flex-col h-full gap-8">
+              <div>
+                <div>
+                  <label for="name" class="text-sm font-medium text-primary">Name</label>
+                </div>
+                <input type="text" id="name"
+                  class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
+                  placeholder="Name" formControlName="name">
+                <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('name')"
+                  [error]="this.getErrorMessage('name')"></span>
+              </div>
+              <div>
+                <div>
+                  <label for="begin" class="text-sm text-surface font-medium">Begin</label>
+                </div>
+                <input type="date" id="begin" formControlName="begin"
+                  class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl">
+                <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('begin', true)"
+                  [error]="this.getErrorMessage('begin',true,'Begin')"></span>
+              </div>
+              <div>
+                <div>
+                  <label for="end" class="text-sm text-surface font-medium">End</label>
+                </div>
+                <input type="date" id="end" formControlName="end"
+                  class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl">
+                <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('end', true)"
+                  [error]="this.getErrorMessage('end',true,'End')"></span>
+              </div>
             </div>
-            <input type="text" id="name"
-              class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
-              placeholder="Name" formControlName="name">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('name')"
-              [error]="this.getErrorMessage('name')"></span>
-          </div>
-          <div>
-            <div>
-              <label for="begin" class="text-sm text-surface font-medium">Begin</label>
+            <div class="flex flex-col gap-4 h-full w-full">
+              <div class="flex items-center gap-20 mb-2">
+                <div>
+                  <div>
+                    <label for="client" class="text-sm font-medium text-primary">Client</label>
+                  </div>
+                  <input type="text" id="client"
+                    class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl w-full"
+                    placeholder="Client" formControlName="client">
+                  <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('client')"
+                    [error]="this.getErrorMessage('client', false, 'Client')"></span>
+                </div>
+                <div>
+                  <div>
+                    <label class="text-sm font-medium text-primary">Is International</label>
+                  </div>
+                  <div
+                    class="flex justify-between items-center w-50 bg-white/10 py-1 px-3 border-2 border-(--color-surface) rounded-2xl">
+                    <div>
+                      <input type="radio" class="radio radio-xs text-secondary text-right "
+                        formControlName="international" [value]="true">
+                      <label class="text-sm text-secondary font-medium ml-2">True</label>
+                    </div>
+                    <div>
+                      <input type="radio" class="radio radio-xs text-secondary text-right"
+                        formControlName="international" [value]="false">
+                      <label class="text-sm text-secondary font-medium ml-2">False</label>
+                    </div>
+                  </div>
+                  <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('international')"
+                    [error]="this.getErrorMessage('international')"></span>
+                </div>
+
+              </div>
+              <div class="h-full w-full">
+                <textarea id="description" placeholder="Enter instrument description..." formControlName="description"
+                  class="bg-white/10 flex-1 h-full w-full text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
+                </textarea>
+              </div>
+
             </div>
-            <input type="date" id="begin" formControlName="begin"
-              class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl">
-            <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('begin', true)"
-              [error]="this.getErrorMessage('begin',true,'Begin')"></span>
-          </div>
-          <div>
-            <div>
-              <label for="end" class="text-sm text-surface font-medium">End</label>
-            </div>
-            <input type="date" id="end" formControlName="end"
-              class="input bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl">
-            <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('end', true)"
-              [error]="this.getErrorMessage('end',true,'End')"></span>
           </div>
         </div>
-        <div class="flex flex-col gap-4 h-full w-full">
-          <div class="flex items-center gap-20 mb-2">
-            <div>
-              <div>
-                <label for="client" class="text-sm font-medium text-primary">Client</label>
-              </div>
-              <input type="text" id="client"
-                class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl w-full"
-                placeholder="Client" formControlName="client">
-              <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('client')"
-                [error]="this.getErrorMessage('client', false, 'Client')"></span>
-            </div>
-            <div>
-              <div>
-                <label class="text-sm font-medium text-primary">Is International</label>
-              </div>
-              <div
-                class="flex justify-between items-center w-50 bg-white/10 py-1 px-3 border-2 border-(--color-surface) rounded-2xl">
-                <div>
-                  <input type="radio" class="radio radio-xs text-secondary text-right " formControlName="international"
-                    [value]="true">
-                  <label class="text-sm text-secondary font-medium ml-2">True</label>
-                </div>
-                <div>
-                  <input type="radio" class="radio radio-xs text-secondary text-right" formControlName="international"
-                    [value]="false">
-                  <label class="text-sm text-secondary font-medium ml-2">False</label>
-                </div>
-              </div>
-              <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidControl('international')"
-                [error]="this.getErrorMessage('international')"></span>
-            </div>
 
-          </div>
-          <div class="h-full w-full">
-            <textarea id="description" placeholder="Enter instrument description..." formControlName="description"
-              class="bg-white/10 flex-1 h-full w-full text-secondary py-1 px-3 border border-(--color-surface) rounded-2xl">
-          </textarea>
-          </div>
-
+        <input type="radio" name="my_tabs_3" class="tab" aria-label="Musicians" checked="checked" />
+        <div class="tab-content bg-base-100 border-base-300 p-6">
+            <!-- Musicians -->
+             <h1>Musicians</h1>
         </div>
       </div>
+
     </form>
   </dialog-modal>
 
@@ -135,8 +147,7 @@
   <!-- Table -->
   <div class="flex-1 min-h-0">
     <table-layout class="h-full" [tableTitle]="'Activity List'" (addButtonClicked)="showDialogModalOnCreateMode()"
-      (deleteAllButtonClicked)="onDeleteAllButtonClicked()"
-      [deleteAllButtonDisabled]="deleteAllButtonDisabled()">
+      (deleteAllButtonClicked)="onDeleteAllButtonClicked()" [deleteAllButtonDisabled]="deleteAllButtonDisabled()">
       <tr table-header>
         <th></th>
         <th class="w-[25%]">Name</th>
@@ -165,12 +176,12 @@
         <td class="text-center">{{ activity.end | date }}</td>
         <th>
           <div class="float-right">
-            <a class="btn btn-link  text-purple-600 hover:scale-125 hover:transition hover:ease-in hover:duration-150" title="Edit"
-              (click)="showDialogModalOnUpdateMode(activity.id)">
+            <a class="btn btn-link  text-purple-600 hover:scale-125 hover:transition hover:ease-in hover:duration-150"
+              title="Edit" (click)="showDialogModalOnUpdateMode(activity.id)">
               <i class="fa-solid fa-pen-to-square"></i>
             </a>
-            <a class="btn btn-link text-red-800 hover:scale-125 hover:transition hover:ease-in hover:duration-150" title="Delete"
-              (click)="showPromptModalOnDeleteMode(activity.id)">
+            <a class="btn btn-link text-red-800 hover:scale-125 hover:transition hover:ease-in hover:duration-150"
+              title="Delete" (click)="showPromptModalOnDeleteMode(activity.id)">
               <i class="fa-solid fa-trash-can"></i>
             </a>
           </div>
