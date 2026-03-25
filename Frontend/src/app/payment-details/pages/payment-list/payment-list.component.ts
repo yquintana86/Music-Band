@@ -239,8 +239,6 @@ export default class PaymentListComponent {
     this.promptModal()?.showModal();
   }
 
-
-
   public deleteSelectedPaymentDetails() {
     this._paymentDetailService.deleteManyPaymentDetails(this.paymentIdsSelectedForDelete())
       .subscribe({
@@ -267,6 +265,9 @@ export default class PaymentListComponent {
     this._paymentDetailService.deletePaymentDetail(id)
       .subscribe({
         next: () => {
+          if(this.paymentIdsSelectedForDelete()?.includes(this.paymentDetailIdToDelete() ?? 0)) {
+            this.paymentIdsSelectedForDelete.update(current => current.filter(id => id !== this.paymentDetailIdToDelete()));
+          }
           this._toastService.success('Payment detail deleted successfully', 'Success');
           this._paymentDetailsFilterQuery.set(this.getPaymentDetailFilter());
           this.paymentDetailIdToDelete.set(null);

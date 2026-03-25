@@ -279,6 +279,9 @@ export default class InstrumentListComponent {
     this._instrumentService.deleteInstrument(instrumentId)
       .subscribe({
         next: () => {
+          if(this.selectedIdsSelectedForDelete()?.includes(this._instrumentIdToDelete() ?? 0)) {
+            this.selectedIdsSelectedForDelete.update(current => current.filter(id => id !== this._instrumentIdToDelete()));
+          }
           this._instrumentIdToDelete.set(null);
           this.promptDeleteModalTitle.set('Delete Instrument');
           this._toastService.success('Instrument deleted successfully', 'Success');

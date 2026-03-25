@@ -5,101 +5,103 @@
     <filter-layout filterTitle="Musician Filter" [formGroup]="this.musicianFilterformGroup" (reset)="onReset()"
       (search)="onSearch()">
       <div class="flex flex-col">
-        <div class="flex justify-between items-center py-2 px-4 ">
-          <div>
+        <div class="flex justify-between items-center gap-4 py-2 px-4 w-full">
+          <div class="flex-1">
             <div>
               <label for="firstName" class="text-sm font-medium text-primary">First Name</label>
             </div>
-            <input type="text"
-              class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
-              placeholder="First Name" formControlName="firstName">
+            <input type="text" class="input input-md w-full bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl
+              focus-within:outline-none focus:ring-0" placeholder="First Name" formControlName="firstName">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('firstName', true)"
               [error]="this.getErrorMessage('firstName',true ,'First Name')"></span>
           </div>
-          <div>
+          <div class="flex-2">
             <div>
               <label for="lastName" class="text-sm font-medium text-primary">Last Name</label>
             </div>
-            <input type="text"
-              class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
-              placeholder="Last Name" formControlName="lastName">
+            <input type="text" class="input input-md w-full bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl
+              focus-within:outline-none focus:ring-0" placeholder="Last Name" formControlName="lastName">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('lastName', true)"
               [error]="this.getErrorMessage('lastName', true, 'Last Name')"></span>
           </div>
-          <div>
-            <div>
-              <label for="fromAge" class="text-sm font-medium text-primary">From Age</label>
-            </div>
-            <input type="number" class="bg-white/10 text-secondary text-right py-1 px-3 border-2 border-(--color-surface) rounded-2xl
-              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="From Age"
-              formControlName="fromAge">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromAge', true)"
-              [error]="this.getErrorMessage('fromAge', true, 'From Age')"></span>
-          </div>
-
-          <div>
-            <div>
-              <label for="toAge" class="text-sm font-medium text-primary">To Age</label>
-            </div>
-            <input type="number" class="bg-white/10 text-right text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl
-              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="To Age"
-              formControlName="toAge">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toAge', true)"
-              [error]="this.getErrorMessage('toAge', true, 'To Age')"></span>
-          </div>
-        </div>
-        <div class="flex justify-between items-center py-2 px-4">
-          <div>
-            <div>
-              <label for="fromExperience" class="text-sm font-medium text-primary">From Experience</label>
-            </div>
-            <input type="number" class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
-              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="From Experience"
-              formControlName="fromExperience">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromExperience', true)"
-              [error]="this.getErrorMessage('fromExperience',true, 'From Experience')"></span>
-          </div>
-          <div>
-            <div>
-              <label for="toExperience" class="text-sm font-medium text-primary">To Experience</label>
-            </div>
-            <input type="number" class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
-              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="To Experience"
-              formControlName="toExperience">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toExperience', true)"
-              [error]="this.getErrorMessage('toExperience', true, 'To Experience')"></span>
-          </div>
-          <div>
-            <div>
-              <label for="fromBasicSalary" class="text-sm font-medium text-primary">From Basic Salary</label>
-            </div>
-            <input type="number" class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
-              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="From Basic Salary"
-              formControlName="fromBasicSalary">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromBasicSalary', true)"
-              [error]="this.getErrorMessage('fromBasicSalary', true, 'From BasicSalary')"></span>
-          </div>
-          <div>
-            <div>
-              <label for="toBasicSalary" class="text-sm font-medium text-primary">To Basic Salary</label>
-            </div>
-            <input type="number" class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
-              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="To Basic Salary"
-              formControlName="toBasicSalary">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toBasicSalary', true)"
-              [error]="this.getErrorMessage('toBasicSalary', true, 'To BasicSalary')"></span>
-          </div>
-        </div>
-        <div class="flex justify-start items-center py-2 px-4">
-          <div>
+          <div class="flex-1">
             <div>
               <label for="instrument" class="text-sm font-medium text-primary">Instrument</label>
             </div>
-            <input type="number" class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
-              placeholder-shown:text-left not-placeholder-shown:text-right" placeholder="Instrument"
-              formControlName="instrumentId">
+            <input-search-selector [initialDto]="initialDto()" [callBackShowFieldValueFn]="callBackShowFieldValueFn"
+              [callBackGetFilterFn]="callBackGetFilterFn" [searchPostUri]="searchPostUri"
+              (elementSelected)="setFilterInstrumentId($event)" (elementCleared)="setFilterInstrumentId(null)">
+            </input-search-selector>
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('instrumentId', true)"
               [error]="this.getErrorMessage('instrumentId', true, 'Instrument Id')"></span>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between items-center px-4 py-6 gap-4 xl:flex-row">
+          <div class="flex flex-1 justify-start items-center gap-1">
+            <div>
+              <div>
+                <label for="fromExperience" class="text-sm font-medium text-primary">From Experience</label>
+              </div>
+              <input type="number" class="input input-md bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right focus-within:outline-none focus:ring-0"
+                placeholder="From Experience" formControlName="fromExperience">
+              <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromExperience', true)"
+                [error]="this.getErrorMessage('fromExperience',true, 'From Experience')"></span>
+            </div>
+            <div>
+              <div>
+                <label for="toExperience" class="text-sm font-medium text-primary">To Experience</label>
+              </div>
+              <input type="number" class="input input-md bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right focus-within:outline-none focus:ring-0"
+                placeholder="To Experience" formControlName="toExperience">
+              <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toExperience', true)"
+                [error]="this.getErrorMessage('toExperience', true, 'To Experience')"></span>
+            </div>
+          </div>
+          <div class="flex flex-2 justify-center items-center gap-1">
+            <div class="flex-1">
+              <div>
+                <label for="fromBasicSalary" class="text-sm font-medium text-primary">From Basic Salary</label>
+              </div>
+              <input type="number" class=" input input-md bg-white/10 text-secondary text-right border-2 border-(--color-surface) rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right focus-within:outline-none focus:ring-0"
+                placeholder="From Basic Salary" formControlName="fromBasicSalary">
+              <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromBasicSalary', true)"
+                [error]="this.getErrorMessage('fromBasicSalary', true, 'From BasicSalary')"></span>
+            </div>
+            <div class="flex-1">
+              <div>
+                <label for="toBasicSalary" class="text-sm font-medium text-primary">To Basic Salary</label>
+              </div>
+              <input type="number" class="input input-md w-full bg-white/10 text-secondary text-right border-2 border-(--color-surface) rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right focus-within:outline-none focus:ring-0"
+                placeholder="To Basic Salary" formControlName="toBasicSalary">
+              <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toBasicSalary', true)"
+                [error]="this.getErrorMessage('toBasicSalary', true, 'To BasicSalary')"></span>
+            </div>
+          </div>
+          <div class="flex flex-1 justify-start items-center gap-1">
+            <div>
+              <div>
+                <label for="fromAge" class="text-sm font-medium text-primary">From Age</label>
+              </div>
+              <input type="number" class="input input-md bg-white/10 text-secondary text-right py-1 px-3 border-2 border-(--color-surface) rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right focus-within:outline-none focus:ring-0"
+                placeholder="From Age" formControlName="fromAge">
+              <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('fromAge', true)"
+                [error]="this.getErrorMessage('fromAge', true, 'From Age')"></span>
+            </div>
+            <div>
+              <div>
+                <label for="toAge" class="text-sm font-medium text-primary">To Age</label>
+              </div>
+              <input type="number" class="input input-md bg-white/10 text-right text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right focus-within:outline-none focus:ring-0"
+                placeholder="To Age" formControlName="toAge">
+              <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('toAge', true)"
+                [error]="this.getErrorMessage('toAge', true, 'To Age')"></span>
+            </div>
           </div>
         </div>
       </div>
@@ -108,7 +110,8 @@
 
   <!-- Update/Create Modal -->
   <dialog-modal #dialogModalComponent [title]="musicianDialogModalTitle" [showCancelButton]="false"
-    [divContentClasses]="'h-50 bg-surface'" (okButtonEmit)="onAcceptModalButtonClicked()" [disableOKButton]="disableDialogModalOkBtn()!">
+    [divContentClasses]="'h-50 bg-surface'" (okButtonEmit)="onAcceptModalButtonClicked()"
+    [disableOKButton]="disableDialogModalOkBtn()!">
     <form autocomplete="off" [formGroup]="musicianDialogModalForm" (keydown.enter)="$event.preventDefault()"
       (ngSubmit)="$event.preventDefault()">
       <div class="flex flex-col gap-4">
@@ -117,21 +120,17 @@
             <div>
               <label for="firstName" class="text-sm font-medium text-primary">First Name</label>
             </div>
-            <input type="text"
-              class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
-              placeholder="First Name" formControlName="firstName">
-            <span class="block text-xs"
-            fielderror
-            [isInvalidField]="this.isInvalidField('firstName')"
-            [error]="this.getErrorMessage('firstName', false, 'First Name')"></span>
+            <input type="text" class="input input-md bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl
+              focus-within:outline-none focus:ring-0" placeholder="First Name" formControlName="firstName">
+            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('firstName')"
+              [error]="this.getErrorMessage('firstName', false, 'First Name')"></span>
           </div>
           <div class="flex-3/4">
             <div>
               <label for="lastName" class="text-sm font-medium text-primary">Last Name</label>
             </div>
-            <input type="text" id="lastName"
-              class="bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl w-full"
-              placeholder="Last Name" formControlName="lastName">
+            <input type="text" id="lastName" class="input input-md bg-white/10 text-secondary py-1 px-3 border-2 border-(--color-surface) rounded-2xl w-full
+              focus-within:outline-none focus:ring-0" placeholder="Last Name" formControlName="lastName">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('lastName')"
               [error]="this.getErrorMessage('lastName', false, 'Last Name')"></span>
           </div>
@@ -142,8 +141,8 @@
             <div>
               <label for="age" class="text-sm font-medium text-primary">Age</label>
             </div>
-            <input type="number" id="age"
-              class="bg-white/10 text-secondary text-right py-1 px-3 border-2 border-(--color-surface) rounded-2xl"
+            <input type="number" id="age" class="input input-md bg-white/10 text-secondary text-right py-1 px-3 border-2 border-(--color-surface) rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right focus-within:outline-none focus:ring-0"
               placeholder="Age" formControlName="age">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('age')"
               [error]="this.getErrorMessage('age')"></span>
@@ -152,8 +151,8 @@
             <div>
               <label for="experience" class="text-sm font-medium text-primary">Experience</label>
             </div>
-            <input type="number" id="experience"
-              class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl"
+            <input type="number" id="experience" class=" input input-md bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right focus-within:outline-none focus:ring-0"
               placeholder="Experience" formControlName="experience">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('experience')"
               [error]="this.getErrorMessage('experience')"></span>
@@ -163,21 +162,11 @@
             <div>
               <label for="basicSalary" class="text-sm font-medium text-primary">Basic Salary</label>
             </div>
-            <input type="number" id="basicSalary"
-              class=" bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl "
+            <input type="number" id="basicSalary" class=" input input-md bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl
+              placeholder-shown:text-left not-placeholder-shown:text-right focus-within:outline-none focus:ring-0"
               placeholder="Basic Salary" formControlName="basicSalary">
             <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('basicSalary')"
               [error]="this.getErrorMessage('basicSalary', false, 'Basic Salary')"></span>
-          </div>
-          <div>
-            <div>
-              <label for="instrumentId" class="text-sm font-medium text-primary">Instrument</label>
-            </div>
-            <input type="number" id="instrumentId"
-              class="bg-white/10 text-secondary text-right border-2 border-(--color-surface) py-1 px-4 rounded-2xl"
-              placeholder="Instrument" formControlName="instrumentId">
-            <span class="block text-xs" fielderror [isInvalidField]="this.isInvalidField('instrumentId')"
-              [error]="this.getErrorMessage('instrumentId', false, 'Instrument Id')"></span>
           </div>
         </div>
 
@@ -186,37 +175,34 @@
   </dialog-modal>
 
   <!-- Prompt Modal -->
-  <dialog-modal #promptModalComponent
-    [divModalBoxClasses]="'modal-box max-w-4xs p-0 border-2 border-(--color-primary)'" [title]="'Delete Musician'"
-    [showCloseButton]="false" [okButtonText]="'Delete'" [divContentClasses]="'h-15 bg-surface'"
-    (okButtonEmit)="onAcceptPromptButtonClicked()" (cancelButtonEmit)="onCancelPromptButtonClicked()">
+  <dialog-modal #promptModalComponent [divModalBoxClasses]="'modal-box max-w-4xs p-0 border-2 border-(--color-primary)'"
+    [title]="'Delete Musician'" [showCloseButton]="false" [okButtonText]="'Delete'"
+    [divContentClasses]="'h-15 bg-surface'" (okButtonEmit)="onAcceptPromptButtonClicked()"
+    (cancelButtonEmit)="onCancelPromptButtonClicked()">
     <h3 class="font-semibold text-lg text-red-800 p-4">
-      Are you sure to delete?
+      {{ promptModalBodyText() }}
     </h3>
   </dialog-modal>
 
   <!-- Table -->
   <div class="flex-1 min-h-0">
-    <table-layout class="h-full" [tableTitle]="'Musician List'"
-      (addButtonClicked)="showModalOnCreateMode()" (deleteAllButtonClicked)="onDeleteAllButtonClicked()">
+    <table-layout class="h-full" [tableTitle]="'Musician List'" (addButtonClicked)="showModalOnCreateMode()"
+      (deleteAllButtonClicked)="onDeleteAllButtonClicked()"
+      [deleteAllButtonDisabled]="musicianSelectedForDeleteEmpty()">
       <tr table-header>
-        <th>
-          <label>
-            <input type="checkbox" class="checkbox" />
-          </label>
-        </th>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Experience</th>
-        <th>Basic Salary</th>
-        <th class="w-[15%]">Options</th>
+        <th class="w-[5%]"></th>
+        <th class="w-[35%]">Name</th>
+        <th class="text-center">Age</th>
+        <th class="text-center">Experience</th>
+        <th class="w-[20%] text-center">Basic Salary</th>
+        <th class="w-[10%] text-center">Options</th>
       </tr>
 
       @for (musician of musicians(); track musician.id) {
       <tr table-body>
         <th>
           <label>
-            <input type="checkbox" class="checkbox" />
+            <input type="checkbox" class="checkbox" (change)="updateMusicianSelectedForDelete(musician.id, $event)" />
           </label>
         </th>
         <td>
@@ -232,17 +218,17 @@
             </div>
           </div>
         </td>
-        <td>{{ musician.age }} </td>
-        <td>{{ musician.experience }}</td>
-        <td>{{ musician.basicSalary | currency : 'USD'}}</td>
+        <td class="text-center">{{ musician.age }} </td>
+        <td class="text-center">{{ musician.experience }}</td>
+        <td class="text-center">{{ musician.basicSalary | currency : 'USD'}}</td>
         <th>
-          <div>
-            <a class="btn btn-link  text-purple-600 hover:text-lg" title="Edit"
-              (click)="showModalOnUpdateMode(musician.id)">
+          <div class="flex justify-end gap-2">
+            <a class="btn btn-link  text-purple-600 hover:scale-125 hover:transition hover:ease-in hover:duration-150"
+              title="Edit" (click)="showModalOnUpdateMode(musician.id)">
               <i class="fa-solid fa-pen-to-square"></i>
             </a>
-            <a class="btn btn-link hover:text-lg text-red-800" title="Delete"
-              (click)="showDeletePromptModal(musician.id, musician.firstName + ' ' + musician.lastName)">
+            <a class="btn btn-link text-red-800 hover:scale-125 hover:transition hover:ease-in hover:duration-150"
+              title="Delete" (click)="showDeletePromptModal(musician.id)">
               <i class="fa-solid fa-trash-can"></i>
             </a>
           </div>

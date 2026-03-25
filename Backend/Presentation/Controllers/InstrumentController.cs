@@ -96,13 +96,4 @@ public class InstrumentController : ControllerBase
 
 
     #endregion
-
-    [HttpPost]
-    [Route("search")]
-    public async Task<IResult> SearchInstrumentsByFilterAsync([FromBody] SearchInstrumentsByFilterQuery filterQuery, ISender sender, CancellationToken cancellationToken)
-    {
-        var result = await sender.Send(filterQuery, cancellationToken);
-        return result.ToHttpResult();
-    }
-    
 }

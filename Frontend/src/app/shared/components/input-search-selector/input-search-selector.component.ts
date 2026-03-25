@@ -28,18 +28,7 @@ export class InputSearchSelectorComponent {
   public elementSelected = output<number>();
   public elementCleared = output<void>();
 
-
-   public idSelected: WritableSignal<number | null> = signal(null);
-  // public idSelected: WritableSignal<number | null> = linkedSignal(() => {
-  //   const dto = this.initialDto();
-
-  //   if(!dto){
-  //     (this.inputSearch()?.nativeElement as HTMLInputElement).value = '';
-  //     return null;
-  //   }
-  //   (this.inputSearch()?.nativeElement as HTMLInputElement).value = dto.text;
-  //   return dto.id;
-  // });
+  public idSelected: WritableSignal<number | null> = signal(null);
 
   public itemSelected: WritableSignal<SelectItem | null> = linkedSignal(() => {
     const dto = this.initialDto();
@@ -103,7 +92,8 @@ export class InputSearchSelectorComponent {
     this.dropDownHidden.set(true);
   }
 
-  public selectItem(){
+  public selectItem(event: Event){
+    event?.preventDefault();
     const item = this.foundedItems().find(i => i.id == this.idSelected());
     if(item){
       (this.inputSearch()?.nativeElement as HTMLInputElement).value = item.text;

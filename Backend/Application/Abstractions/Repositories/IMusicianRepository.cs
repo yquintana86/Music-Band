@@ -14,6 +14,7 @@ public interface IMusicianRepository
     Task<Musician?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
     void Add(Musician musician);
     Task DeleteAsync(int id);
+    Task DeleteManyAsync(List<int> ids, CancellationToken cancellationToken);
     Task<IEnumerable<Musician>> GetMostUsedInstrumentAsync(string instrumentName, int? instrumentQtyToSearch, CancellationToken cancellationToken);
     Task<decimal> GetMusicianAverageByPlayedInstrumentsTypeAsync(IEnumerable<int> instrumentIds, CancellationToken cancellationToken);
     Task<IEnumerable<Musician>> SearchNoInternationalMusicianOlderThanAge(int age, CancellationToken cancellationToken);

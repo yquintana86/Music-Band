@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation.Extension;
 using Application.Musicians.Query.GetMusicianAverageByPlayedInstrumentsType;
 using Application.Musicians.Query.SearchDomesticSeniorMusicians;
+using Application.Musicians.Command.DeleteManyMusician;
 
 namespace Presentation.Controllers;
 
@@ -37,14 +38,14 @@ public class MusicianController : ControllerBase
         return response.ToHttpResult();
     }
 
-    //[HttpPost]
-    //[Route("test")]
-    //public async Task<IResult> Test(string name, int nameid, [FromBody] CreateMusicianCommand command, ISender sender, CancellationToken cancellationToken)
-    //{
-    //    var response = await sender.Send(command, cancellationToken);
+    [HttpPost]
+    [Route("deletemany")]
+    public async Task<IResult> DeleteManyMusicianAsync([FromBody] List<int> ids, ISender sender, CancellationToken cancellationToken)
+    {
+        var response = await sender.Send(new DeleteManyMusicianCommand(ids), cancellationToken);
 
-    //    return response.ToHttpResult();
-    //}
+        return response.ToHttpResult();
+    }
 
 
     [HttpPut]
