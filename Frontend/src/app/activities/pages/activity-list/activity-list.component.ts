@@ -15,12 +15,13 @@ import { TableComponent } from "../../../shared/components/table/table.component
 import { DatePipe } from '@angular/common';
 import { ItemsPerPageComponent } from "../../../shared/components/items-per-page/items-per-page.component";
 import { PagerComponent } from "../../../shared/components/pager/pager.component";
+import { MultiSelectItemsComponent } from "../../../shared/components/multi-select-items/multi-select-items.component";
 
 
 
 @Component({
   selector: 'app-activity-list',
-  imports: [ReactiveFormsModule, FilterLayoutComponent, DialogModalComponent, FieldErrorDirective, TableComponent, DatePipe, ItemsPerPageComponent, PagerComponent],
+  imports: [ReactiveFormsModule, FilterLayoutComponent, DialogModalComponent, FieldErrorDirective, TableComponent, DatePipe, ItemsPerPageComponent, PagerComponent, MultiSelectItemsComponent],
   templateUrl: './activity-list.component.html',
   styleUrl: './activity-list.component.css',
 })
