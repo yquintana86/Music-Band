@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Shared.Common;
 using SharedLib.Models.Common;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 
 namespace Infrastructure.Persistence.Repositories;
 
@@ -29,6 +30,22 @@ internal class MusicianRepository : IMusicianRepository
         ArgumentNullException.ThrowIfNull(musician);
 
         _appDbContext.Musicians.Remove(musician);
+    }
+
+    public async Task DeleteManyAsync(List<int> ids, CancellationToken cancellation)
+    {
+        var founded = await _appDbContext.Musicians
+                                   .Where(m => ids.Contains(m.Id))
+                                   .ToListAsync();
+
+        var hash = founded.Select(f => f.Id).ToHashSet();
+
+        var notFounded = ids.Where(id => !hash.Contains(id)).ToList();
+
+        if (notFounded.Any())
+            throw new Exception("Some musician weren't founded");
+
+        _appDbContext.Musicians.RemoveRange(founded);
     }
 
     public async Task<IEnumerable<Musician>> GetAllAsync(Expression<Func<Musician, bool>> filter, CancellationToken cancellationToken = default) =>

@@ -121,6 +121,16 @@ public deleteMusician(id: number): Observable<boolean>{
   )
 }
 
+public deleteManyMusician(ids: number[]): Observable<boolean>{
+  const commandUri = `${this.baseApiUrl}/deletemany`;
+
+  return this.#httpclient.post<APIOperationResultBase>(commandUri, ids)
+  .pipe(
+    map((response) => response.isSuccess),
+    catchError((err) => throwError(() => err))
+  )
+}
+
 //#endregion
 }
 

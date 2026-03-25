@@ -223,6 +223,9 @@ export default class ActivityListComponent {
     this._activityService.deleteActivity(id)
       .subscribe({
         next: () => {
+          if(this.activitiesIdsSelectedForDelete()?.includes(this.activityIdToDelete() ?? 0)) {
+            this.activitiesIdsSelectedForDelete.update(current => current.filter(id => id !== this.activityIdToDelete()));
+          }
           this._toastService.success('Activity deleted successfully', 'Success');
           this._activityFilterQuery.set(this.getActivityFilter());
           this.activityIdToDelete.set(null);

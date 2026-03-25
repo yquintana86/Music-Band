@@ -16,18 +16,24 @@ import { map, startWith, tap } from 'rxjs';
 import { ItemsPerPageComponent } from "../../../shared/components/items-per-page/items-per-page.component";
 import { PagerComponent } from "../../../shared/components/pager/pager.component";
 import { toSignal } from '@angular/core/rxjs-interop';
+import { IntrumentService } from '../../../instrument/services/intrument.service';
+import { DtoWithId, SelectItem } from '../../../shared/interfaces';
+import { InstrumentResponse } from '../../../instrument/interfaces';
+import { environment } from '../../../../environments/environment.development';
+import { InputSearchSelectorComponent } from "../../../shared/components/input-search-selector/input-search-selector.component";
 
 @Component({
   selector: 'app-musician-list',
-  imports: [FilterLayoutComponent, TableComponent, ReactiveFormsModule, FieldErrorDirective, CurrencyPipe, DialogModalComponent, ItemsPerPageComponent, PagerComponent],
+  imports: [FilterLayoutComponent, TableComponent, ReactiveFormsModule, FieldErrorDirective, CurrencyPipe, DialogModalComponent, ItemsPerPageComponent, PagerComponent, InputSearchSelectorComponent],
   templateUrl: './musician-list.component.html',
   styleUrl: './musician-list.component.css',
 })
-export default class MusicianList {
+export default class MusicianList  {
 
   //#region Private Properties
 
   private readonly _musicianService = inject(MusicianService);
+  private readonly _instrumentService = inject(IntrumentService);
   private readonly _fb = inject(FormBuilder);
   private readonly _validatorService = inject(ValidatorsService);
   private readonly _toastService = inject(ToastrService);
@@ -36,6 +42,20 @@ export default class MusicianList {
   //#endregion
 
   //#region Public Properties
+
+  public initialDto = signal<SelectItem | null>(null);
+    public callBackShowFieldValueFn = (item: DtoWithId) => ({
+      id: item.id,
+      text: (item as InstrumentResponse).name,
+    } as SelectItem);
+
+    public searchPostUri = `${environment.API_BASE_URL}/api/instrument/search`;
+    public callBackGetFilterFn = (query: string) => ({
+      page: 1,
+      pageSize: 10,
+      name: query,
+    }) as SearchMusicianByFilterQuery;
+
   public dialogModalComponent = viewChild<DialogModalComponent>('dialogModalComponent');
   public promptModalComponent = viewChild<DialogModalComponent>('promptModalComponent');
   public isLoading: WritableSignal<boolean> = signal(false);
@@ -75,8 +95,7 @@ export default class MusicianList {
     lastName: ['', [Validators.required, Validators.maxLength(50)]],
     age: [0, [Validators.required, Validators.min(0), Validators.max(80)]],
     experience: [0, [Validators.required, Validators.min(0), Validators.max(50)]],
-    basicSalary: [0, [Validators.required, Validators.min(0), Validators.max(100000)]],
-    instrumentId: [0, [Validators.required, Validators.min(0)]],
+    basicSalary: [0, [Validators.required, Validators.min(0), Validators.max(100000)]]
   });
 
   public readonly disableDialogModalOkBtn = toSignal(
@@ -89,9 +108,9 @@ export default class MusicianList {
 
   searchMusicianQuery: WritableSignal<SearchMusicianByFilterQuery> = signal<SearchMusicianByFilterQuery>(
     {
-       page: 1,
-       pageSize: 20,
-       requestCount: true
+      page: 1,
+      pageSize: 20,
+      requestCount: true
     }
   );
 
@@ -100,11 +119,20 @@ export default class MusicianList {
     this.doMusicianSearchByQuery(musicianQuery);
   })
 
+  public musicianSelectedForDelete: WritableSignal<number[]> = signal([]); // musicianSelectedForDelete
+  public musicianSelectedForDeleteEmpty = computed(() => !this.musicianSelectedForDelete()?.length);
+  public musicianSingleDeleteMode = signal(false);
+  public promptModalBodyText = signal('Are you sure to delete?');
+
+  //#endregion
+
+
+
+
   public get musicianDialogModalTitle() {
     return !this.musicianFilterformGroup.get('id')?.value ? 'Add Musician' : 'Update Musician';
   }
 
-  //#endregion
 
   //#region Public Methods
   onSearch() {
@@ -116,6 +144,10 @@ export default class MusicianList {
       this.musicianFilterformGroup.reset();
       this.searchMusicianQuery.set(this.searchMusicianByFilterQuery);
     }
+  }
+
+  public setFilterInstrumentId(id: number | null) {
+    this.musicianFilterformGroup.get('instrumentId')?.setValue(id);
   }
 
   public isInvalidField(controlName: string, isFilterFormGroup: boolean = false): boolean {
@@ -135,22 +167,55 @@ export default class MusicianList {
   }
 
   onAcceptPromptButtonClicked() {
-    this.doDeleteMusician()
-    .pipe(
-      // tap(() => this.musicianToDeleteId.set(null)),
-      tap(() => this.promptModalComponent()?.closeModal())
-    ).subscribe({
-      next:() => {
-          this._toastService.success('Musician deleted successfully', 'Success');
-          this.searchMusicianQuery.set(this.searchMusicianByFilterQuery);
-      },
-      error: (error: any) => {
-        this._toastService.error(ErrorUtilitiesClass.getErrorMessage(error), 'Error');
-      }
-    });
+
+    if (this.musicianSingleDeleteMode()) {
+      this.deleteSingleMusician();
+      return;
+    }
+    this.deleteManyMusician();
   }
 
-  onCancelPromptButtonClicked(){
+  public deleteManyMusician() {
+    return this._musicianService.deleteManyMusician(this.musicianSelectedForDelete())
+      .subscribe({
+        next: () => {
+          this._toastService.success('Musician deleted successfully', 'Success');
+          this.musicianSelectedForDelete.set([]);
+          this.searchMusicianQuery.set(this.searchMusicianByFilterQuery);
+          this.promptModalComponent()?.closeModal();
+        },
+        error: (error: any) => {
+          this._toastService.error(ErrorUtilitiesClass.getErrorMessage(error), 'Error');
+        }
+      })
+  }
+
+  public deleteSingleMusician() {
+    if(this.musicianToDeleteId() === null) {
+      this._toastService.error('Invalid Musician Id');
+      return;
+    }
+
+    this._musicianService.deleteMusician(this.musicianToDeleteId() ?? 0)
+      .pipe(
+        tap(() => this.promptModalComponent()?.closeModal())
+      ).subscribe({
+        next: () => {
+          if(this.musicianSelectedForDelete()?.includes(this.musicianToDeleteId() ?? 0)) {
+            this.musicianSelectedForDelete.update(current => current.filter(id => id !== this.musicianToDeleteId()));
+          }
+          this._toastService.success('Musician deleted successfully', 'Success');
+          this.searchMusicianQuery.set(this.searchMusicianByFilterQuery);
+          this.musicianToDeleteId.set(null);
+          this.promptModalComponent()?.closeModal();
+        },
+        error: (error: any) => {
+          this._toastService.error(ErrorUtilitiesClass.getErrorMessage(error), 'Error');
+        }
+      });
+  }
+
+  onCancelPromptButtonClicked() {
     this.musicianToDeleteId.set(null);
     this.promptModalComponent()?.closeModal();
   }
@@ -175,6 +240,7 @@ export default class MusicianList {
       next: () => {
         this._toastService.success(message, 'Success');
         this.dialogModalComponent()?.closeModal();
+        this.searchMusicianQuery.set(this.searchMusicianByFilterQuery);
         this.isLoading.set(false);
       },
       error: (error: any) => {
@@ -186,22 +252,38 @@ export default class MusicianList {
   }
 
   onDeleteAllButtonClicked() {
-
+    if (!this.musicianSelectedForDeleteEmpty()) {
+      this.promptModalBodyText.set('Are you sure to delete the selected musicians?');
+      this.musicianSingleDeleteMode.set(false);
+      this.promptModalComponent()?.showModal();
+    }
   }
 
-  showDeletePromptModal(musicianId: number, musicianName: string) {
-    if(!musicianId)
-    {
+  public updateMusicianSelectedForDelete(musicianId: number, event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (musicianId && target) {
+      if (target.checked) {
+        this.musicianSelectedForDelete.update(current => [...current, musicianId]);
+        return;
+      }
+      this.musicianSelectedForDelete.update(current => current.filter(mid => mid !== musicianId));
+    }
+  }
+
+
+  showDeletePromptModal(musicianId: number) {
+    if (!musicianId) {
       this._toastService.error('Invalid Musician Id');
       return;
     }
     const musician = this.musicianPagedResult().results.find(m => m.id === musicianId);
-    if(!musician)
-    {
+    if (!musician) {
       this._toastService.error('Musician not found');
       return;
     }
     this.musicianToDeleteId.set(musician.id);
+    this.musicianSingleDeleteMode.set(true);
+    this.promptModalBodyText.set(`Are you sure to delete the musician: ${musician.firstName + ' ' + musician.lastName} ?`);
     this.promptModalComponent()?.showModal();
   }
 
@@ -279,8 +361,5 @@ export default class MusicianList {
     return this._musicianService.updateMusician(musician);
   }
 
-  private doDeleteMusician() {
-    return this._musicianService.deleteMusician(this.musicianToDeleteId() ?? 0);
-  }
   //#endregion
 }
