@@ -9,6 +9,7 @@ public sealed class Activity
     public bool International { get; set; }
     public DateTime? Begin { get; set; }
     public DateTime? End { get; set; }
+    public double Price { get; set; }
 
     #region Navigation Properties
     public ICollection<Musician> Musicians { get; set; } = new List<Musician>();

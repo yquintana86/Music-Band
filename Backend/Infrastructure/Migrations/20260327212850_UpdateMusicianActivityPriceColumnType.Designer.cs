@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251204020139_Add_PaymentDetails1")]
-    partial class Add_PaymentDetails1
+    [Migration("20260327212850_UpdateMusicianActivityPriceColumnType")]
+    partial class UpdateMusicianActivityPriceColumnType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,13 +47,14 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("International")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(8,2)");
 
                     b.HasKey("Id");
 
@@ -104,7 +105,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("BasicSalary")
-                        .HasColumnType("decimal(7,2)");
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<int>("Experience")
                         .HasColumnType("int");
@@ -141,7 +142,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("SalaryByActivity")
-                        .HasColumnType("decimal(6,2)");
+                        .HasColumnType("decimal(8,2)");
 
                     b.HasKey("ActivityId", "MusicianId");
 
@@ -182,7 +183,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("RangePlusId");
 
-                    b.ToTable("MusicianPaymentDetailsRepository");
+                    b.ToTable("MusicianPaymentDetails");
                 });
 
             modelBuilder.Entity("Domain.Entities.Permission", b =>
@@ -219,7 +220,7 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.RangePlusRepository", b =>
+            modelBuilder.Entity("Domain.Entities.RangePlus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -238,7 +239,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RangePlusRepository", t =>
+                    b.ToTable("RangePlus", t =>
                         {
                             t.HasCheckConstraint("CHK_MinMax_Experience", "([MinExperience] >= 0 AND [MinExperience] < [MaxExperience])");
                         });
@@ -437,20 +438,20 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.MusicianPaymentDetail", b =>
                 {
                     b.HasOne("Domain.Entities.Musician", "Musician")
-                        .WithMany("MusicianPaymentDetailsRepository")
+                        .WithMany("MusicianPaymentDetails")
                         .HasForeignKey("MusicianId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.RangePlusRepository", "RangePlusRepository")
-                        .WithMany("MusicianPaymentDetailsRepository")
+                    b.HasOne("Domain.Entities.RangePlus", "RangePlus")
+                        .WithMany("MusicianPaymentDetails")
                         .HasForeignKey("RangePlusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Musician");
 
-                    b.Navigation("RangePlusRepository");
+                    b.Navigation("RangePlus");
                 });
 
             modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
@@ -505,12 +506,12 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("MusicianActivities");
 
-                    b.Navigation("MusicianPaymentDetailsRepository");
+                    b.Navigation("MusicianPaymentDetails");
                 });
 
-            modelBuilder.Entity("Domain.Entities.RangePlusRepository", b =>
+            modelBuilder.Entity("Domain.Entities.RangePlus", b =>
                 {
-                    b.Navigation("MusicianPaymentDetailsRepository");
+                    b.Navigation("MusicianPaymentDetails");
                 });
 #pragma warning restore 612, 618
         }

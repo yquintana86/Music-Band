@@ -15,10 +15,10 @@ public class ActivitiesConfiguration : IEntityTypeConfiguration<Activity>
 
         builder.Property(a => a.Begin).IsRequired(false);
         builder.Property(a => a.End).IsRequired(false);
+        builder.Property(a => a.Price).HasColumnType("decimal(8,2)");
 
         builder.Property(a => a.International)
             .HasConversion(a => a ? 1 : 0, a => a == 1 ? true : false)
-            .HasDefaultValue(0)
             .IsRequired();
     }
 }

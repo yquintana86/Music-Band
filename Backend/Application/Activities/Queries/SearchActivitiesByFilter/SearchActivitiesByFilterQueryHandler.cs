@@ -40,7 +40,8 @@ internal sealed class SearchActivitiesByFilterQueryHandler : IQueryHandler<Searc
                     End = a.End,
                     Client = a.Client,
                     International = a.International,
-                    Description = a.Description
+                    Description = a.Description,
+                    Price = a.Price,
                 }).ToList()
             };
 

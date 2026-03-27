@@ -1,6 +1,7 @@
 ﻿using Application.Activities.Queries.SearchActivitiesByFilter;
 using Domain.Entities;
 using SharedLib.Models.Common;
+using System.Linq.Expressions;
 
 namespace Application.Abstractions.Repositories;
 
@@ -9,7 +10,7 @@ public interface IActivityRepository
     Task<IEnumerable<Activity>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<PagedResult<Activity>> SearchByFilterAsync(SearchActivitiesByFilterQuery filter, CancellationToken cancellationToken = default);
 
-    Task<Activity?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<Activity?> GetByIdAsync(int id, CancellationToken cancellationToken = default, params Expression<Func<Activity, object>>[] includes);
     Task<bool> ExistIdAsync(int id, CancellationToken cancellationToken = default);
     void Add(Activity activity);
     Task DeleteAsync(int id);

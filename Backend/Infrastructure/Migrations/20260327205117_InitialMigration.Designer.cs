@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241207024700_Add_TokenRefresh")]
-    partial class Add_TokenRefresh
+    [Migration("20260327205117_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,6 +54,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(8,2)");
 
                     b.HasKey("Id");
 
@@ -104,7 +107,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("BasicSalary")
-                        .HasColumnType("decimal(7,2)");
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<int>("Experience")
                         .HasColumnType("int");
@@ -153,6 +156,38 @@ namespace Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Entities.MusicianPaymentDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("BasicSalary")
+                        .HasColumnType("decimal(6,2)");
+
+                    b.Property<int>("MusicianId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2(3)");
+
+                    b.Property<int>("RangePlusId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("decimal(6,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MusicianId");
+
+                    b.HasIndex("RangePlusId");
+
+                    b.ToTable("MusicianPaymentDetails");
+                });
+
             modelBuilder.Entity("Domain.Entities.Permission", b =>
                 {
                     b.Property<int>("Id")
@@ -187,7 +222,32 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.RefreshTokenRepository", b =>
+            modelBuilder.Entity("Domain.Entities.RangePlus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MaxExperience")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinExperience")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Plus")
+                        .HasColumnType("decimal(4,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RangePlus", t =>
+                        {
+                            t.HasCheckConstraint("CHK_MinMax_Experience", "([MinExperience] >= 0 AND [MinExperience] < [MaxExperience])");
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -215,7 +275,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Domain.Entities.RoleType", b =>
+            modelBuilder.Entity("Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -377,7 +437,26 @@ namespace Infrastructure.Migrations
                     b.Navigation("Musician");
                 });
 
-            modelBuilder.Entity("Domain.Entities.RefreshTokenRepository", b =>
+            modelBuilder.Entity("Domain.Entities.MusicianPaymentDetail", b =>
+                {
+                    b.HasOne("Domain.Entities.Musician", "Musician")
+                        .WithMany("MusicianPaymentDetails")
+                        .HasForeignKey("MusicianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.RangePlus", "RangePlus")
+                        .WithMany("MusicianPaymentDetails")
+                        .HasForeignKey("RangePlusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Musician");
+
+                    b.Navigation("RangePlus");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany()
@@ -396,7 +475,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.RoleType", null)
+                    b.HasOne("Domain.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -405,7 +484,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("UserRoles", b =>
                 {
-                    b.HasOne("Domain.Entities.RoleType", null)
+                    b.HasOne("Domain.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -428,6 +507,13 @@ namespace Infrastructure.Migrations
                     b.Navigation("Instruments");
 
                     b.Navigation("MusicianActivities");
+
+                    b.Navigation("MusicianPaymentDetails");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RangePlus", b =>
+                {
+                    b.Navigation("MusicianPaymentDetails");
                 });
 #pragma warning restore 612, 618
         }

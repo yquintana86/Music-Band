@@ -26,7 +26,7 @@ internal sealed class SearchActivityByIdQueryHandler : IQueryHandler<SearchActiv
         {
             int actId = request.Id;
 
-            Activity? activity = await _activityRepository.GetByIdAsync(actId, cancellationToken);
+            Activity? activity = await _activityRepository.GetByIdAsync(actId, cancellationToken, a => a.Musicians);
             if (activity is null)
                 return ApiOperationResult.Fail<ActivityResponse>(ActivityError.ExistActivityNotFoundId(actId));
 
@@ -38,7 +38,13 @@ internal sealed class SearchActivityByIdQueryHandler : IQueryHandler<SearchActiv
                 Description = activity.Description,
                 International = activity.International,
                 Begin = activity.Begin,
-                End = activity.End
+                End = activity.End,
+                Price = activity.Price,
+                Musicians = activity.Musicians.Select(m => new SelectItem
+                {
+                    Id = m.Id.ToString(),
+                    Text = $"{m.FirstName} {m.LastName}"
+                }).ToList()
             };
 
             return ApiOperationResult.Success(model);

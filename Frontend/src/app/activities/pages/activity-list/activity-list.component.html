@@ -29,9 +29,9 @@
           </div>
           <select id="international" formControlName="international" class="select select-md  bg-[rgba(57,57,61,1)] text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl
             focus-within:outline-none focus:ring-0">
-            <option value="" selected></option>
-            <option value="true">True</option>
-            <option value="false">False</option>
+            <option [ngValue]="null" selected></option>
+            <option [ngValue]="true">True</option>
+            <option [ngValue]="false">False</option>
           </select>
           <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('international', true)"
             [error]="this.getErrorMessage('international',true,'International')"></span>
@@ -113,6 +113,13 @@
                     [error]="this.getErrorMessage('international')"></span>
                 </div>
 
+                <div>
+                  <label for="priceipt" class="text-sm text-primary font-medium">Price</label>
+                  <input type="number" id="priceipt" formControlName="price" [readonly]="!!dialogModalForm.get('id')?.value"
+                    class="input input-sm bg-white/10 text-secondary px-4 py-1 border-2 border-(--color-surface) rounded-2xl">
+                  <span fielderror class="block text-sm" [isInvalidField]="this.isInvalidControl('price', true)"
+                    [error]="this.getErrorMessage('price',true,'Price')"></span>
+                </div>
               </div>
               <div class="h-full w-full">
                 <textarea id="description" placeholder="Enter instrument description..." formControlName="description"

@@ -10,6 +10,6 @@ public sealed class MusicianActivities
     public int ActivityId { get; set; }
     public Activity Activity { get; set; } = null!;
 
-    public decimal SalaryByActivity { get; set; }
+    public double SalaryByActivity { get; set; }
 
 }

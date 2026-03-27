@@ -10,23 +10,21 @@ namespace Application.Activities.Commands.CreateAtivity;
 internal class UpdateActivityCommandHandler : ICommandHandler<CreateActivityCommand>
 {
     private readonly IActivityRepository _activityRepository;
-    private readonly IMusicianRepository _musicianRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UpdateActivityCommandHandler> _logger;
 
-    public UpdateActivityCommandHandler(IActivityRepository activityRepository, ILogger<UpdateActivityCommandHandler> logger, IUnitOfWork unitOfWork, IMusicianRepository musicianRepository)
+    public UpdateActivityCommandHandler(IActivityRepository activityRepository, ILogger<UpdateActivityCommandHandler> logger, IUnitOfWork unitOfWork)
     {
         _activityRepository = activityRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
-        _musicianRepository = musicianRepository;
     }
 
     public async Task<ApiOperationResult> Handle(CreateActivityCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var musicians = await _musicianRepository.GetAllAsync(m => request.MusiciansId.Contains(m.Id), cancellationToken);
+            var payPerMusician = request.Price / request.MusiciansId.Count;
 
             var activity = new Activity
             {
@@ -36,7 +34,13 @@ internal class UpdateActivityCommandHandler : ICommandHandler<CreateActivityComm
                 International = request.International,
                 Begin = request.Begin,
                 End = request.End,
-                //TODO: Update Musician Activity
+                Price = request.Price,
+                MusicianActivities = request.MusiciansId
+                                            .Select(m => new MusicianActivities
+                                            {
+                                                MusicianId = m,
+                                                SalaryByActivity = payPerMusician
+                                            }).ToList()
             };
 
             _activityRepository.Add(activity);

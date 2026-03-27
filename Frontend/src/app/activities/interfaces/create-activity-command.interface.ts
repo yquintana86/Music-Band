@@ -6,4 +6,5 @@ export interface CreateActivityCommand {
   begin?: Date;
   end?: Date;
   musiciansId: number[];
+  price: number;
 }

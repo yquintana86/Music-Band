@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,7 +24,8 @@ namespace Infrastructure.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     International = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     Begin = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    End = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    End = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(8,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,7 +43,7 @@ namespace Infrastructure.Migrations
                     LastName = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
                     Experience = table.Column<int>(type: "int", nullable: false),
-                    BasicSalary = table.Column<decimal>(type: "decimal(7,2)", nullable: false)
+                    BasicSalary = table.Column<decimal>(type: "decimal(8,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,6 +64,22 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Permissions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RangePlus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MinExperience = table.Column<int>(type: "int", nullable: false),
+                    MaxExperience = table.Column<int>(type: "int", nullable: false),
+                    Plus = table.Column<decimal>(type: "decimal(4,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RangePlus", x => x.Id);
+                    table.CheckConstraint("CHK_MinMax_Experience", "([MinExperience] >= 0 AND [MinExperience] < [MaxExperience])");
                 });
 
             migrationBuilder.CreateTable(
@@ -150,6 +167,35 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MusicianPaymentDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2(3)", nullable: false),
+                    Salary = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    BasicSalary = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    MusicianId = table.Column<int>(type: "int", nullable: false),
+                    RangePlusId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MusicianPaymentDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MusicianPaymentDetails_Musicians_MusicianId",
+                        column: x => x.MusicianId,
+                        principalTable: "Musicians",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MusicianPaymentDetails_RangePlus_RangePlusId",
+                        column: x => x.RangePlusId,
+                        principalTable: "RangePlus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RolePermissions",
                 columns: table => new
                 {
@@ -169,6 +215,27 @@ namespace Infrastructure.Migrations
                         name: "FK_RolePermissions_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Token = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ExpireUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -237,6 +304,27 @@ namespace Infrastructure.Migrations
                 column: "MusicianId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MusicianPaymentDetails_MusicianId",
+                table: "MusicianPaymentDetails",
+                column: "MusicianId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MusicianPaymentDetails_RangePlusId",
+                table: "MusicianPaymentDetails",
+                column: "RangePlusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_Token",
+                table: "RefreshTokens",
+                column: "Token",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_UserId",
+                table: "RefreshTokens",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RolePermissions_PermissionId",
                 table: "RolePermissions",
                 column: "PermissionId");
@@ -275,6 +363,12 @@ namespace Infrastructure.Migrations
                 name: "MusicianActivities");
 
             migrationBuilder.DropTable(
+                name: "MusicianPaymentDetails");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
+
+            migrationBuilder.DropTable(
                 name: "RolePermissions");
 
             migrationBuilder.DropTable(
@@ -285,6 +379,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Musicians");
+
+            migrationBuilder.DropTable(
+                name: "RangePlus");
 
             migrationBuilder.DropTable(
                 name: "Permissions");
