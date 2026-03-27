@@ -10,7 +10,7 @@ public class MusicianActivitiesConfiguration : IEntityTypeConfiguration<Musician
     {
         builder.HasKey(ma => new { ma.ActivityId, ma.MusicianId});
 
-        builder.Property(ma => ma.SalaryByActivity).HasColumnType("decimal(6,2)");
+        builder.Property(ma => ma.SalaryByActivity).HasColumnType("decimal(8,2)");
 
         builder.ToTable(ma => ma.HasCheckConstraint("CK_Salary", "SalaryByActivity > 0"));
 

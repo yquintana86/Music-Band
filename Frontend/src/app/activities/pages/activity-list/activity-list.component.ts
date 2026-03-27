@@ -9,7 +9,7 @@ import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.
 import { DialogModalComponent } from '../../../shared/components/dialog-modal/dialog-modal.component';
 import { FilterLayoutComponent } from "../../../shared/components/filter-layout/filter-layout.component";
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map, startWith } from 'rxjs';
+import { map, min, Observable, startWith, EMPTY } from 'rxjs';
 import { FieldErrorDirective } from '../../../shared/directives/field-error-directive';
 import { TableComponent } from "../../../shared/components/table/table.component";
 import { DatePipe } from '@angular/common';
@@ -79,7 +79,7 @@ export default class ActivityListComponent {
   public itemsPerPage = signal(20);
 
   public filterForm = this._fb.group({
-    international: this._fb.control<string | null>(null),
+    international: this._fb.control<boolean | null>(null),
     begin: this._fb.control<string | null>(null),
     end: this._fb.control<string | null>(null),
   });
@@ -89,9 +89,10 @@ export default class ActivityListComponent {
     name: ['', [Validators.required, Validators.maxLength(50)]],
     client: ['', [Validators.required, Validators.maxLength(50)]],
     description: [''],
-    international: ['true', [Validators.required]],
+    international: [false, [Validators.required]],
     begin: this._fb.control<string | null>(null, [Validators.required]),
     end: this._fb.control<string | null>(null, [Validators.required]),
+    price: this._fb.control<number | null>(null, [Validators.required, Validators.min(1)]),
   });
 
   public disableDialogModalOkBtn = toSignal(this.dialogModalForm.statusChanges
@@ -121,7 +122,6 @@ export default class ActivityListComponent {
       this._activityFilterQuery.set(this.getActivityFilter());
     }
   }
-
 
   //validation methods
 
@@ -168,10 +168,10 @@ export default class ActivityListComponent {
     this.dialogModalTitle.set('Update Activity');
     this.dialogModalForm.patchValue({
       ...activity,
-      international: activity.international ? 'true' : 'false',
       begin: activity.begin ? this.getFormDate(activity.begin) : null,
       end: activity.end ? this.getFormDate(activity.end) : null
-    });
+    }); //TODO: GET the Sctivity Musicians from the backend OJO
+    this.musiciansSelected.set(activity.musicians.map(m => ({ id: m.id, text: m.text, checked: false } as CheckedItem)));
     this.dialogModal()?.showModal();
   }
 
@@ -311,12 +311,27 @@ export default class ActivityListComponent {
 
   public onDialogModalOk() {
 
+    if (!this.dialogModalForm.valid || !this.musiciansSelected().length) {
+      this._toastService.error('Please fill all required fields', 'Error');
+      return;
+    }
+
     const isCreation = !this.dialogModalForm.get('id')?.value;
     const value = this.dialogModalForm.value;
-    const activity = { ...value, international: value.international == 'true' };
+    debugger;
+    const activity = {
+      ...value,
+      musiciansId: this.musiciansSelected().map(m => m.id),
+    };
 
-    const doTask = isCreation ? this._activityService.createActivity(activity as CreateActivityCommand)
-      : this._activityService.updateActivity(activity as UpdateActivityCommand);
+    let doTask = new Observable<boolean>();
+    if(isCreation) {
+     doTask = this._activityService.createActivity(activity as CreateActivityCommand)
+    }
+    else{
+      const {price, ...rest} = activity
+      doTask = this._activityService.updateActivity(rest as UpdateActivityCommand);
+    }
 
     doTask.subscribe({
       next: () => {
@@ -356,16 +371,16 @@ export default class ActivityListComponent {
         value !== '')
       .reduce((acc, [key, value]) => {
 
-        let data: string | boolean = '';
+        let data: string | Date | boolean = '';
         switch (key) {
           case 'begin':
-            data = this.getFormDate(value!);
+            data = this.getFormDate(value! as string | Date);
             break;
           case 'end':
-            data = this.getFormDate(value!);
+            data = this.getFormDate(value! as string | Date);
             break;
           case 'international':
-            data = value == 'true';
+            data = value as boolean;
             break;
         }
 

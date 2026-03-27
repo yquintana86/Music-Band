@@ -5,6 +5,7 @@ using Domain.Entities;
 using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using SharedLib.Models.Common;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Persistence.Repositories;
 
@@ -50,10 +51,24 @@ internal class ActivityRepository : IActivityRepository
     
     public async Task<IEnumerable<Activity>> GetAllAsync(CancellationToken cancellationToken = default) => 
         await _appDbContext.Activities.AsNoTracking().ToListAsync(cancellationToken);
-        
-    
-    public async Task<Activity?> GetByIdAsync(int id, CancellationToken cancellationToken = default) => 
-        await _appDbContext.Activities.FindAsync(id,cancellationToken);
+
+
+    public async Task<Activity?> GetByIdAsync(int id, CancellationToken cancellationToken = default, params Expression<Func<Activity, object>>[] includes) 
+    {
+
+        IQueryable<Activity> query = from activity in _appDbContext.Activities
+                                          select activity;
+
+        if (includes is not null && includes.Any())
+        {
+            foreach (var item in includes)
+            {
+                query = query.Include(item);
+            }
+        }
+
+        return await query.FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+    }
 
     public async Task<IEnumerable<Activity>> GetInternationalActivitiesByMusicianIdAsync(int id, CancellationToken cancellationToken)
     {

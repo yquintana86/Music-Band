@@ -35,7 +35,8 @@ internal sealed class SearchActivitiesQueryHandler : IQueryHandler<SearchActivit
                     Description = a.Description,
                     International = a.International,
                     Begin = a.Begin,
-                    End = a.End
+                    End = a.End,
+                    Price = a.Price,
                 }).ToList();
             }
 

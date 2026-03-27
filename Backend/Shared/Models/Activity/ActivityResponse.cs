@@ -1,4 +1,6 @@
-﻿namespace Shared.Models.Activity;
+﻿using SharedLib.Models.Common;
+
+namespace Shared.Models.Activity;
 
 public class ActivityResponse
 {
@@ -9,5 +11,6 @@ public class ActivityResponse
     public bool International { get; set; }
     public DateTime? Begin { get; set; }
     public DateTime? End { get; set; }
-
+    public double Price { get; set; }
+    public List<SelectItem> Musicians { get; set; } = new();
 }

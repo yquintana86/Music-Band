@@ -2,4 +2,13 @@
 
 namespace Application.Activities.Commands.CreateAtivity;
 
-public sealed record CreateActivityCommand(string Name, string Client, string? Description, bool International, DateTime? Begin, DateTime? End, List<int> MusiciansId) : ICommand;
+public sealed record CreateActivityCommand(
+    string Name, 
+    string Client, 
+    string? Description, 
+    bool International, 
+    DateTime? Begin, 
+    DateTime? End, 
+    List<int> MusiciansId,
+    double Price
+    ) : ICommand;

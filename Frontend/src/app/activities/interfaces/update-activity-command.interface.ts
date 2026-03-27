@@ -6,4 +6,5 @@ export interface UpdateActivityCommand {
   international: boolean;
   begin?: Date;
   end?: Date;
+  musiciansId: number[];
 }
