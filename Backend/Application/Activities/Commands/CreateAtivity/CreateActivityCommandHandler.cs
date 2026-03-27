@@ -10,20 +10,24 @@ namespace Application.Activities.Commands.CreateAtivity;
 internal class UpdateActivityCommandHandler : ICommandHandler<CreateActivityCommand>
 {
     private readonly IActivityRepository _activityRepository;
+    private readonly IMusicianRepository _musicianRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<UpdateActivityCommandHandler> _logger;
 
-    public UpdateActivityCommandHandler(IActivityRepository activityRepository, ILogger<UpdateActivityCommandHandler> logger, IUnitOfWork unitOfWork)
+    public UpdateActivityCommandHandler(IActivityRepository activityRepository, ILogger<UpdateActivityCommandHandler> logger, IUnitOfWork unitOfWork, IMusicianRepository musicianRepository)
     {
         _activityRepository = activityRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _musicianRepository = musicianRepository;
     }
 
     public async Task<ApiOperationResult> Handle(CreateActivityCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            var musicians = await _musicianRepository.GetAllAsync(m => request.MusiciansId.Contains(m.Id), cancellationToken);
+
             var activity = new Activity
             {
                 Name = request.Name,
@@ -31,7 +35,8 @@ internal class UpdateActivityCommandHandler : ICommandHandler<CreateActivityComm
                 Description = request.Description,
                 International = request.International,
                 Begin = request.Begin,
-                End = request.End
+                End = request.End,
+                //TODO: Update Musician Activity
             };
 
             _activityRepository.Add(activity);

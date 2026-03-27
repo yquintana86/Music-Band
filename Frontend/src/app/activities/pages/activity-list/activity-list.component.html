@@ -43,7 +43,7 @@
   <!-- Update/Create Modal -->
   <dialog-modal #dialogModal [title]="dialogModalTitle()" [showCancelButton]="false"
     [divContentClasses]="'h-80 bg-surface'" (okButtonEmit)="onDialogModalOk()"
-    [disableOKButton]="disableDialogModalOkBtn()!">
+    [disableOKButton]="disableDialogModalOkBtn()! || this.musiciansSelected().length === 0">
     <form class="h-full" autocomplete="off" [formGroup]="dialogModalForm" (keydown.enter)="$event.preventDefault()"
       (ngSubmit)="$event.preventDefault()">
       <div class="tabs tabs-lift h-full">
@@ -125,10 +125,45 @@
         </div>
 
         <input type="radio" name="my_tabs_3" class="tab" aria-label="Musicians" checked="checked" />
-        <div class="tab-content bg-base-100 border-base-300 p-6">
-            <!-- Musicians -->
-             <h1>Musicians</h1>
-             <multi-select-items></multi-select-items>
+        <div class="tab-content bg-base-100 border-base-300 p-4">
+          <div class="flex flex-col gap-2 w-full h-full">
+            <div class="mb-2 w-[45%]">
+              <input-search
+              searchPlaceholder="Search by musician name..."
+              searchButtonTitle="Search musicians"
+              [isParentSearching]="isLoading()"
+              (searchClicked)="dialogModalSearchClicked($event)"
+              (clearClicked)="dialogModalCleanClicked()"></input-search>
+            </div>
+            <div class="flex flex-1 items-center justify-between gap-2 h-full w-full">
+              <div class="flex-2 h-full">
+                <select-item class="h-full"
+                  [inputList]="musiciansFounded()"
+                  (selectionChange)="musiciansFounded.set($event)">
+                </select-item>
+              </div>
+              <div class="h-full flex flex-col justify-center items-center gap-4">
+                <button title="Add musicians to this activity" class="btn btn-link bg-surface mx-3 no-underline"
+                [disabled]="!musiciansFounded().length"
+                (click)="moveFoundedToSelectedMusicians()">
+                  <i class="fa-solid fa-angles-right"></i>
+                </button>
+                <button title="Remove from Activity" class="btn btn-link bg-surface mx-3 no-underline"
+                [disabled]="!musiciansSelected().length"
+                (click)="removeSelectedItems()">
+                  <i class="fa-solid fa-arrow-rotate-left"></i>
+                </button>
+              </div>
+              <div class="flex-2 h-full">
+                <select-item
+                [inputList]="musiciansSelected()"
+                (selectionChange)="musiciansSelected.set($event)"
+                [showButtons]="true"></select-item>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
 

@@ -1,0 +1,23 @@
+<div class="flex items-center gap-0">
+  <div class="flex items-center justify-center bg-white/10 input border border-(--color-surface) border-r-0 rounded-l-2xl rounded-r-none
+      w-10 h-10 focus-within:outline-none focus:ring-0">
+    <span role="button" class="btn btn-link no-underline p-0 min-h-0 h-auto" title="Clear Selection"
+      (click)="clearSelection()" [class.hidden]="!inputHasValue()">
+      <i class="fa-solid fa-xmark text-gray-400 hover:text-primary hover:p-0 hover:scale-130 hover:ease-in hover:duration-150 hover:transition"></i>
+    </span>
+  </div>
+
+  <input type="text" [placeholder]="searchPlaceholder()" class="h-10 input input-md flex-1 bg-white/10 text-sm text-secondary px-2 py-1 rounded-r-none rounded-l-none
+      border border-(--color-surface) border-x-0 focus-within:outline-none focus:ring-0" #inputSearch
+    [readOnly]="isParentSearching()">
+
+  <!-- third section / Search button -->
+  <div class="flex items-center justify-center bg-white/10 input border border-(--color-surface) border-l-0 rounded-r-2xl
+      rounded-l-none w-10 h-10 focus-within:outline-none focus:ring-0">
+    <button [disabled]="isParentSearching() || !inputHasValue() " role="button" class="btn btn-link no-underline p-0 min-h-0 h-auto"
+      [title]="searchButtonTitle()" (click)="doSearch(inputSearch.value)">
+      <i
+        class="fa-solid fa-magnifying-glass text-gray-400 hover:text-primary hover:p-0 hover:scale-130 hover:ease-in hover:duration-150 hover:transition"></i>
+    </button>
+  </div>
+</div>
