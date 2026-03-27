@@ -1,0 +1,18 @@
+<div class="flex flex-col border-2 border-(--color-surface) bg-white/10 rounded-2xl h-full">
+  <div
+  class="flex flex-col flex-1 gap-2 py-2 px-4 rounded-2xl basis-4  overflow-y-auto overflow-x-hidden"
+  [ngClass]="showButtons() ? 'max-h-35' : 'max-h-40'">
+    @for (item of inputList(); track item.id) {
+      <label class="label">
+        <input type="checkbox" class="checkbox checkbox-sm text-secondary" [checked]="item.checked" (change)="updateSelection(item.id, $event)">
+        {{ item.text }}
+      </label>
+    }
+  </div>
+  <div class="flex justify-end items-center border-t-2 border-t-(--color-surface) p-2"
+  [class.hidden]="!showButtons()">
+    <button
+    class="btn btn-secondary btn-sm"
+    [disabled]="!existCheckedItem()"
+    (click)="clearAllSelection()">Uncheck All</button>
+</div>

@@ -9,6 +9,7 @@ public class CreateActivityCommandValidator : AbstractValidator<CreateActivityCo
     {
         RuleFor(a => a.Name).NotEmpty();
         RuleFor(a => a.Client).NotEmpty();
+        RuleFor(a => a.MusiciansId).NotEmpty();
         RuleFor(a => a).Custom((a, vc) =>
         {
             if (a.Begin.HasValue && a.Begin.Value.Year < 2020)

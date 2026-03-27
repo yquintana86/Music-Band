@@ -7,3 +7,9 @@ export interface SelectItem {
   id: number;
   text : string;
 }
+
+export interface CheckedItem {
+  id: number;
+  text : string;
+  checked : boolean;
+}

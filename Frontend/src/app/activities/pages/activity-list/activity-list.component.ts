@@ -4,7 +4,7 @@ import { ValidatorsService } from '../../../shared/services/validator.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityFilterQuery, ActivityReponse, CreateActivityCommand, UpdateActivityCommand } from '../../interfaces';
-import { PagedResult } from '../../../shared/interfaces';
+import { CheckedItem, PagedResult } from '../../../shared/interfaces';
 import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.class';
 import { DialogModalComponent } from '../../../shared/components/dialog-modal/dialog-modal.component';
 import { FilterLayoutComponent } from "../../../shared/components/filter-layout/filter-layout.component";
@@ -15,19 +15,24 @@ import { TableComponent } from "../../../shared/components/table/table.component
 import { DatePipe } from '@angular/common';
 import { ItemsPerPageComponent } from "../../../shared/components/items-per-page/items-per-page.component";
 import { PagerComponent } from "../../../shared/components/pager/pager.component";
-import { MultiSelectItemsComponent } from "../../../shared/components/multi-select-items/multi-select-items.component";
+import { InputSearchComponent } from "../../../shared/components/input-search/input-search.component";
+import { SelectItemComponent } from "../../../shared/components/select-item/select-item.component";
+import { MusicianService } from '../../../musician/services/musician.service';
+import { SearchMusicianByFilterQuery } from '../../../musician/interfaces';
+import { list } from 'postcss';
 
 
 
 @Component({
   selector: 'app-activity-list',
-  imports: [ReactiveFormsModule, FilterLayoutComponent, DialogModalComponent, FieldErrorDirective, TableComponent, DatePipe, ItemsPerPageComponent, PagerComponent, MultiSelectItemsComponent],
+  imports: [ReactiveFormsModule, FilterLayoutComponent, DialogModalComponent, FieldErrorDirective, TableComponent, DatePipe, ItemsPerPageComponent, PagerComponent, InputSearchComponent, SelectItemComponent],
   templateUrl: './activity-list.component.html',
   styleUrl: './activity-list.component.css',
 })
 export default class ActivityListComponent {
 
   private _activityService = inject(ActivityService);
+  private _musicianService = inject(MusicianService);
   private _validatorService = inject(ValidatorsService);
   private _toastService = inject(ToastrService);
   private _fb = inject(FormBuilder);
@@ -66,6 +71,10 @@ export default class ActivityListComponent {
 
   public activities = computed(() => this.activitiesPagedResult().results);
 
+
+  public musiciansFounded = signal<CheckedItem[]>([]);
+  public musiciansSelected = signal<CheckedItem[]>([]);
+
   public page = signal(1);
   public itemsPerPage = signal(20);
 
@@ -102,9 +111,6 @@ export default class ActivityListComponent {
   //#region public methods
 
   //filter methods
-
-
-
   public onSearch() {
     this._activityFilterQuery.set(this.getActivityFilter());
   }
@@ -130,6 +136,16 @@ export default class ActivityListComponent {
   }
 
   //dialog modal methods
+
+  public moveFoundedToSelectedMusicians() {
+    const selected = this.musiciansFounded().filter(m => m.checked);
+    this.musiciansSelected.update(list => [...list, ...selected.map(m => ({ ...m, checked: false }))]);
+    this.musiciansFounded.update(list => list.filter(m => !m.checked));
+  }
+
+  public removeSelectedItems() {
+    this.musiciansSelected.update(list => list.filter(i => !i.checked));
+  }
 
   public showDialogModalOnCreateMode() {
     this.dialogModalTitle.set('Create Activity');
@@ -178,7 +194,7 @@ export default class ActivityListComponent {
 
   public onDeleteAllButtonClicked() {
 
-    if(this.activitiesIdsSelectedForDelete()?.length > 0) {
+    if (this.activitiesIdsSelectedForDelete()?.length > 0) {
       this.deletePromptBodyText.set(`Are you sure to delete ${this.activitiesIdsSelectedForDelete()?.length} activities ?`);
       this.isPromptDeleteSingleMode.set(false);
       this.promptModal()?.showModal();
@@ -200,13 +216,46 @@ export default class ActivityListComponent {
 
   }
 
+  public dialogModalCleanClicked()
+  {
+    this.musiciansFounded.set([]);
+  }
+
+  public dialogModalSearchClicked(query: string | undefined) {
+    const filterQuery: SearchMusicianByFilterQuery = {
+      page: 1,
+      pageSize: 10,
+      firstName: query
+    };
+
+    this._musicianService.searchMusicianByQuery(filterQuery)
+      .subscribe({
+        next: ({ results }) => {
+          this.musiciansFounded.set(
+            results.filter(m =>
+              this.musiciansSelected()
+              .find(mSelected => mSelected.id === m.id) === undefined)
+              .map(m => (
+                {
+                  id: m.id,
+                  text: `${m.firstName} ${m.lastName}`,
+                  checked: false
+                } as CheckedItem)))
+        },
+        error: (err) => {
+          this._toastService.error(err.message);
+        }
+      })
+  }
+
+  //prompt modal
   public onCancelPromptButtonClicked() {
     this.activityIdToDelete.set(null);
     this.promptModal()?.closeModal();
   }
 
   public promptModalOkButtonClicked() {
-    if(this.isPromptDeleteSingleMode()){
+    if (this.isPromptDeleteSingleMode()) {
       this.deleteSingleActivity();
       return;
     }
@@ -214,8 +263,8 @@ export default class ActivityListComponent {
     this.deleteSelectedActivities();
   }
 
-  public deleteSingleActivity(){
-     const id = this.activityIdToDelete();
+  public deleteSingleActivity() {
+    const id = this.activityIdToDelete();
     if (id == null) {
       this._toastService.error('Invalid Activity Id');
       return;
@@ -224,7 +273,7 @@ export default class ActivityListComponent {
     this._activityService.deleteActivity(id)
       .subscribe({
         next: () => {
-          if(this.activitiesIdsSelectedForDelete()?.includes(this.activityIdToDelete() ?? 0)) {
+          if (this.activitiesIdsSelectedForDelete()?.includes(this.activityIdToDelete() ?? 0)) {
             this.activitiesIdsSelectedForDelete.update(current => current.filter(id => id !== this.activityIdToDelete()));
           }
           this._toastService.success('Activity deleted successfully', 'Success');
@@ -240,28 +289,28 @@ export default class ActivityListComponent {
       })
   }
 
-  public deleteSelectedActivities(){
-    if(!this.activitiesIdsSelectedForDelete()?.length)
-    {
+  public deleteSelectedActivities() {
+    if (!this.activitiesIdsSelectedForDelete()?.length) {
       this._toastService.error('Please select at least one activity');
       return;
     }
 
     this._activityService.deteleManyActivities(this.activitiesIdsSelectedForDelete())
-    .subscribe({
-      next: () => {
-        this.activitiesIdsSelectedForDelete.set([]);
-        this._toastService.success('Activities deleted successfully', 'Success');
-        this._activityFilterQuery.set(this.getActivityFilter());
-        this.promptModal()?.closeModal();
-      },
-      error: (err) => {
+      .subscribe({
+        next: () => {
+          this.activitiesIdsSelectedForDelete.set([]);
+          this._toastService.success('Activities deleted successfully', 'Success');
+          this._activityFilterQuery.set(this.getActivityFilter());
+          this.promptModal()?.closeModal();
+        },
+        error: (err) => {
           this._toastService.error(ErrorUtilitiesClass.getErrorMessage(err), 'Error');
-      }
-    })
+        }
+      })
   }
 
   public onDialogModalOk() {
+
     const isCreation = !this.dialogModalForm.get('id')?.value;
     const value = this.dialogModalForm.value;
     const activity = { ...value, international: value.international == 'true' };

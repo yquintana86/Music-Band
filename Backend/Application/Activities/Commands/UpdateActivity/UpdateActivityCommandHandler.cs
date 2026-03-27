@@ -36,6 +36,7 @@ internal class UpdateActivityCommandHandler : ICommandHandler<UpdateActivityComm
             activityDb.International = request.International;
             activityDb.Begin = request.Begin;
             activityDb.End = request.End;
+            //TODO: Update Musician Activity
             
 
             await _unitOfWork.SaveChangesAsync();

@@ -5,4 +5,5 @@ export interface CreateActivityCommand {
   international: boolean;
   begin?: Date;
   end?: Date;
+  musiciansId: number[];
 }
