@@ -4,7 +4,10 @@
   [ngClass]="showButtons() ? 'max-h-35' : 'max-h-40'">
     @for (item of inputList(); track item.id) {
       <label class="label">
-        <input type="checkbox" class="checkbox checkbox-sm text-secondary" [checked]="item.checked" (change)="updateSelection(item.id, $event)">
+        @if(!isReadOnly())
+        {
+          <input type="checkbox" class="checkbox checkbox-sm text-secondary" [checked]="item.checked" (change)="updateSelection(item.id, $event)">
+        }
         {{ item.text }}
       </label>
     }

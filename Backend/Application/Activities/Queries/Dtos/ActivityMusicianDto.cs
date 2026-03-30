@@ -2,7 +2,7 @@
 
 namespace Application.Activities.Queries.Dtos;
 
-public sealed record ActivityMusicianDto(
+public sealed record ActivityMusiciansNameDto(
     int Id,
     string Name,
     string Client,

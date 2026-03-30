@@ -22,7 +22,7 @@ internal sealed class SearchActivitiesByFilterQueryHandler : IQueryHandler<Searc
     {
         try
         {
-            var paged = await _activityRepository.SearchByFilterAsync(request, cancellationToken);
+            var paged = await _activityRepository.SearchByFilterAsync(request, cancellationToken, a => a.Musicians);
 
             var pagedResponse = new PagedResult<ActivityResponse>
             {
@@ -42,6 +42,11 @@ internal sealed class SearchActivitiesByFilterQueryHandler : IQueryHandler<Searc
                     International = a.International,
                     Description = a.Description,
                     Price = a.Price,
+                    Musicians = a.Musicians.Select(m => new SelectItem
+                    {
+                        Id = m.Id.ToString(),
+                        Text = string.Concat(m.FirstName," ", m.LastName)
+                    }).ToList(),
                 }).ToList()
             };
 

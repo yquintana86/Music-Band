@@ -29,14 +29,13 @@ internal class UpdateActivityCommandHandler : ICommandHandler<UpdateActivityComm
             if (activityDb is null)
                 return ApiOperationResult.Fail(ActivityError.UpdateActivityNotFoundId(request.Id));
 
-
             activityDb.Name = request.Name;
             activityDb.Description = request.Description;
             activityDb.Client = request.Client;
             activityDb.International = request.International;
             activityDb.Begin = request.Begin;
             activityDb.End = request.End;
-            //TODO: Update Musician Activity
+            
             
 
             await _unitOfWork.SaveChangesAsync();

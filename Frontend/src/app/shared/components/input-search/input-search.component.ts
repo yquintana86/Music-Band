@@ -12,6 +12,7 @@ export class InputSearchComponent implements AfterViewInit {
   public searchPlaceholder = input<string>('Search...');
   public searchButtonTitle = input<string>('Search');
   public isParentSearching = input<boolean>(false);
+  public isReadOnlyMode = input<boolean>(false);
   public clearClicked = output<void>();
   public searchClicked = output<string>();
 
@@ -21,6 +22,8 @@ export class InputSearchComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     const inputSearch = this.inputSearch()?.nativeElement as HTMLInputElement;
+    inputSearch.value = '';
+    inputSearch.focus();
      fromEvent(inputSearch, 'input')
      .pipe(
         map((event: Event) => {

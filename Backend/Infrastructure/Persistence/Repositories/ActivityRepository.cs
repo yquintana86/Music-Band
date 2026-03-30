@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.DataContext;
 using Application.Abstractions.Repositories;
+using Application.Activities.Queries.Dtos;
 using Application.Activities.Queries.SearchActivitiesByFilter;
 using Domain.Entities;
 using Infrastructure.Extensions;
@@ -82,10 +83,20 @@ internal class ActivityRepository : IActivityRepository
         return activities;
     }
 
-    public Task<PagedResult<Activity>> SearchByFilterAsync(SearchActivitiesByFilterQuery filter, CancellationToken cancellationToken = default)
+    private IQueryable<Activity> BuildSearchQueryByFilterAsync(SearchActivitiesByFilterQuery filter, CancellationToken cancellationToken = default,
+        params Expression<Func<Activity, object>>[] includes)
     {
         IQueryable<Activity> query = from activity in _appDbContext.Activities.AsNoTracking()
-                                          select activity;
+                                     select activity;
+
+
+        if (includes is not null && includes.Any())
+        {
+            foreach (var related in includes)
+            {
+                query = query.Include(related);
+            }
+        }
 
         DateTime? begin = filter.Begin;
         if (begin.HasValue)
@@ -94,7 +105,7 @@ internal class ActivityRepository : IActivityRepository
         }
 
         DateTime? end = filter.End;
-        if(end.HasValue)
+        if (end.HasValue)
         {
             query = query.Where(a => a.End <= end.Value);
         }
@@ -104,6 +115,46 @@ internal class ActivityRepository : IActivityRepository
         {
             query = query.Where(a => a.International == international.Value);
         }
+
+        return query;
+    }
+
+
+    //public Task<PagedResult<ActivityMusiciansNameDto>> SearchAsync(SearchActivitiesByFilterQuery filter, CancellationToken cancellationToken = default,
+    //    params Expression<Func<Activity, Object>>[] includes)
+    //{
+    //    var query = BuildSearchQueryByFilterAsync(filter)
+    //                .Select(a => new 
+    //                {
+    //                    Activity = a,
+    //                    Musicians = a.Musicians,
+    //                })
+    //                .AsNoTracking()
+    //                .AsEnumerable()
+    //                .Select(a => new ActivityMusiciansNameDto
+    //                (
+    //                   a.Activity.Id,
+    //                   a.Activity.Name,
+    //                   a.Activity.Client,
+    //                   a.Activity.Description,
+    //                   a.Activity.International,
+    //                   a.Activity.Begin,
+    //                   a.Activity.End,
+    //                   a.Activity.Price,
+    //                   a.Musicians.Select(m => new SelectItem()
+    //                   {
+    //                       Id = m.Id.ToString(),
+    //                       Text = string.Concat(m.FirstName, " ", m.LastName)
+    //                   }).ToList()
+    //                ));
+
+    //    return query.ToQuickPageList(a => a.Begin, filter.Page, filter.PageSize, filter.RequestCount, cancellationToken);
+    //}
+
+    public Task<PagedResult<Activity>> SearchByFilterAsync(SearchActivitiesByFilterQuery filter, CancellationToken cancellationToken = default, 
+        params Expression<Func<Activity, Object>>[] includes)
+    {
+        var query = BuildSearchQueryByFilterAsync(filter, cancellationToken, includes);
 
         return query.ToQuickPageList(a => a.Id, filter.Page, filter.PageSize, filter.RequestCount, cancellationToken);
     }
