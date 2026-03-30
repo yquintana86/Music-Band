@@ -150,6 +150,8 @@ export default class ActivityListComponent {
   public showDialogModalOnCreateMode() {
     this.dialogModalTitle.set('Create Activity');
     this.dialogModalForm.reset();
+    this.musiciansFounded.set([]);
+    this.musiciansSelected.set([]);
     this.dialogModal()?.showModal();
   }
 
@@ -170,7 +172,8 @@ export default class ActivityListComponent {
       ...activity,
       begin: activity.begin ? this.getFormDate(activity.begin) : null,
       end: activity.end ? this.getFormDate(activity.end) : null
-    }); //TODO: GET the Sctivity Musicians from the backend OJO
+    });
+    this.musiciansFounded.set([]);
     this.musiciansSelected.set(activity.musicians.map(m => ({ id: m.id, text: m.text, checked: false } as CheckedItem)));
     this.dialogModal()?.showModal();
   }
@@ -310,6 +313,9 @@ export default class ActivityListComponent {
   }
 
   public onDialogModalOk() {
+    if(this.dialogModalForm.pristine) {
+      return;
+    }
 
     if (!this.dialogModalForm.valid || !this.musiciansSelected().length) {
       this._toastService.error('Please fill all required fields', 'Error');

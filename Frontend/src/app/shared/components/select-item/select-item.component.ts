@@ -12,6 +12,7 @@ export class SelectItemComponent {
 
   public inputList = input<CheckedItem[]>([]);
   public showButtons = input<boolean>(false);
+  public isReadOnly = input<boolean>(false);
   public selectionChange = output<CheckedItem[]>();
 
   public existCheckedItem = computed(() => this.inputList().some(i => i.checked));

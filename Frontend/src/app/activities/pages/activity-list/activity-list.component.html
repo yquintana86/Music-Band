@@ -139,6 +139,7 @@
               searchPlaceholder="Search by musician name..."
               searchButtonTitle="Search musicians"
               [isParentSearching]="isLoading()"
+              [isReadOnlyMode]="!!dialogModalForm.get('id')?.value"
               (searchClicked)="dialogModalSearchClicked($event)"
               (clearClicked)="dialogModalCleanClicked()"></input-search>
             </div>
@@ -156,7 +157,7 @@
                   <i class="fa-solid fa-angles-right"></i>
                 </button>
                 <button title="Remove from Activity" class="btn btn-link bg-surface mx-3 no-underline"
-                [disabled]="!musiciansSelected().length"
+                [disabled]="!musiciansSelected().length || !!dialogModalForm.get('id')?.value"
                 (click)="removeSelectedItems()">
                   <i class="fa-solid fa-arrow-rotate-left"></i>
                 </button>
@@ -165,7 +166,8 @@
                 <select-item
                 [inputList]="musiciansSelected()"
                 (selectionChange)="musiciansSelected.set($event)"
-                [showButtons]="true"></select-item>
+                [isReadOnly]= "!!dialogModalForm.get('id')?.value"
+                [showButtons]="!dialogModalForm.get('id')?.value"></select-item>
               </div>
 
             </div>
