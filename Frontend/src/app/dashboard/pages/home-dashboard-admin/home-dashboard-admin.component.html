@@ -1,1 +1,162 @@
+<div class="min-h-screen p-6" style="background-color: var(--color-background); color: var(--color-text-primary); font-family: var(--font-body);">
 
+  <!-- Header -->
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold" style="font-family: var(--font-heading);">
+      Music Analytics Dashboard
+    </h1>
+    <p class="text-gray-400 mt-1">
+      Reports and statistics for musicians, instruments, and international events
+    </p>
+  </div>
+
+  <!-- Global Filters -->
+  <div class="rounded-2xl p-4 mb-6" style="background-color: var(--color-surface);">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-sm mb-1 text-gray-400">Start Date</label>
+        <input
+          type="date"
+          class="w-full rounded-xl px-3 py-2 border border-gray-700 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        />
+      </div>
+      <div>
+        <label class="block text-sm mb-1 text-gray-400">End Date</label>
+        <input
+          type="date"
+          class="w-full rounded-xl px-3 py-2 border border-gray-700 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        />
+      </div>
+      <div class="flex items-end">
+        <button class="w-full py-2 rounded-xl text-white" style="background-color: var(--color-primary); hover:brightness(90%);">
+          Apply Filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="rounded-2xl p-4" style="background-color: var(--color-surface);">
+      <p class="text-sm text-gray-400">Total Musicians</p>
+      <h2 class="text-2xl font-bold">120</h2>
+    </div>
+    <div class="rounded-2xl p-4" style="background-color: var(--color-surface);">
+      <p class="text-sm text-gray-400">International</p>
+      <h2 class="text-2xl font-bold">45</h2>
+    </div>
+    <div class="rounded-2xl p-4" style="background-color: var(--color-surface);">
+      <p class="text-sm text-gray-400">Avg Salary</p>
+      <h2 class="text-2xl font-bold">$280</h2>
+    </div>
+    <div class="rounded-2xl p-4" style="background-color: var(--color-surface);">
+      <p class="text-sm text-gray-400">Avg Age</p>
+      <h2 class="text-2xl font-bold">32</h2>
+    </div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- A -->
+    <div class="rounded-2xl p-5" style="background-color: var(--color-surface);">
+      <h3 class="text-lg font-semibold mb-4">International Participation by Musician</h3>
+      <input
+        type="text"
+        placeholder="Enter musician name"
+        class="w-full rounded-xl px-3 py-2 mb-3 border border-gray-700 bg-transparent text-white"
+      />
+      <button class="px-4 py-2 rounded-xl text-white" style="background-color: var(--color-primary); hover:brightness(90%);">
+        Search
+      </button>
+    </div>
+
+    <!-- B -->
+    <div class="rounded-2xl p-5" style="background-color: var(--color-surface);">
+      <h3 class="text-lg font-semibold mb-4">Most Played Instruments</h3>
+      <button class="px-4 py-2 rounded-xl text-white" style="background-color: var(--color-accent); hover:brightness(90%);">
+        Generate Report
+      </button>
+      <div class="mt-4 text-gray-400">
+        Results will be displayed here
+      </div>
+    </div>
+
+    <!-- C -->
+    <div class="rounded-2xl p-5" style="background-color: var(--color-surface);">
+      <h3 class="text-lg font-semibold mb-4">Musicians by Instrument</h3>
+      <select class="w-full rounded-xl px-3 py-2 mb-3 border border-gray-700 bg-transparent text-white">
+        <option>Select instrument</option>
+        <option>Guitar</option>
+        <option>Piano</option>
+        <option>Drums</option>
+      </select>
+      <button class="px-4 py-2 rounded-xl text-white" style="background-color: var(--color-primary); hover:brightness(90%);">
+        Search
+      </button>
+    </div>
+
+    <!-- D -->
+    <div class="rounded-2xl p-5" style="background-color: var(--color-surface);">
+      <h3 class="text-lg font-semibold mb-4">International Salary Report</h3>
+      <button class="px-4 py-2 rounded-xl text-white" style="background-color: var(--color-accent); hover:brightness(90%);">
+        Generate Salary Report
+      </button>
+    </div>
+
+    <!-- E -->
+    <div class="rounded-2xl p-5" style="background-color: var(--color-surface);">
+      <h3 class="text-lg font-semibold mb-4">Average Musicians by 3 Instruments</h3>
+      <div class="space-y-2">
+        <select class="w-full rounded-xl px-3 py-2 border border-gray-700 bg-transparent text-white">
+          <option>Instrument 1</option>
+        </select>
+        <select class="w-full rounded-xl px-3 py-2 border border-gray-700 bg-transparent text-white">
+          <option>Instrument 2</option>
+        </select>
+        <select class="w-full rounded-xl px-3 py-2 border border-gray-700 bg-transparent text-white">
+          <option>Instrument 3</option>
+        </select>
+      </div>
+      <button class="mt-3 px-4 py-2 rounded-xl text-white" style="background-color: var(--color-primary); hover:brightness(90%);">
+        Calculate Average
+      </button>
+    </div>
+
+    <!-- F -->
+    <div class="rounded-2xl p-5" style="background-color: var(--color-surface);">
+      <h3 class="text-lg font-semibold mb-4">Average Age (Salary > 300)</h3>
+      <button class="px-4 py-2 rounded-xl text-white" style="background-color: var(--color-accent); hover:brightness(90%);">
+        Calculate
+      </button>
+    </div>
+
+    <!-- G -->
+    <div class="rounded-2xl p-5 lg:col-span-2" style="background-color: var(--color-surface);">
+      <h3 class="text-lg font-semibold mb-4">Musicians Over 30 Without International Events</h3>
+      <button class="px-4 py-2 rounded-xl text-white" style="background-color: var(--color-primary); hover:brightness(90%);">
+        Generate Report
+      </button>
+
+      <div class="overflow-x-auto mt-4">
+        <table class="min-w-full border border-gray-700 rounded-xl">
+          <thead class="bg-gray-800">
+            <tr>
+              <th class="text-left px-4 py-2 text-gray-400">Name</th>
+              <th class="text-left px-4 py-2 text-gray-400">Age</th>
+              <th class="text-left px-4 py-2 text-gray-400">Instrument</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="px-4 py-2">John Doe</td>
+              <td class="px-4 py-2">35</td>
+              <td class="px-4 py-2">Guitar</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
