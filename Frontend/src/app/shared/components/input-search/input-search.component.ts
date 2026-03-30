@@ -24,8 +24,8 @@ export class InputSearchComponent implements AfterViewInit {
     const inputSearch = this.inputSearch()?.nativeElement as HTMLInputElement;
     inputSearch.value = '';
     inputSearch.focus();
-     fromEvent(inputSearch, 'input')
-     .pipe(
+    fromEvent(inputSearch, 'input')
+      .pipe(
         map((event: Event) => {
           const value = (event.target as HTMLInputElement).value;
           this.inputHasValue.set(value.length > 0);
@@ -34,22 +34,28 @@ export class InputSearchComponent implements AfterViewInit {
           console.error(err);
           return EMPTY;
         })
-     ).subscribe();
+      ).subscribe();
   }
 
-  public clearSelection(){
+  public clearSelectionAndEmit(): void {
+    if(this.clearSelection())
+      this.clearClicked.emit();
+  }
+
+
+  public clearSelection(): boolean {
     const inputSearch = this.inputSearch()?.nativeElement as HTMLInputElement;
 
-    if(inputSearch && inputSearch.value)
-    {
+    if (inputSearch && inputSearch.value) {
       inputSearch.value = '';
       this.inputHasValue.set(false);
-      this.clearClicked.emit();
+      return true;
     }
+    return false;
   }
 
-  public doSearch(query: string){
-    if(!query) return;
+  public doSearch(query: string) {
+    if (!query) return;
     this.searchClicked.emit(query);
   }
 

@@ -141,7 +141,7 @@
               [isParentSearching]="isLoading()"
               [isReadOnlyMode]="!!dialogModalForm.get('id')?.value"
               (searchClicked)="dialogModalSearchClicked($event)"
-              (clearClicked)="dialogModalCleanClicked()"></input-search>
+              (clearClicked)="dialogModalCleanClicked()" #inputSearch />
             </div>
             <div class="flex flex-1 items-center justify-between gap-2 h-full w-full">
               <div class="flex-2 h-full">

@@ -36,6 +36,8 @@ export default class ActivityListComponent {
   private _validatorService = inject(ValidatorsService);
   private _toastService = inject(ToastrService);
   private _fb = inject(FormBuilder);
+  private inputSearch = viewChild<InputSearchComponent>('inputSearch');
+
   //#region Private Fields
   private _activityFilterQuery = signal<ActivityFilterQuery>({
     page: 1,
@@ -152,6 +154,7 @@ export default class ActivityListComponent {
     this.dialogModalForm.reset();
     this.musiciansFounded.set([]);
     this.musiciansSelected.set([]);
+    this.inputSearch()?.clearSelection();
     this.dialogModal()?.showModal();
   }
 
@@ -175,6 +178,7 @@ export default class ActivityListComponent {
     });
     this.musiciansFounded.set([]);
     this.musiciansSelected.set(activity.musicians.map(m => ({ id: m.id, text: m.text, checked: false } as CheckedItem)));
+    this.inputSearch()?.clearSelection();
     this.dialogModal()?.showModal();
   }
 
