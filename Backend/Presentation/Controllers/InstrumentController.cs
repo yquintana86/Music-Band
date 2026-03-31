@@ -5,12 +5,14 @@ using Application.Instrument.Commands.UpdateInstrument;
 using Application.Instrument.Queries.GetInstruments;
 using Application.Instrument.Queries.SearchInstrumentbyId;
 using Application.Instruments.Commands.DeleteManyInstrument;
+using Application.Instruments.Queries.GetMostUsedInstruments;
 using Application.Instruments.Queries.SearchInstrumentsByFilter;
 
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Presentation.Extension;
 
 namespace Presentation.Controllers;
@@ -52,6 +54,15 @@ public class InstrumentController : ControllerBase
         var result = await sender.Send(filterQuery, cancellationToken);
         return result.ToHttpResult();
     }
+
+    [HttpPost]
+    [Route("mostplayed")]
+    public async Task<IResult> GetMostPlayedInstrument([FromBody] GetMostUsedInstrumentQuery query, ISender sender, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(query, cancellationToken);
+        return result.ToHttpResult();
+    }
+
 
     #endregion
 

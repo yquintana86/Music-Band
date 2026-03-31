@@ -1,7 +1,9 @@
 ﻿using Application.Abstractions.Messaging;
 using Application.Abstractions.Repositories;
 using Domain.Exceptions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
+using Shared.Models.Musician;
 using SharedLib.Models.Common;
 
 namespace Application.Instruments.Queries.GetMostUsedInstruments;
@@ -28,7 +30,23 @@ internal sealed class GetMostUsedInstrumentQueryHandler : IQueryHandler<GetMostU
 
             var response = await _instrumentRepository.GetMostUsedInstrument(request.InstrumentQtyToSearch, cancellationToken);
 
-            return ApiOperationResult.Success<MostUsedInstrumentResponse>(new MostUsedInstrumentResponse(response));
+            var result = new Dictionary<string, IEnumerable<MusicianResponse>>();
+
+            foreach (var keyvalue in response)
+            {
+                result.Add(keyvalue.Key, keyvalue.Value.Select(m => new MusicianResponse
+                {
+                    Id = m.Id,
+                    Age = m.Age,
+                    BasicSalary = m.BasicSalary,
+                    Experience = m.Experience,
+                    FirstName = m.FirstName,
+                    LastName = m.LastName,
+                    MiddleName = m.MiddleName
+                }));
+            }
+
+            return ApiOperationResult.Success(new MostUsedInstrumentResponse(result));
 
         }
         catch (Exception ex)

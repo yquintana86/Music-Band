@@ -71,11 +71,12 @@ internal class InstrumentRepository : IInstrumentRepository
             .Select(g => new
             {
                 InstrumentName = g.Key,
-                Musicians = g.Select(m => m.Musician).DistinctBy(m => m.Id).ToList(),
+                Musicians = g.Select(m => m.Musician).Distinct(),
+                MusiciansCount = g.Select(m => m.MusicianId).Distinct().Count()
             })
-            .OrderByDescending(g => g.Musicians.Count)
+            .OrderByDescending(g => g.MusiciansCount)
             .Take(instrumentQtyToSearch ?? int.MaxValue)
-            .ToDictionaryAsync(d => d.InstrumentName, d => d.Musicians.AsEnumerable(), cancellationToken);
+            .ToDictionaryAsync(d => d.InstrumentName, d => d.Musicians.AsEnumerable(),cancellationToken);
 
         return response;
     }
