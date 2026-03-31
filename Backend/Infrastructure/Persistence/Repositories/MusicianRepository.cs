@@ -87,7 +87,7 @@ internal class MusicianRepository : IMusicianRepository
 
     public async Task<IEnumerable<Musician>> SearchNoInternationalMusicianOlderThanAge(int age, CancellationToken cancellationToken) =>
         await _appDbContext.Musicians
-            .Where(m => m.Age > age && m.Activities.All(a => a.International))
+            .Where(m => m.Age > age && !m.Activities.Any(a => a.International))
             .ToListAsync();
 
 

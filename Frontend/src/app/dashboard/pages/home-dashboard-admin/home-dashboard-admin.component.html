@@ -24,9 +24,12 @@
         <input type="date"
           class="w-full rounded-xl px-3 py-2 border border-gray-700 bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-(--color-primary)" />
       </div>
-      <div class="flex items-end">
+      <div class="flex items-end gap-2">
         <button class="w-full py-2 rounded-xl text-white hover:brightness(90%) bg-primary">
           Apply Filters
+        </button>
+        <button class="w-full py-2 rounded-xl text-white hover:brightness(90%) bg-white/10">
+          Clear Filters
         </button>
       </div>
     </div>
@@ -70,7 +73,7 @@
     <!-- B -->
     <div class="rounded-2xl p-5 bg-surface">
       <h3 class="text-lg font-semibold mb-4">Most Played Instruments</h3>
-      <button class="px-4 py-2 rounded-xl text-white bg-accent hover:brightness(90%)" (click)="refreshMostUsedInstrumentResponse()">
+      <button class="px-4 py-2 rounded-xl text-white bg-accent hover:brightness(90%)" (click)="getMostUsedInstrumentResponse()">
         Generate Report
       </button>
       <div class="mt-4 text-gray-400">
@@ -109,10 +112,16 @@
 
     <!-- D -->
     <div class="rounded-2xl p-5 bg-surface">
-      <h3 class="text-lg font-semibold mb-4">International Salary Report</h3>
-      <button class="px-4 py-2 rounded-xl text-white bg-accent hover:brightness(90%)">
+      <h3 class="text-lg font-semibold mb-4">Musicians Over 30 Without International Events</h3>
+      <button class="px-4 py-2 rounded-xl text-white bg-accent hover:brightness(90%)" (click)="getDomesticSeniorMusicians()">
         Generate Salary Report
       </button>
+      @if(!!domesticSeniorMusicians())
+      {
+      <div class="mt-4 ml-4 text-gray-400">
+        <h2 class="text-2xl font-semibold">{{ domesticSeniorMusicians() || 0 }}</h2>
+      </div>
+    }
     </div>
 
     <!-- E -->
@@ -143,8 +152,8 @@
     </div>
 
     <!-- G -->
-    <div class="rounded-2xl p-5 lg:col-span-2 " style="background-color: var(--color-surface);">
-      <h3 class="text-lg font-semibold mb-4">Musicians Over 30 Without International Events</h3>
+    <div class="rounded-2xl p-5 lg:col-span-2 bg-surface">
+      <h3 class="text-lg font-semibold mb-4">International Salary Report</h3>
       <button class="px-4 py-2 rounded-xl text-white bg-primary hover:brightness(90%)">
         Generate Report
       </button>

@@ -17,6 +17,7 @@ export default class HomeDashboardAdminComponent implements OnInit  {
   private readonly _toastrService = inject(ToastrService);
   public dashboardGenerics = signal<MusicianDashboardGenericsResponse | null>(null);
   public mostPlayedInstrument = signal<MostUsedInstrumentResponse | null>(null);
+  public domesticSeniorMusicians = signal<number | null>(null);
 
   mostPlayedInstrumentComputed = computed(() => {
     if(!this.mostPlayedInstrument())
@@ -37,7 +38,7 @@ export default class HomeDashboardAdminComponent implements OnInit  {
     })
   }
 
-  public refreshMostUsedInstrumentResponse(): void {
+  public getMostUsedInstrumentResponse(): void {
     this._dashboardService.getMostPlayedInstrument({InstrumentQtyToSearch: 3})
     .subscribe({
       next: (response) => {
@@ -46,6 +47,20 @@ export default class HomeDashboardAdminComponent implements OnInit  {
       error: (err) => {
         console.log(err);
         this.mostPlayedInstrument.set(null);
+        this._toastrService.error(ErrorUtilitiesClass.getErrorMessage(err), 'Error');
+      }
+    })
+  }
+
+  public getDomesticSeniorMusicians(): void{
+    this._dashboardService.searchDomesticSeniorMusiciansAsync()
+    .subscribe({
+      next: (response) => {
+        this.domesticSeniorMusicians.set(response);
+      },
+      error: (err) => {
+        console.log(err);
+        this.domesticSeniorMusicians.set(null);
         this._toastrService.error(ErrorUtilitiesClass.getErrorMessage(err), 'Error');
       }
     })
