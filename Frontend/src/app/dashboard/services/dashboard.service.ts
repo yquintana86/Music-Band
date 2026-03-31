@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { catchError, map, Observable, pipe, throwError } from 'rxjs';
 import { APIOperationResult } from '../../shared/interfaces';
-import { GetMostUsedInstrumentQuery, MostUsedInstrumentResponse, MusicianDashboardGenericsQuery, MusicianDashboardGenericsResponse } from '../interfaces';
+import { GetMostUsedInstrumentQuery, MostUsedInstrumentResponse, MusicianDashboardGenericsQuery, MusicianDashboardGenericsResponse, SearchDomesticSeniorMusiciansQuery } from '../interfaces';
 
 @Injectable({providedIn: 'root'})
 export class DashboardService {
@@ -30,6 +30,20 @@ export class DashboardService {
     const uri = `${this._baseUrl}/instrument/mostplayed/`;
 
     return this._httpClient.post<APIOperationResult<MostUsedInstrumentResponse>>(uri, query)
+    .pipe(
+      map(response => response.data!),
+      catchError(err => {
+        console.log(err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  public searchDomesticSeniorMusiciansAsync(query: SearchDomesticSeniorMusiciansQuery = {age: 30}): Observable<number>
+  {
+    const uri = `${this._baseUrl}/musician/domesticbyage`;
+
+    return this._httpClient.post<APIOperationResult<number>>(uri, query)
     .pipe(
       map(response => response.data!),
       catchError(err => {
