@@ -170,4 +170,36 @@ internal class MusicianRepository : IMusicianRepository
         return await query.ToQuickPageList(p => p.Id, filter.Page, filter.PageSize, filter.RequestCount, cancellationToken);
 
     }
+
+    public async Task<MusicianDashboardGenerics> GetMusicianDashboardGenericsAsync(DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken)
+    {
+        IQueryable<Musician> query = from musician in _appDbContext.Musicians.AsNoTracking()
+                                     select musician;
+
+        //if (startDate.HasValue)
+        //{
+        //    query = query.Where(m => m.startDate >= startDate.Value);
+        //}
+        //if (endDate.HasValue)
+        //{
+        //    query = query.Where(m => m.endDate <= endDate.Value);
+        //}
+
+        var result = await query.Select(m => new
+        {
+            isInternational = m.Activities.Any(a => a.International) ? 1 : 0,
+            age = m.Age,
+            salaries = m.MusicianPaymentDetails.Where(p => p.Id == m.Id).Select(p => p.Salary),
+        }).ToListAsync();
+
+
+        return new MusicianDashboardGenerics
+        {
+            musicianQty = result.Count,
+            internationalQty = !result.Any() ? 0 : result.Sum(r => r.isInternational),
+            ageAvg = !result.Any(r => r.age > 15) ? 0 : (decimal)result.Average(r => r.age),
+            salaryAvg = !result.Any(r => r.salaries.Any()) ? 0 : (double)result.SelectMany(r => r.salaries).Average(),
+        };
+    
+    }
 }
