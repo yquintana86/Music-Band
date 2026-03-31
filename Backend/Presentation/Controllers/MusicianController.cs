@@ -12,6 +12,7 @@ using Presentation.Extension;
 using Application.Musicians.Query.GetMusicianAverageByPlayedInstrumentsType;
 using Application.Musicians.Query.SearchDomesticSeniorMusicians;
 using Application.Musicians.Command.DeleteManyMusician;
+using Application.Musicians.Query.MusicianDashboardGenerics;
 
 namespace Presentation.Controllers;
 
@@ -114,6 +115,15 @@ public class MusicianController : ControllerBase
     public async Task<IResult> SearchDomesticSeniorMusiciansAsync([FromBody] SearchDomesticSeniorMusiciansQuery query, ISender sender, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);
+        return result.ToHttpResult();
+    }
+
+    [HttpPost]
+    [Route("dashboardgenerics")]
+    public async Task<IResult> GetMusicianDashboardGenericsAsync([FromBody] MusicianDashboardGenericsQuery query, ISender sender, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(query, cancellationToken);
+
         return result.ToHttpResult();
     }
 
