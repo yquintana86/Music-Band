@@ -60,6 +60,24 @@ internal class InstrumentRepository : IInstrumentRepository
         .Where(filter)
         .ToListAsync(cancellationToken);
 
+    public async Task<IEnumerable<SelectItem>> GetDisctinctAsync(CancellationToken cancellationToken) =>
+        await _appDbContext.Instruments.AsNoTracking()
+                                        .GroupBy(i => i.Id)
+                                        .Select(i => new SelectItem
+                                        {
+                                            Id = i.Key.ToString(),
+                                            Text = i.First().Name,
+                                        })
+                                        .ToListAsync(cancellationToken);
+
+    public async Task<IEnumerable<Musician>> GetMusiciansByInstrumentIdAsync(int instrumentId, CancellationToken cancellationToken = default)
+    {
+        return await _appDbContext.Instruments.AsNoTracking()
+            .Where(i => i.Id == instrumentId)
+            .Select(i => i.Musician)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<MusicalInstrument?> GetByIdAsync(int id, CancellationToken cancellationToken = default) =>
         await _appDbContext.Instruments.FindAsync(id);
 

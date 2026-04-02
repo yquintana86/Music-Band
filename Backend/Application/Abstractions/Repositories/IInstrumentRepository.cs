@@ -8,6 +8,8 @@ namespace Application.Abstractions.Repositories;
 public interface IInstrumentRepository
 {
     Task<IEnumerable<MusicalInstrument>> GetAllAsync(Expression<Func<MusicalInstrument, bool>> filter, CancellationToken cancellationToken = default);
+    Task<IEnumerable<SelectItem>> GetDisctinctAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<Musician>> GetMusiciansByInstrumentIdAsync(int instrumentId, CancellationToken cancellationToken = default);
     Task<PagedResult<MusicalInstrument>> SearchByFilterAsync(SearchInstrumentsByFilterQuery filter, CancellationToken cancellationToken = default);
     Task<MusicalInstrument?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
     Task<bool> ExistByIdAsync(int id, CancellationToken cancellationToken = default);

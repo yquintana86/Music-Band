@@ -4,6 +4,8 @@ import { environment } from '../../../environments/environment.development';
 import { catchError, map, Observable, pipe, throwError } from 'rxjs';
 import { APIOperationResult } from '../../shared/interfaces';
 import { GetMostUsedInstrumentQuery, MostUsedInstrumentResponse, MusicianDashboardGenericsQuery, MusicianDashboardGenericsResponse, SearchDomesticSeniorMusiciansQuery } from '../interfaces';
+import { SelectItem } from '../../shared/interfaces/dto-with-id.interface';
+import { MusicianResponse } from '../../musician/interfaces';
 
 @Injectable({providedIn: 'root'})
 export class DashboardService {
@@ -51,6 +53,28 @@ export class DashboardService {
         return throwError(() => err);
       })
     );
+  }
+
+  public getDisctinctInstruments(): Observable<SelectItem[]>
+  {
+    const uri = `${this._baseUrl}/instrument/disctinct`
+
+    return this._httpClient.get<APIOperationResult<SelectItem[]>>(uri)
+    .pipe(
+      map(response => response.data!),
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  public getMusicianByInstrument(instrumentId: number): Observable<MusicianResponse[]>
+  {
+    const uri = `${this._baseUrl}/instrument/musiciansbyinstrument`;
+
+    return this._httpClient.post<APIOperationResult<MusicianResponse[]>>(uri, instrumentId)
+    .pipe(
+      map(response => response.data!),
+      catchError(err => throwError(() => err))
+    )
   }
 
 }
