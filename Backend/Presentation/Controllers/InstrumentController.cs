@@ -5,6 +5,8 @@ using Application.Instrument.Commands.UpdateInstrument;
 using Application.Instrument.Queries.GetInstruments;
 using Application.Instrument.Queries.SearchInstrumentbyId;
 using Application.Instruments.Commands.DeleteManyInstrument;
+using Application.Instruments.GetMusiciansByInstrument;
+using Application.Instruments.Queries.GetDisctinctInstruments;
 using Application.Instruments.Queries.GetMostUsedInstruments;
 using Application.Instruments.Queries.SearchInstrumentsByFilter;
 
@@ -60,6 +62,24 @@ public class InstrumentController : ControllerBase
     public async Task<IResult> GetMostPlayedInstrument([FromBody] GetMostUsedInstrumentQuery query, ISender sender, CancellationToken cancellationToken)
     {
         var result = await sender.Send(query, cancellationToken);
+        return result.ToHttpResult();
+    }
+
+    [HttpGet]
+    [Route("disctinct")]
+    public async Task<IResult> GetDisctinctInstrumentsQueryAsync(ISender sender, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new DisctinctInstrumentsQuery(), cancellationToken);
+
+        return result.ToHttpResult();
+    }
+
+    [HttpPost]
+    [Route("musiciansbyinstrument")]
+    public async Task<IResult> GetMusiciansByInstrumentAsync([FromBody] int instrumentId, ISender sender, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new MusiciansByInstrumentQuery(instrumentId), cancellationToken);
+        
         return result.ToHttpResult();
     }
 
