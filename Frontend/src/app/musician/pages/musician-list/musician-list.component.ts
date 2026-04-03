@@ -16,7 +16,7 @@ import { map, startWith, tap } from 'rxjs';
 import { ItemsPerPageComponent } from "../../../shared/components/items-per-page/items-per-page.component";
 import { PagerComponent } from "../../../shared/components/pager/pager.component";
 import { toSignal } from '@angular/core/rxjs-interop';
-import { IntrumentService } from '../../../instrument/services/intrument.service';
+import { InstrumentService } from '../../../instrument/services/instrument.service';
 import { DtoWithId, SelectItem } from '../../../shared/interfaces';
 import { InstrumentResponse } from '../../../instrument/interfaces';
 import { environment } from '../../../../environments/environment.development';
@@ -33,7 +33,7 @@ export default class MusicianList  {
   //#region Private Properties
 
   private readonly _musicianService = inject(MusicianService);
-  private readonly _instrumentService = inject(IntrumentService);
+  private readonly _instrumentService = inject(InstrumentService);
   private readonly _fb = inject(FormBuilder);
   private readonly _validatorService = inject(ValidatorsService);
   private readonly _toastService = inject(ToastrService);

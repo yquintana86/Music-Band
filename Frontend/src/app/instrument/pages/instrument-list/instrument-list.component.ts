@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal, untracked, viewChild, Writ
 import { FormBuilder, ReactiveFormsModule, Validators, FormControlStatus } from '@angular/forms';
 import { InstrumentFilterQuery, InstrumentResponse, InstrumentType, UpdateInstrumentCommand } from '../../interfaces';
 import { FilterLayoutComponent } from '../../../shared/components/filter-layout/filter-layout.component';
-import { IntrumentService } from '../../services/intrument.service';
+import { InstrumentService } from '../../services/instrument.service';
 import { DtoWithId, PagedResult, SelectItem } from '../../../shared/interfaces';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.class';
@@ -46,7 +46,7 @@ export default class InstrumentListComponent {
   });
 
   //#region private fields
-  private readonly _instrumentService = inject(IntrumentService);
+  private readonly _instrumentService = inject(InstrumentService);
   private readonly _toastService = inject(ToastrService);
   private readonly dialogModal = viewChild<DialogModalComponent>('dialogModalComponent');
   private readonly promptModal = viewChild<DialogModalComponent>('promptModalComponent');
