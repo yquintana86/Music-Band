@@ -86,7 +86,18 @@ export class DashboardService {
       map(response => response.data!),
       catchError(err => throwError(() => err))
     );
-
   }
+
+  public getMusicianAverageByInstruments(instrumentIds: number[]): Observable<number>
+  {
+    const uri = `${this._baseUrl}/musician/averagebyinstrument`;
+
+    return this._httpClient.post<APIOperationResult<number>>(uri, {instrumentIds})
+    .pipe(
+      map(response => response.data!),
+      catchError(err => throwError(() => err))
+    )
+  }
+
 
 }
