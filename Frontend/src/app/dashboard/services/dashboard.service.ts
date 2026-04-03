@@ -13,7 +13,7 @@ export class DashboardService {
   private readonly _httpClient = inject(HttpClient);
   private readonly _baseUrl: string = `${environment.API_BASE_URL}/api`;
 
-  public getMusicianDashboardGenerics(query: MusicianDashboardGenericsQuery): Observable<MusicianDashboardGenericsResponse>
+  public getMusicianDashboardSummary(query: MusicianDashboardGenericsQuery): Observable<MusicianDashboardGenericsResponse>
   {
     const uri = `${this._baseUrl}/musician/dashboardgenerics`;
     debugger;
@@ -26,78 +26,5 @@ export class DashboardService {
       })
     );
   }
-
-  public getMostPlayedInstrument(query: GetMostUsedInstrumentQuery = {InstrumentQtyToSearch: 3}): Observable<MostUsedInstrumentResponse>
-  {
-    const uri = `${this._baseUrl}/instrument/mostplayed/`;
-
-    return this._httpClient.post<APIOperationResult<MostUsedInstrumentResponse>>(uri, query)
-    .pipe(
-      map(response => response.data!),
-      catchError(err => {
-        console.log(err);
-        return throwError(() => err);
-      })
-    );
-  }
-
-  public searchDomesticSeniorMusiciansAsync(query: SearchDomesticSeniorMusiciansQuery = {age: 30}): Observable<number>
-  {
-    const uri = `${this._baseUrl}/musician/domesticbyage`;
-
-    return this._httpClient.post<APIOperationResult<number>>(uri, query)
-    .pipe(
-      map(response => response.data!),
-      catchError(err => {
-        console.log(err);
-        return throwError(() => err);
-      })
-    );
-  }
-
-  public getDisctinctInstruments(): Observable<SelectItem[]>
-  {
-    const uri = `${this._baseUrl}/instrument/disctinct`
-
-    return this._httpClient.get<APIOperationResult<SelectItem[]>>(uri)
-    .pipe(
-      map(response => response.data!),
-      catchError(err => throwError(() => err))
-    );
-  }
-
-  public getMusicianByInstrument(instrumentId: number): Observable<MusicianResponse[]>
-  {
-    const uri = `${this._baseUrl}/instrument/musiciansbyinstrument`;
-
-    return this._httpClient.post<APIOperationResult<MusicianResponse[]>>(uri, instrumentId)
-    .pipe(
-      map(response => response.data!),
-      catchError(err => throwError(() => err))
-    )
-  }
-
-  public getInternationalActivitiesByMusician(id: number): Observable<number>
-  {
-    const uri = `${this._baseUrl}/musician/internationalqty/${id}`;
-
-    return this._httpClient.get<APIOperationResult<number>>(uri)
-    .pipe(
-      map(response => response.data!),
-      catchError(err => throwError(() => err))
-    );
-  }
-
-  public getMusicianAverageByInstruments(instrumentIds: number[]): Observable<number>
-  {
-    const uri = `${this._baseUrl}/musician/averagebyinstrument`;
-
-    return this._httpClient.post<APIOperationResult<number>>(uri, {instrumentIds})
-    .pipe(
-      map(response => response.data!),
-      catchError(err => throwError(() => err))
-    )
-  }
-
 
 }

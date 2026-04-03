@@ -2,13 +2,15 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { APIOperationResult, APIOperationResultBase, PagedResult } from '../../shared/interfaces';
+import { APIOperationResult, APIOperationResultBase, PagedResult, SelectItem } from '../../shared/interfaces';
 import { InstrumentFilterQuery, UpdateInstrumentCommand, InstrumentResponse, CreateInstrumentCommand } from '../interfaces';
+import { GetMostUsedInstrumentQuery, MostUsedInstrumentResponse } from '../../dashboard/interfaces';
+import { MusicianResponse } from '../../musician/interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
-export class IntrumentService {
+export class InstrumentService {
 
   #baseUrl = `${environment.API_BASE_URL}/api/instrument`;
   _httpClient = inject(HttpClient);
@@ -76,6 +78,42 @@ export class IntrumentService {
     return this._httpClient.post<APIOperationResultBase>(uri, ids)
     .pipe(
       map(response => response.isSuccess),
+      catchError(err => throwError(() => err))
+    )
+  }
+
+  public getMostPlayedInstrument(query: GetMostUsedInstrumentQuery = {InstrumentQtyToSearch: 3}): Observable<MostUsedInstrumentResponse>
+    {
+      const uri = `${this.#baseUrl}/instrument/mostplayed/`;
+
+      return this._httpClient.post<APIOperationResult<MostUsedInstrumentResponse>>(uri, query)
+      .pipe(
+        map(response => response.data!),
+        catchError(err => {
+          console.log(err);
+          return throwError(() => err);
+        })
+      );
+    }
+
+     public getDisctinctInstruments(): Observable<SelectItem[]>
+  {
+    const uri = `${this.#baseUrl}/instrument/disctinct`
+
+    return this._httpClient.get<APIOperationResult<SelectItem[]>>(uri)
+    .pipe(
+      map(response => response.data!),
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  public getMusicianByInstrument(instrumentId: number): Observable<MusicianResponse[]>
+  {
+    const uri = `${this.#baseUrl}/instrument/musiciansbyinstrument`;
+
+    return this._httpClient.post<APIOperationResult<MusicianResponse[]>>(uri, instrumentId)
+    .pipe(
+      map(response => response.data!),
       catchError(err => throwError(() => err))
     )
   }

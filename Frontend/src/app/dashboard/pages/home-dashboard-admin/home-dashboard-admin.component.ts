@@ -13,6 +13,7 @@ import { InputSearchSelectorComponent } from "../../../shared/components/input-s
 import { environment } from '../../../../environments/environment.development';
 import { FormsModule } from '@angular/forms';
 import { AverageByInstrumentsQuery } from '../../../musician/interfaces/average-by-intrument-query.interface';
+import { InstrumentService } from '../../../instrument/services/instrument.service';
 
 @Component({
   selector: 'app-general-dashboard-admin',
@@ -24,6 +25,7 @@ export default class HomeDashboardAdminComponent implements OnInit, AfterViewIni
 
   private readonly _dashboardService = inject(DashboardService);
   private readonly _musicianService = inject(MusicianService);
+  private readonly _instrumentService = inject(InstrumentService);
   private readonly _toastrService = inject(ToastrService);
   public dashboardGenerics = signal<MusicianDashboardGenericsResponse | null>(null);
   public mostPlayedInstrument = signal<MostUsedInstrumentResponse | null>(null);
@@ -87,8 +89,8 @@ export default class HomeDashboardAdminComponent implements OnInit, AfterViewIni
   }
   ngOnInit(): void {
 
-    var disctinct = this._dashboardService.getDisctinctInstruments();
-    var MusicianDashboardGenerics = this._dashboardService.getMusicianDashboardGenerics({ startDate: undefined, endDate: undefined })
+    var disctinct = this._instrumentService.getDisctinctInstruments();
+    var MusicianDashboardGenerics = this._dashboardService.getMusicianDashboardSummary({ startDate: undefined, endDate: undefined })
 
     forkJoin([disctinct, MusicianDashboardGenerics]).subscribe({
       next: ([disctinctResponse, MusicianDashboardGenericsResponse]) => {
@@ -123,7 +125,7 @@ export default class HomeDashboardAdminComponent implements OnInit, AfterViewIni
 
     const averages = [this.averageInstrument1(), this.averageInstrument2(), this.averageInstrument3()];
 
-    this._dashboardService.getMusicianAverageByInstruments(averages.filter(id => id !== null) as number[])
+    this._musicianService.getMusicianAverageByInstruments(averages.filter(id => id !== null) as number[])
     .subscribe({
       next: (response) => {
         this.averageInstruments.set(response);
@@ -148,7 +150,7 @@ export default class HomeDashboardAdminComponent implements OnInit, AfterViewIni
       return;
     }
 
-    this._dashboardService.getInternationalActivitiesByMusician(musicianId)
+    this._musicianService.getInternationalActivitiesByMusician(musicianId)
       .subscribe({
         next: (response) => {
           this.InternationalActivitiesByMusician.set(response);
@@ -162,7 +164,7 @@ export default class HomeDashboardAdminComponent implements OnInit, AfterViewIni
   }
 
   public getMostUsedInstrumentResponse(): void {
-    this._dashboardService.getMostPlayedInstrument({ InstrumentQtyToSearch: 3 })
+    this._instrumentService.getMostPlayedInstrument({ InstrumentQtyToSearch: 3 })
       .subscribe({
         next: (response) => {
           this.mostPlayedInstrument.set(response);
@@ -176,7 +178,7 @@ export default class HomeDashboardAdminComponent implements OnInit, AfterViewIni
   }
 
   public getDomesticSeniorMusicians(): void {
-    this._dashboardService.searchDomesticSeniorMusiciansAsync()
+    this._musicianService.searchDomesticSeniorMusiciansAsync()
       .subscribe({
         next: (response) => {
           this.domesticSeniorMusicians.set(response);
@@ -196,7 +198,7 @@ export default class HomeDashboardAdminComponent implements OnInit, AfterViewIni
       this._toastrService.error('Please select a valid instrument', 'Error');
       return;
     }
-    this._dashboardService.getMusicianByInstrument(Nu)
+    this._instrumentService.getMusicianByInstrument(Nu)
       .subscribe({
         next: (response) => {
           this.musiciansByInstrument.set(response);

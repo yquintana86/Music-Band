@@ -6,6 +6,7 @@ import { catchError, map, Observable, throwError } from 'rxjs';
 import { AverageByInstrumentsQuery, CreateMusicianCommand, MusicianResponse, SearchMusicianByFilterQuery, UpdateMusicianCommand } from '../interfaces';
 import { APIOperationResult, APIOperationResultBase, PagedResult } from '../../shared/interfaces';
 import { environment } from '../../../environments/environment.development';
+import { SearchDomesticSeniorMusiciansQuery } from '../../dashboard/interfaces';
 
 
 @Injectable({
@@ -130,6 +131,44 @@ public deleteManyMusician(ids: number[]): Observable<boolean>{
     catchError((err) => throwError(() => err))
   )
 }
+
+ public searchDomesticSeniorMusiciansAsync(query: SearchDomesticSeniorMusiciansQuery = {age: 30}): Observable<number>
+  {
+    const uri = `${this.baseApiUrl}/musician/domesticbyage`;
+
+    return this.#httpclient.post<APIOperationResult<number>>(uri, query)
+    .pipe(
+      map(response => response.data!),
+      catchError(err => {
+        console.log(err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+
+
+  public getInternationalActivitiesByMusician(id: number): Observable<number>
+  {
+    const uri = `${this.baseApiUrl}/musician/internationalqty/${id}`;
+
+    return this.#httpclient.get<APIOperationResult<number>>(uri)
+    .pipe(
+      map(response => response.data!),
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  public getMusicianAverageByInstruments(instrumentIds: number[]): Observable<number>
+  {
+    const uri = `${this.baseApiUrl}/musician/averagebyinstrument`;
+
+    return this.#httpclient.post<APIOperationResult<number>>(uri, {instrumentIds})
+    .pipe(
+      map(response => response.data!),
+      catchError(err => throwError(() => err))
+    )
+  }
 
 //#endregion
 }
