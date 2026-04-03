@@ -63,11 +63,24 @@
     <!-- A -->
     <div class="rounded-2xl p-5 bg-surface">
       <h3 class="text-lg font-semibold mb-4">International Participation by Musician</h3>
-      <input type="text" placeholder="Enter musician name"
-        class="w-full rounded-xl px-3 py-2 mb-3 border border-gray-700 bg-transparent text-white" />
-      <button class="px-4 py-2 rounded-xl text-white bg-primary hover:brightness(90%)">
-        Search
-      </button>
+      <div class="flex items-center gap-2">
+        <input-search-selector class="w-[70%]" [initialDto]="initialDto()" [callBackShowFieldValueFn]="callBackShowFieldValueFn"
+          [callBackGetFilterFn]="callBackGetFilterFn" [searchPostUri]="searchPostUri"
+          (elementSelected)="setMusicianId($event)" (elementCleared)="setMusicianId(null)">
+        </input-search-selector>
+        <div class="w-[10%]">
+        <button class="px-4 py-2 rounded-xl text-white bg-primary hover:brightness(90%)"
+          (click)="getInternationalParticipationByMusician()">
+          <i class="fa-solid fa-equals"></i>
+        </button>
+      </div>
+        <div class="text-white w-[20%]">
+          @if(internationalMusicianId() && InternationalActivitiesByMusician() !== null)
+          {
+            <p class="font-semibold text-3xl text-right"> {{ InternationalActivitiesByMusician() ? InternationalActivitiesByMusician() : 0 }}</p>
+          }
+        </div>
+      </div>
     </div>
 
     <!-- B -->
@@ -134,17 +147,20 @@
     <!-- E -->
     <div class="rounded-2xl p-5 lg:col-span-2 bg-surface">
       <h3 class="text-lg font-semibold mb-4">Musicians by Instrument</h3>
-      <select class="select w-full rounded-xl px-3 py-2 mb-3 border border-gray-700 bg-transparent text-white" #instrumentByMusicianSelect>
+      <select class="select w-full rounded-xl px-3 py-2 mb-3 border border-gray-700 bg-transparent text-white"
+        #instrumentByMusicianSelect>
         <option value="">Select instrument</option>
         @for (instrument of selectableInstruments(); track instrument.id) {
-          <option class="bg-gray-600 text-primary rounded-none hover:bg-gray-700 "
-          [ngClass]="{'rounded-t-2xl': $first, 'rounded-b-2xl': $last }"
-          [value]="instrument.id">{{ instrument.text }}</option>
+        <option class="bg-gray-600 text-primary rounded-none hover:bg-gray-700 "
+          [ngClass]="{'rounded-t-2xl': $first, 'rounded-b-2xl': $last }" [value]="instrument.id">{{ instrument.text
+          }}
+        </option>
         }
       </select>
-      <button class="px-4 py-2 rounded-xl text-white bg-primary hover:brightness(90%) hover:cursor-pointer disabled:opacity-50"
-      [disabled]="!instrumentByMusicianSelectValue()"
-      (click)="getMusiciansByInstrument(instrumentByMusicianSelectValue())">
+      <button
+        class="px-4 py-2 rounded-xl text-white bg-primary hover:brightness(90%) hover:cursor-pointer disabled:opacity-50"
+        [disabled]="!instrumentByMusicianSelectValue()"
+        (click)="getMusiciansByInstrument(instrumentByMusicianSelectValue())">
         Generate Report
       </button>
 
@@ -164,7 +180,7 @@
               <td class="px-4 py-2">{{musician.age}}</td>
               <td class="px-4 py-2">{{musician.experience}}</td>
             </tr>
-          }
+            }
           </tbody>
         </table>
       </div>

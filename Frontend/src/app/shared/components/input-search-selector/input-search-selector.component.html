@@ -4,8 +4,8 @@
     <div
       class="flex items-center justify-center bg-white/10 input border border-(--color-surface) border-r-0 rounded-l-2xl rounded-r-none
       w-10 h-10 focus-within:outline-none focus:ring-0">
-      <span role="button" class="btn btn-link no-underline p-0 min-h-0 h-auto" title="Clear Selection" (click)="clearSelection()">
-        <i [class.hidden]="xHidden()" class="fa-solid fa-xmark text-gray-400 hover:text-primary hover:p-0 hover:scale-130 hover:ease-in hover:duration-150 hover:transition"></i>
+      <span role="button" class="btn btn-link no-underline p-0 min-h-0 h-auto" [class.hidden]="xHidden()" title="Clear Selection" (click)="clearSelection()">
+        <i class="fa-solid fa-xmark text-gray-400 hover:text-primary hover:p-0 hover:scale-130 hover:ease-in hover:duration-150 hover:transition"></i>
       </span>
     </div>
 
