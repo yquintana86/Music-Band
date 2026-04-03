@@ -13,6 +13,7 @@ using Application.Musicians.Query.GetMusicianAverageByPlayedInstrumentsType;
 using Application.Musicians.Query.SearchDomesticSeniorMusicians;
 using Application.Musicians.Command.DeleteManyMusician;
 using Application.Musicians.Query.MusicianDashboardGenerics;
+using Application.Musicians.Query.IternationalActivitiesByMusician;
 
 namespace Presentation.Controllers;
 
@@ -126,6 +127,16 @@ public class MusicianController : ControllerBase
 
         return result.ToHttpResult();
     }
+
+    [HttpGet]
+    [Route("internationalqty/{id:int}")]
+    public async Task<IResult> GetInternationalActivitiesByMusicianAsync(int id, ISender sender, CancellationToken cancellationToken)
+    {
+        var result = await sender.Send(new InternationalActivitiesByMusicianQuery(id), cancellationToken);
+
+        return result.ToHttpResult();
+    }
+
 
 
     #endregion

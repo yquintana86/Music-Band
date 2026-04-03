@@ -77,4 +77,16 @@ export class DashboardService {
     )
   }
 
+  public getInternationalActivitiesByMusician(id: number): Observable<number>
+  {
+    const uri = `${this._baseUrl}/musician/internationalqty/${id}`;
+
+    return this._httpClient.get<APIOperationResult<number>>(uri)
+    .pipe(
+      map(response => response.data!),
+      catchError(err => throwError(() => err))
+    );
+
+  }
+
 }
