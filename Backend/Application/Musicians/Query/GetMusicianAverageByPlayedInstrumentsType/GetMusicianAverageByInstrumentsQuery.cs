@@ -3,4 +3,4 @@ using Shared.Common;
 
 namespace Application.Musicians.Query.GetMusicianAverageByPlayedInstrumentsType;
 
-public sealed record GetMusicianAverageByInstrumentsQuery(IEnumerable<int> instrumentIds, InstrumentType InstrumentType) : IQuery<decimal>;
+public sealed record GetMusicianAverageByInstrumentsQuery(IEnumerable<int> instrumentIds) : IQuery<decimal>;

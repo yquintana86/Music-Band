@@ -29,19 +29,15 @@ internal sealed class GetMusicianAverageByInstrumentsQueryHandler : IQueryHandle
                 return ApiOperationResult.Fail<decimal>(MusicianError.InvalidId(0));
             }
 
-            if (Enum.TryParse<InstrumentType>(request.InstrumentType.ToString(), out var instrumentType))
-            {
-                return ApiOperationResult.Fail<decimal>(InstrumentError.InvalidType());
-            }
             var instrumentsDb = await _instrumentRepository.GetAllAsync(i => request.instrumentIds.Contains(i.Id), cancellationToken);
 
-            if (instrumentsDb is null || instrumentsDb.Count() != request.instrumentIds.Count() || instrumentsDb.Any(i => i.Type != request.InstrumentType))
+            if (instrumentsDb is null || !instrumentsDb.Any())
             {
                 return ApiOperationResult.Fail<decimal>(InstrumentError.NotFound());
             }
 
-            var average = await _musicianRepository.GetMusicianAverageByPlayedInstrumentsTypeAsync(request.instrumentIds, cancellationToken);
-            return ApiOperationResult.Success<decimal>(average);
+            var average = await _musicianRepository.GetMusicianAverageByPlayedInstrumentsTypeAsync(request.instrumentIds.Distinct(), cancellationToken);
+            return ApiOperationResult.Success(average);
         }
         catch (Exception ex)
         {

@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, computed, ElementRef, inject, OnInit, signal, untracked, ViewChild, viewChild } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
 import { MostUsedInstrumentResponse, MusicianDashboardGenericsResponse } from '../../interfaces';
-import { CurrencyPipe, DecimalPipe, NgClass } from '@angular/common';
+import { CommonModule, CurrencyPipe, DecimalPipe, NgClass } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.class';
 import { DtoWithId, SelectItem } from '../../../shared/interfaces';
@@ -11,10 +11,12 @@ import { InputSearchComponent } from "../../../shared/components/input-search/in
 import { MusicianService } from '../../../musician/services/musician.service';
 import { InputSearchSelectorComponent } from "../../../shared/components/input-search-selector/input-search-selector.component";
 import { environment } from '../../../../environments/environment.development';
+import { FormsModule } from '@angular/forms';
+import { AverageByInstrumentsQuery } from '../../../musician/interfaces/average-by-intrument-query.interface';
 
 @Component({
   selector: 'app-general-dashboard-admin',
-  imports: [DecimalPipe, CurrencyPipe, NgClass, InputSearchSelectorComponent],
+  imports: [DecimalPipe, CurrencyPipe, NgClass, InputSearchSelectorComponent, FormsModule],
   templateUrl: './home-dashboard-admin.component.html',
   styleUrl: './home-dashboard-admin.component.css',
 })
@@ -34,6 +36,11 @@ export default class HomeDashboardAdminComponent implements OnInit, AfterViewIni
   public musiciansFounded = signal<SelectItem[]>([]);
   public internationalMusicianId = signal<number | null>(null);
   public InternationalActivitiesByMusician = signal<number | null>(null);
+
+  public averageInstrument1 = signal<number | null>(null);
+  public averageInstrument2 = signal<number | null>(null);
+  public averageInstrument3 = signal<number | null>(null);
+  public averageInstruments = signal<number | null>(null);
 
 
   public initialDto = signal<SelectItem | null>(null);
@@ -94,6 +101,42 @@ export default class HomeDashboardAdminComponent implements OnInit, AfterViewIni
       }
     })
   }
+
+  public setAverageInstrument1(id: string | null) {
+    this.averageInstrument1.set(!id ? null : parseInt(id));
+  }
+  public setAverageInstrument2(id: string | null) {
+    this.averageInstrument2.set(!id ? null : parseInt(id));
+  }
+  public setAverageInstrument3(id: string | null) {
+    this.averageInstrument3.set(!id ? null : parseInt(id));
+  }
+
+  public getAverageMusiciansByInstrument()
+  {
+    if(!this.averageInstrument1() && !this.averageInstrument2() && !this.averageInstrument3())
+    {
+      this._toastrService.error('Please select an instrument', 'Error');
+      this.averageInstruments.set(null);
+      return;
+    }
+
+    const averages = [this.averageInstrument1(), this.averageInstrument2(), this.averageInstrument3()];
+
+    this._dashboardService.getMusicianAverageByInstruments(averages.filter(id => id !== null) as number[])
+    .subscribe({
+      next: (response) => {
+        this.averageInstruments.set(response);
+      },
+      error: (err) => {
+        console.log(err);
+        this.averageInstruments.set(null);
+        this._toastrService.error(ErrorUtilitiesClass.getErrorMessage(err), 'Error');
+      }
+    })
+
+  }
+
 
   public getInternationalParticipationByMusician(): void{
 
