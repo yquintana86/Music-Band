@@ -162,7 +162,6 @@ public deleteManyMusician(ids: number[]): Observable<boolean>{
   public getMusicianAverageByInstruments(instrumentIds: number[]): Observable<number>
   {
     const uri = `${this.baseApiUrl}/averagebyinstrument`;
-
     return this.#httpclient.post<APIOperationResult<number>>(uri, {instrumentIds})
     .pipe(
       map(response => response.data!),

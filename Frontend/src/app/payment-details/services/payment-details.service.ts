@@ -29,7 +29,6 @@ export class PaymentDetailService {
   public createPaymentDetail(command: CreatePaymentDetailCommand): Observable<boolean>
   {
     const uri = `${this.baseUrl}/create`;
-    debugger;
     return this._httpClient.post<APIOperationResultBase>(uri, command)
     .pipe(
       map(response => response.isSuccess),

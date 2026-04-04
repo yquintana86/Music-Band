@@ -126,7 +126,7 @@ export default class HomeDashboardAdminComponent implements OnInit, AfterViewIni
 
     const averages = [this.averageInstrument1(), this.averageInstrument2(), this.averageInstrument3()];
 
-    this._musicianService.getMusicianAverageByInstruments(averages.filter(id => id !== null) as number[])
+    this._musicianService.getMusicianAverageByInstruments(averages.filter(id => !!id) as number[])
     .subscribe({
       next: (response) => {
         this.averageInstruments.set(response);
