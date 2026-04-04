@@ -134,7 +134,7 @@ public deleteManyMusician(ids: number[]): Observable<boolean>{
 
  public searchDomesticSeniorMusiciansAsync(query: SearchDomesticSeniorMusiciansQuery = {age: 30}): Observable<number>
   {
-    const uri = `${this.baseApiUrl}/musician/domesticbyage`;
+    const uri = `${this.baseApiUrl}/domesticbyage`;
 
     return this.#httpclient.post<APIOperationResult<number>>(uri, query)
     .pipe(
@@ -150,7 +150,7 @@ public deleteManyMusician(ids: number[]): Observable<boolean>{
 
   public getInternationalActivitiesByMusician(id: number): Observable<number>
   {
-    const uri = `${this.baseApiUrl}/musician/internationalqty/${id}`;
+    const uri = `${this.baseApiUrl}/internationalqty/${id}`;
 
     return this.#httpclient.get<APIOperationResult<number>>(uri)
     .pipe(
@@ -161,7 +161,7 @@ public deleteManyMusician(ids: number[]): Observable<boolean>{
 
   public getMusicianAverageByInstruments(instrumentIds: number[]): Observable<number>
   {
-    const uri = `${this.baseApiUrl}/musician/averagebyinstrument`;
+    const uri = `${this.baseApiUrl}/averagebyinstrument`;
 
     return this.#httpclient.post<APIOperationResult<number>>(uri, {instrumentIds})
     .pipe(

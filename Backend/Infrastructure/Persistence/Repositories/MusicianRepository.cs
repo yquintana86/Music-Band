@@ -4,11 +4,8 @@ using Application.Musicians.Query.SearchMusiciansByFilter;
 using Domain.Entities;
 using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Shared.Common;
 using SharedLib.Models.Common;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 
 namespace Infrastructure.Persistence.Repositories;
 
@@ -171,7 +168,7 @@ internal class MusicianRepository : IMusicianRepository
 
     }
 
-    public async Task<MusicianDashboardGenerics> GetMusicianDashboardGenericsAsync(DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken)
+    public async Task<MusicianSummary> GetMusicianDashboardGenericsAsync(DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken)
     {
         IQueryable<Musician> query = from musician in _appDbContext.Musicians.AsNoTracking()
                                      select musician;
@@ -189,11 +186,11 @@ internal class MusicianRepository : IMusicianRepository
         {
             isInternational = m.Activities.Any(a => a.International) ? 1 : 0,
             age = m.Age,
-            salaries = m.MusicianPaymentDetails.Where(p => p.Id == m.Id).Select(p => p.Salary),
+            salaries = m.MusicianPaymentDetails.Where(p => p.MusicianId == m.Id).Select(p => p.Salary),
         }).ToListAsync();
 
 
-        return new MusicianDashboardGenerics
+        return new MusicianSummary
         {
             musicianQty = result.Count,
             internationalQty = !result.Any() ? 0 : result.Sum(r => r.isInternational),

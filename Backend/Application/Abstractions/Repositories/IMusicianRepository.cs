@@ -22,5 +22,5 @@ public interface IMusicianRepository
     Task<Musician?> GetByIdWithRelatedEntitiesAsync<T>(int id, Expression<Func<Musician, ICollection<T>>> relatedIncluded, CancellationToken cancellationToken)
         where T : class;
 
-    Task<MusicianDashboardGenerics> GetMusicianDashboardGenericsAsync(DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken);
+    Task<MusicianSummary> GetMusicianDashboardGenericsAsync(DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken);
 }
