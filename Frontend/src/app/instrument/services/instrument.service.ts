@@ -84,7 +84,7 @@ export class InstrumentService {
 
   public getMostPlayedInstrument(query: GetMostUsedInstrumentQuery = {InstrumentQtyToSearch: 3}): Observable<MostUsedInstrumentResponse>
     {
-      const uri = `${this.#baseUrl}/instrument/mostplayed/`;
+      const uri = `${this.#baseUrl}/mostplayed/`;
 
       return this._httpClient.post<APIOperationResult<MostUsedInstrumentResponse>>(uri, query)
       .pipe(
@@ -98,7 +98,7 @@ export class InstrumentService {
 
      public getDisctinctInstruments(): Observable<SelectItem[]>
   {
-    const uri = `${this.#baseUrl}/instrument/disctinct`
+    const uri = `${this.#baseUrl}/disctinct`
 
     return this._httpClient.get<APIOperationResult<SelectItem[]>>(uri)
     .pipe(
@@ -109,7 +109,7 @@ export class InstrumentService {
 
   public getMusicianByInstrument(instrumentId: number): Observable<MusicianResponse[]>
   {
-    const uri = `${this.#baseUrl}/instrument/musiciansbyinstrument`;
+    const uri = `${this.#baseUrl}/musiciansbyinstrument`;
 
     return this._httpClient.post<APIOperationResult<MusicianResponse[]>>(uri, instrumentId)
     .pipe(

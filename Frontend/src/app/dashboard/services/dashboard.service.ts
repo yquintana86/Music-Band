@@ -11,12 +11,11 @@ import { MusicianResponse } from '../../musician/interfaces';
 export class DashboardService {
 
   private readonly _httpClient = inject(HttpClient);
-  private readonly _baseUrl: string = `${environment.API_BASE_URL}/api`;
+  private readonly _baseUrl: string = `${environment.API_BASE_URL}/api/dashboard`;
 
   public getMusicianDashboardSummary(query: MusicianDashboardGenericsQuery): Observable<MusicianDashboardGenericsResponse>
   {
-    const uri = `${this._baseUrl}/musician/dashboardgenerics`;
-    debugger;
+    const uri = `${this._baseUrl}/musiciansummary`;
     return this._httpClient.post<APIOperationResult<MusicianDashboardGenericsResponse>>(uri, query)
     .pipe(
       map(response => response.data!),

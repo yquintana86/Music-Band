@@ -1,4 +1,4 @@
-﻿public sealed class MusicianDashboardGenerics
+﻿public sealed class MusicianSummary
 {
     public int musicianQty { get; set; }
     public int internationalQty { get; set; }

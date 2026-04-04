@@ -12,8 +12,8 @@ using Presentation.Extension;
 using Application.Musicians.Query.GetMusicianAverageByPlayedInstrumentsType;
 using Application.Musicians.Query.SearchDomesticSeniorMusicians;
 using Application.Musicians.Command.DeleteManyMusician;
-using Application.Musicians.Query.MusicianDashboardGenerics;
 using Application.Musicians.Query.IternationalActivitiesByMusician;
+using Application.Dashboard.Query.MusicianDashboardGenerics;
 
 namespace Presentation.Controllers;
 
@@ -119,14 +119,7 @@ public class MusicianController : ControllerBase
         return result.ToHttpResult();
     }
 
-    [HttpPost]
-    [Route("dashboardgenerics")]
-    public async Task<IResult> GetMusicianDashboardGenericsAsync([FromBody] MusicianDashboardGenericsQuery query, ISender sender, CancellationToken cancellationToken)
-    {
-        var result = await sender.Send(query, cancellationToken);
-
-        return result.ToHttpResult();
-    }
+    
 
     [HttpGet]
     [Route("internationalqty/{id:int}")]
