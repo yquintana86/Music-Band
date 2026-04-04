@@ -1,8 +1,9 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
+
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import * as jose from 'jose';
+
 import { environment } from '../../../environments/environment.development';
 import { AuthStatusType, CredentialsResponse, JwtPayload, RegisterRequest, User } from '../../auth/interfaces';
 import { APIOperationResult, APIOperationResultBase } from '../../shared/interfaces';

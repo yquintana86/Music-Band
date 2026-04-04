@@ -1,25 +1,26 @@
 import { Component, computed, effect, inject, signal, untracked, viewChild } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { DatePipe } from '@angular/common';
+
+import { ToastrService } from 'ngx-toastr';
+import { map, Observable, startWith } from 'rxjs';
+
 import { ActivityService } from '../../services/activity.service';
 import { ValidatorsService } from '../../../shared/services/validator.service';
-import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivityFilterQuery, ActivityReponse, CreateActivityCommand, UpdateActivityCommand } from '../../interfaces';
 import { CheckedItem, PagedResult } from '../../../shared/interfaces';
 import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.class';
 import { DialogModalComponent } from '../../../shared/components/dialog-modal/dialog-modal.component';
 import { FilterLayoutComponent } from "../../../shared/components/filter-layout/filter-layout.component";
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map, min, Observable, startWith, EMPTY } from 'rxjs';
 import { FieldErrorDirective } from '../../../shared/directives/field-error-directive';
 import { TableComponent } from "../../../shared/components/table/table.component";
-import { DatePipe } from '@angular/common';
 import { ItemsPerPageComponent } from "../../../shared/components/items-per-page/items-per-page.component";
 import { PagerComponent } from "../../../shared/components/pager/pager.component";
 import { InputSearchComponent } from "../../../shared/components/input-search/input-search.component";
 import { SelectItemComponent } from "../../../shared/components/select-item/select-item.component";
 import { MusicianService } from '../../../musician/services/musician.service';
 import { SearchMusicianByFilterQuery } from '../../../musician/interfaces';
-import { list } from 'postcss';
 
 
 

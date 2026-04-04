@@ -1,18 +1,19 @@
-import { AfterViewInit, Component, computed, ElementRef, inject, OnInit, signal, untracked, ViewChild, viewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
+import { CurrencyPipe, DecimalPipe, NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { forkJoin, fromEvent, map } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+
 import { DashboardService } from '../../services/dashboard.service';
 import { MostUsedInstrumentResponse, MusicianDashboardGenericsResponse } from '../../interfaces';
-import { CommonModule, CurrencyPipe, DecimalPipe, NgClass } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
 import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.class';
 import { DtoWithId, SelectItem } from '../../../shared/interfaces';
-import { forkJoin, fromEvent, map } from 'rxjs';
 import { MusicianResponse, SearchMusicianByFilterQuery } from '../../../musician/interfaces';
 import { InputSearchComponent } from "../../../shared/components/input-search/input-search.component";
 import { MusicianService } from '../../../musician/services/musician.service';
 import { InputSearchSelectorComponent } from "../../../shared/components/input-search-selector/input-search-selector.component";
 import { environment } from '../../../../environments/environment.development';
-import { FormsModule } from '@angular/forms';
-import { AverageByInstrumentsQuery } from '../../../musician/interfaces/average-by-intrument-query.interface';
 import { InstrumentService } from '../../../instrument/services/instrument.service';
 
 @Component({

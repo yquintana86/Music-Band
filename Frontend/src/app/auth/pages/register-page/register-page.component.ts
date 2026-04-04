@@ -1,9 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+
+import { ToastrService } from 'ngx-toastr';
+
 import { ValidatorsService } from '../../../shared/services/validator.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { ToastrService } from 'ngx-toastr';
 import { FieldErrorDirective } from '../../../shared/directives/field-error-directive';
 import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.class';
 
