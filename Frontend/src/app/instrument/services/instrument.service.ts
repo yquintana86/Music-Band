@@ -1,7 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
+
 import { catchError, map, Observable, throwError } from 'rxjs';
+
+import { environment } from '../../../environments/environment.development';
 import { APIOperationResult, APIOperationResultBase, PagedResult, SelectItem } from '../../shared/interfaces';
 import { InstrumentFilterQuery, UpdateInstrumentCommand, InstrumentResponse, CreateInstrumentCommand } from '../interfaces';
 import { GetMostUsedInstrumentQuery, MostUsedInstrumentResponse } from '../../dashboard/interfaces';

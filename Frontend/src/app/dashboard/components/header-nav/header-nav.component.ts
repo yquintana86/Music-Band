@@ -1,8 +1,10 @@
 import { Component, inject, input } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from '../../../core/services/auth.service';
 import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.class';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { User } from '../../../auth/interfaces';
 
 @Component({

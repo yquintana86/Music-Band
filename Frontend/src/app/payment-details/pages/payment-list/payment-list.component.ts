@@ -1,21 +1,23 @@
 import { Component, computed, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { DatePipe, DecimalPipe } from '@angular/common';
+
+import { map, startWith } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+
 import { PaymentDetailService } from '../../services/payment-details.service';
 import { ValidatorsService } from '../../../shared/services/validator.service';
-import { ToastrService } from 'ngx-toastr';
 import { SearchPaymentDetailsByFilterQuery } from '../../interfaces/search-payment-by-filter-query.interface';
 import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.class';
 import { PaymentDetailResponse } from '../../interfaces/payment-detail-response.interface';
 import { DtoWithId, SelectItem, PagedResult } from '../../../shared/interfaces';
-import { map, startWith } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { DialogModalComponent } from '../../../shared/components/dialog-modal/dialog-modal.component';
 import { CreatePaymentDetailCommand, UpdatePaymentDetailCommand } from '../../interfaces';
 import { FieldErrorDirective } from '../../../shared/directives/field-error-directive';
 import { TableComponent } from "../../../shared/components/table/table.component";
 import { ItemsPerPageComponent } from "../../../shared/components/items-per-page/items-per-page.component";
 import { PagerComponent } from "../../../shared/components/pager/pager.component";
-import { DatePipe, DecimalPipe } from '@angular/common';
 import { FilterLayoutComponent } from '../../../shared/components/filter-layout/filter-layout.component';
 import { RangePlusService } from '../../../range-plus/services/range-plus.service';
 import { RangePlusResponse } from '../../../range-plus/interfaces/range-plus-response.interface';

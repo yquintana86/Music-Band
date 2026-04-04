@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+
+import { catchError, map, Observable, throwError } from 'rxjs';
+
 import { environment } from '../../../environments/environment.development';
-import { catchError, map, Observable, pipe, throwError } from 'rxjs';
 import { APIOperationResult } from '../../shared/interfaces';
-import { GetMostUsedInstrumentQuery, MostUsedInstrumentResponse, MusicianDashboardGenericsQuery, MusicianDashboardGenericsResponse, SearchDomesticSeniorMusiciansQuery } from '../interfaces';
-import { SelectItem } from '../../shared/interfaces/dto-with-id.interface';
-import { MusicianResponse } from '../../musician/interfaces';
+import { MusicianDashboardGenericsQuery, MusicianDashboardGenericsResponse } from '../interfaces';
 
 @Injectable({providedIn: 'root'})
 export class DashboardService {

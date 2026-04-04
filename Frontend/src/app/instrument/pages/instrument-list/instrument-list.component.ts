@@ -1,10 +1,14 @@
 import { Component, computed, effect, inject, signal, untracked, viewChild, WritableSignal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, FormControlStatus } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+
+import { ToastrService } from 'ngx-toastr';
+import { map, startWith } from 'rxjs';
+
 import { InstrumentFilterQuery, InstrumentResponse, InstrumentType, UpdateInstrumentCommand } from '../../interfaces';
 import { FilterLayoutComponent } from '../../../shared/components/filter-layout/filter-layout.component';
 import { InstrumentService } from '../../services/instrument.service';
 import { DtoWithId, PagedResult, SelectItem } from '../../../shared/interfaces';
-import { ToastrService } from 'ngx-toastr';
 import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.class';
 import { DialogModalComponent } from "../../../shared/components/dialog-modal/dialog-modal.component";
 import { TableComponent } from '../../../shared/components/table/table.component';
@@ -13,8 +17,6 @@ import { ItemsPerPageComponent } from "../../../shared/components/items-per-page
 import { CreateInstrumentCommand } from '../../interfaces/create-instrument-command.interface';
 import { ValidatorsService } from '../../../shared/services/validator.service';
 import { FieldErrorDirective } from "../../../shared/directives/field-error-directive";
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map, startWith } from 'rxjs';
 import { InputSearchSelectorComponent } from "../../../shared/components/input-search-selector/input-search-selector.component";
 import { MusicianResponse, SearchMusicianByFilterQuery } from '../../../musician/interfaces';
 import { environment } from '../../../../environments/environment.development';

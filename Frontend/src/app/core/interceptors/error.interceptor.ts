@@ -1,5 +1,7 @@
 import { HttpErrorResponse, HttpInterceptorFn, HttpResponse } from "@angular/common/http";
+
 import { catchError, map, throwError } from 'rxjs';
+
 import { APIOperationResultBase } from "../../shared/interfaces";
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {

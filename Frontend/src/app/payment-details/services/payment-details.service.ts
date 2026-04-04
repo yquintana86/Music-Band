@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { catchError, map, Observable, throwError } from 'rxjs';
+
 import { environment } from '../../../environments/environment.development';
 import { CreatePaymentDetailCommand, SearchPaymentDetailsByFilterQuery, UpdatePaymentDetailCommand } from '../interfaces';
-import { catchError, map, Observable, throwError } from 'rxjs';
 import { APIOperationResult, APIOperationResultBase, PagedResult } from '../../shared/interfaces';
 import { PaymentDetailResponse } from '../interfaces/payment-detail-response.interface';
 

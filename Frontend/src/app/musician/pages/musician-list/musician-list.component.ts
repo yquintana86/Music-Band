@@ -1,6 +1,10 @@
 import { Component, computed, effect, inject, signal, viewChild, WritableSignal, untracked } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { CurrencyPipe } from '@angular/common';
+
 import { ToastrService } from 'ngx-toastr';
+import { map, startWith, tap } from 'rxjs';
 
 import { FilterLayoutComponent } from "../../../shared/components/filter-layout/filter-layout.component";
 import { TableComponent } from "../../../shared/components/table/table.component";
@@ -10,12 +14,9 @@ import { ErrorUtilitiesClass } from '../../../shared/interfaces/error-utilities.
 import { FieldErrorDirective } from '../../../shared/directives/field-error-directive';
 import { ValidatorsService } from '../../../shared/services/validator.service';
 import { PagedResult } from './../../../shared/interfaces/paged-result.interface';
-import { CurrencyPipe } from '@angular/common';
 import { DialogModalComponent } from "../../../shared/components/dialog-modal/dialog-modal.component";
-import { map, startWith, tap } from 'rxjs';
 import { ItemsPerPageComponent } from "../../../shared/components/items-per-page/items-per-page.component";
 import { PagerComponent } from "../../../shared/components/pager/pager.component";
-import { toSignal } from '@angular/core/rxjs-interop';
 import { InstrumentService } from '../../../instrument/services/instrument.service';
 import { DtoWithId, SelectItem } from '../../../shared/interfaces';
 import { InstrumentResponse } from '../../../instrument/interfaces';

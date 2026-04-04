@@ -1,8 +1,10 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
+
+import { catchError, Observable, switchMap, throwError } from 'rxjs';
+
 import { AuthService } from '../services/auth.service';
-import { catchError, Observable, pipe, retry, switchMap, throwError } from 'rxjs';
 
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
