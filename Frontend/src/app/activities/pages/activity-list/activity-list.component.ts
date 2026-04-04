@@ -329,7 +329,6 @@ export default class ActivityListComponent {
 
     const isCreation = !this.dialogModalForm.get('id')?.value;
     const value = this.dialogModalForm.value;
-    debugger;
     const activity = {
       ...value,
       musiciansId: this.musiciansSelected().map(m => m.id),
