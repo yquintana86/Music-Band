@@ -65,4 +65,10 @@ public sealed class JwtProvider : IJwtProvider
     {
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
     }
+
+    public string HashRawToken(string rawToken)
+    {        
+        return Convert.ToHexString(
+            SHA256.HashData(Encoding.UTF8.GetBytes(rawToken)));
+    }
 }

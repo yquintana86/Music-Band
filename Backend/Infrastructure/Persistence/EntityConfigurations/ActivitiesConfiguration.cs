@@ -18,7 +18,7 @@ public class ActivitiesConfiguration : IEntityTypeConfiguration<Activity>
         builder.Property(a => a.Price).HasColumnType("decimal(8,2)");
 
         builder.Property(a => a.International)
-            .HasConversion(a => a ? 1 : 0, a => a == 1 ? true : false)
+            .HasConversion(a => a ? 1 : 0, a => a == 1)
             .IsRequired();
     }
 }

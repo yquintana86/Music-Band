@@ -1,6 +1,8 @@
 ﻿using Application.Abstractions.Authentication;
 using Application.Abstractions.DataContext;
+using Application.Abstractions.Email;
 using Application.Abstractions.Repositories;
+using Application.Abstractions.Utilities;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence.DataContext;
 using Infrastructure.Persistence.Repositories;
@@ -23,6 +25,8 @@ public static class MusicBandDependencyInjection
         app.AddScoped<IJwtProvider, JwtProvider>();
         app.AddScoped<IPasswordHasher, PasswordHasher>();
         app.AddScoped<IPermissionService, PermissionService>();
+        app.AddScoped<IEmailService, IEmailService>();
+        app.AddScoped<IUrlService, IUrlService>();
         app.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<AppDbContext>());
         app.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
 
