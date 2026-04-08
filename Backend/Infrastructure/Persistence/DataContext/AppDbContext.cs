@@ -7,7 +7,6 @@ namespace Infrastructure.Persistence.DataContext;
 
 public sealed class AppDbContext : DbContext, IAppDbContext, IUnitOfWork
 {
-
     public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) :
         base(dbContextOptions) { }
 
@@ -22,6 +21,7 @@ public sealed class AppDbContext : DbContext, IAppDbContext, IUnitOfWork
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<MusicianPaymentDetail> MusicianPaymentDetails { get; set ; }
     public DbSet<RangePlus> RangePlus { get ; set ; }
+    public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
