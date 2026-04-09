@@ -23,6 +23,11 @@ export default [
     loadComponent: () => import('./pages/forgot-password-page/forgot-password-page.component')
     },
     {
+      path: 'reset-forgotten-password',
+      title: 'Reset Forgotten Password',
+      loadComponent: () => import('./pages/reset-forgotten-password-page/reset-forgotten-password-page.component')
+    },
+    {
       path: '**',
       redirectTo: 'login',
     }

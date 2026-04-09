@@ -4,8 +4,10 @@ using Application.Abstractions.Email;
 using Application.Abstractions.Repositories;
 using Application.Abstractions.Utilities;
 using Infrastructure.Authentication;
+using Infrastructure.ExternalServices;
 using Infrastructure.Persistence.DataContext;
 using Infrastructure.Persistence.Repositories;
+using Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
@@ -22,11 +24,12 @@ public static class MusicBandDependencyInjection
         app.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
         app.AddScoped<IRoleRepository, RoleRepository>();
         app.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        app.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
         app.AddScoped<IJwtProvider, JwtProvider>();
         app.AddScoped<IPasswordHasher, PasswordHasher>();
         app.AddScoped<IPermissionService, PermissionService>();
-        app.AddScoped<IEmailService, IEmailService>();
-        app.AddScoped<IUrlService, IUrlService>();
+        app.AddScoped<IEmailService, EmailService>();
+        app.AddScoped<IUrlService, UrlService>();
         app.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<AppDbContext>());
         app.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
 

@@ -3,3 +3,4 @@ export * from './authentication-status.enum';
 export * from './credential-response.interface';
 export * from './jwt-payload.interface';
 export * from './register-request.interface';
+export * from './reset-forgotten-password.interface';

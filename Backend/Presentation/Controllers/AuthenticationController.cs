@@ -10,8 +10,8 @@ using Application.Authentication.Command.Logout;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Azure;
-using Application.Authentication.Command.ResetPassword;
 using Application.Authentication.Command.ForgotPassword;
+using Application.Authentication.Command.ResetForgottenPassword;
 
 
 namespace Presentation.Controllers;
@@ -68,8 +68,8 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost]
-    [Route("resetpassword")]
-    public async Task<IResult> ResetPasswordAsync([FromBody] ResetPasswordCommand resetPasswordCommand, ISender sender, CancellationToken cancellationToken)
+    [Route("resetforgottenpassword")]
+    public async Task<IResult> ResetPasswordAsync([FromBody] ResetForgottenPassword resetPasswordCommand, ISender sender, CancellationToken cancellationToken)
     {
         var response = await sender.Send(resetPasswordCommand, cancellationToken);
 
