@@ -6,18 +6,18 @@ using Domain.Exceptions;
 using Microsoft.Extensions.Logging;
 using SharedLib.Models.Common;
 
-namespace Application.Authentication.Command.ResetPassword;
+namespace Application.Authentication.Command.ResetForgottenPassword;
 
-internal sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand>
+internal sealed class ResetForgottenPasswordHandler : ICommandHandler<ResetForgottenPassword>
 {
 
     private readonly IPasswordResetTokenRepository _tokenRepository;
     private readonly IJwtProvider _jwtProvider;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<ResetPasswordCommandHandler> _logger;
+    private readonly ILogger<ResetForgottenPasswordHandler> _logger;
 
-    public ResetPasswordCommandHandler(IPasswordResetTokenRepository tokenRepository, IUnitOfWork unitOfWork, ILogger<ResetPasswordCommandHandler> logger, IJwtProvider jwtProvider, IPasswordHasher passwordHasher)
+    public ResetForgottenPasswordHandler(IPasswordResetTokenRepository tokenRepository, IUnitOfWork unitOfWork, ILogger<ResetForgottenPasswordHandler> logger, IJwtProvider jwtProvider, IPasswordHasher passwordHasher)
     {
         _tokenRepository = tokenRepository;
         _unitOfWork = unitOfWork;
@@ -26,7 +26,7 @@ internal sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswor
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<ApiOperationResult> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+    public async Task<ApiOperationResult> Handle(ResetForgottenPassword request, CancellationToken cancellationToken)
     {
         try
         {

@@ -5,7 +5,7 @@ import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import * as jose from 'jose';
 
 import { environment } from '../../../environments/environment.development';
-import { AuthStatusType, CredentialsResponse, JwtPayload, RegisterRequest, User } from '../../auth/interfaces';
+import { AuthStatusType, CredentialsResponse, JwtPayload, RegisterRequest, User, ResetForgottenPassword } from '../../auth/interfaces';
 import { APIOperationResult, APIOperationResultBase } from '../../shared/interfaces';
 
 
@@ -169,6 +169,24 @@ export class AuthService {
 
     const { exp } = jose.decodeJwt(this._accessToken()!);
     return this.#isExpiredByTokenExpiration(exp);
+  }
+
+  public doForgotPassword(email:string): Observable<boolean> {
+    const uri = `${this.baseUrl}/api/authentication/forgotpassword`;
+    return this.httpClient.post<APIOperationResultBase>(uri, { email })
+    .pipe(
+      map(response => response.isSuccess),
+      catchError((err) => throwError(() => err))
+    );
+  }
+
+  public doResetForgottenPassword(command:ResetForgottenPassword): Observable<boolean> {
+    const uri = `${this.baseUrl}/api/authentication/resetforgottenpassword`;
+    return this.httpClient.post<APIOperationResultBase>(uri, command)
+    .pipe(
+      map(response => response.isSuccess),
+      catchError((err) => throwError(() => err))
+    );
   }
 
   //#endregion

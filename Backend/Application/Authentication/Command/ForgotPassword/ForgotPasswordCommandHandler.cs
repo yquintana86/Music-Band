@@ -63,7 +63,7 @@ internal sealed class ForgotPasswordCommandHandler : ICommandHandler<ForgotPassw
             _tokenRepository.Add(token);            
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var htmlBody = EmailTemplates.GetPasswordResetEmailBody($"https://localhost:4200/auth/forgot-password/authentication/forgotpassword?token={HttpUtility.UrlEncode(rawToken)}", 20);
+            var htmlBody = EmailTemplates.GetPasswordResetEmailBody($"https://localhost:4200/auth/reset-forgotten-password?token={HttpUtility.UrlEncode(rawToken)}", 20);
             await _emailService.SendEmailAsync(request.email, "Reset your password", htmlBody);
             return ApiOperationResult.Success();
 

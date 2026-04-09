@@ -1,15 +1,16 @@
 ﻿using FluentValidation;
 using Shared.Common;
 
-namespace Application.Authentication.Command.ResetPassword;
+namespace Application.Authentication.Command.ResetForgottenPassword;
 
-public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordCommand>
+public class ResetForgottenPasswordCommandValidator : AbstractValidator<ResetForgottenPassword>
 {
-    public ResetPasswordCommandValidator()
+    public ResetForgottenPasswordCommandValidator()
     {
         RuleFor(rp => rp.token).NotEmpty();
         RuleFor(rp => rp.password).NotEmpty();
-        RuleFor(rp => rp.email).Custom((email, validatioctx) => {
+        RuleFor(rp => rp.email).Custom((email, validatioctx) =>
+        {
 
             if (!Email.IsValid(email))
             {
