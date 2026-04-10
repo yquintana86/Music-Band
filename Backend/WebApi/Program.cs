@@ -5,11 +5,11 @@ using Presentation;
 using Microsoft.EntityFrameworkCore;
 using WebApi.GlobalExceptionHandler;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using WebApi.OptionsSetup;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Infrastructure.Authentication;
+using Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,8 +49,32 @@ builder.Services.AddCors(options => {
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+builder.Services.AddOptions<EmailOptions>()
+    .BindConfiguration("EmailSettings")
+    .ValidateDataAnnotations()
+    .Validate( o =>
+         o.Port > 1 && 
+         o.Port < 65535 &&
+        !string.IsNullOrWhiteSpace(o.SmtpServer) && 
+        !string.IsNullOrWhiteSpace(o.From) && 
+        !string.IsNullOrWhiteSpace(o.Username) && 
+        !string.IsNullOrWhiteSpace(o.Password),
+        "Email configuration is invalid")
+        .ValidateOnStart();
 
-builder.Services.ConfigureOptions<JwtOptionsSetup>();
+
+builder.Services.AddOptions<JwtOptions>()
+    .BindConfiguration("Jwt")
+    .ValidateDataAnnotations()
+    .Validate(jwt => 
+       !string.IsNullOrWhiteSpace(jwt.Issuer) &&
+       !string.IsNullOrWhiteSpace(jwt.Audience) &&
+       !string.IsNullOrWhiteSpace(jwt.SecretKey) &&
+       jwt.ExpireUtc > 0 &&
+       jwt.ExpireRefreshUtc > 0,
+       "Jwt configuration is invalid")
+    .ValidateOnStart();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

@@ -7,7 +7,6 @@ using Infrastructure.Authentication;
 using Infrastructure.ExternalServices;
 using Infrastructure.Persistence.DataContext;
 using Infrastructure.Persistence.Repositories;
-using Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;

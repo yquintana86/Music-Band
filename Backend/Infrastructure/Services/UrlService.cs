@@ -1,9 +1,9 @@
 ﻿using Application.Abstractions.Utilities;
 using Microsoft.AspNetCore.Http;
 
-namespace Infrastructure.Utilities;
+namespace Infrastructure.ExternalServices;
 
-public sealed class UrlService: IUrlService
+public sealed class UrlService : IUrlService
 {
     private readonly IHttpContextAccessor _contextAccessor;
 
